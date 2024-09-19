@@ -1,0 +1,34 @@
+name: "리팩터링"
+description: "코드 리팩터링을 합니다. 🔧"
+labels: refactor
+body:
+  - type: textarea
+    id: refactor-contents
+    attributes:
+      label: Refactor
+      description: |
+        작업할 Refactor에 대한 설명을 적어주세요.
+      placeholder: |
+        ex) Calendar 컴포넌트 제작
+    validations:
+      required: true
+  - type: textarea
+    id: work-todo
+    attributes:
+      label: Todo
+      description: |
+        어떤 작업을 진행할 것인가요?
+      placeholder: |
+        - [ ] UI 분리
+        - [ ] API 로직 수정
+        - [ ] 상태관리 로직 수정
+    validations:
+      required: false
+  - type: textarea
+    id: additional-contents
+    attributes:
+      label: Additional
+      description: |
+        추가로 할말을 작성해주세요.
+    validations:
+      required: false
