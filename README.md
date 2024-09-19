@@ -54,7 +54,7 @@ feat/#11
 - src  
   └ api: 사용하는 api들 모음입니다.  
   └ hooks: 커스텀 훅 모음입니다.  
-  └ store: 상태관리 파일 모읍입니다.  
+  └ stores: 상태관리 파일 모읍입니다.  
   └ features: 각 스크린별 대표 스크린 파일과 구성되는 컴포넌트 파일을 구분지어 놓습니다.  
     └ (예시)home  
       └ HomeScreen.tsx  
