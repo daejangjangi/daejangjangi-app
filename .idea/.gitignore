@@ -3,3 +3,6 @@
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/daejangjangi-app.iml
+/modules.xml
+/vcs.xml
