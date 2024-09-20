@@ -6,6 +6,7 @@ const myPageRouteMap = {
   profile: '정보 수정',
   faq: '자주 묻는 질문',
   account: '계정',
+  notification: '알림',
 };
 
 export default function MyPageLayout() {
@@ -21,6 +22,7 @@ export default function MyPageLayout() {
       <Stack.Screen name='profile' />
       <Stack.Screen name='faq' />
       <Stack.Screen name='account' />
+      <Stack.Screen name='notification' />
     </Stack>
   );
 }
