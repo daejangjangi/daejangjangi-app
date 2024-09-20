@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {Link} from 'expo-router';
 
 export default function CareScreen() {
   return (
@@ -10,7 +11,8 @@ export default function CareScreen() {
         alignItems: 'center',
       }}
     >
-      <Text>CareScreen</Text>
+      <Link href='/(care)/diagnosis'>배변 분석</Link>
+      <Link href='/(care)/diagnosis-result'>결과</Link>
     </View>
   );
 }
