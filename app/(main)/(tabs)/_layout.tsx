@@ -12,7 +12,6 @@ export default function TabLayout() {
       <Tabs.Screen name='(care)' />
       <Tabs.Screen name='(community)' />
       <Tabs.Screen name='(market)' />
-      <Tabs.Screen name='(mypage)' />
     </Tabs>
   );
 }

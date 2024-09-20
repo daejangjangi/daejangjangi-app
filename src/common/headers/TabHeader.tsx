@@ -47,7 +47,7 @@ export default function TabHeader({title}: CustomHeaderProps) {
         <TouchableOpacity onPress={() => router.push('/(mypage)')}>
           <Text style={styles.buttonText}>내 정보</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/(mypage)/notification')}>
+        <TouchableOpacity onPress={() => router.push('/(notification)')}>
           <Text style={styles.buttonText}>알림</Text>
         </TouchableOpacity>
       </View>
