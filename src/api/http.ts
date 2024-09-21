@@ -53,6 +53,13 @@ function convertToResponse<RequestBodyDTO, ResponseBodyDTO>(
   };
 }
 
+/**
+ * http get 요청 메서드입니다.
+ *
+ * @param path - url ex)'/user'
+ * @param params - 요청 파라미터(필요 시 axios 공식문서 참고)
+ * @param config - 요청 config(필요 시 axios 공식문서 참고)
+ */
 async function getRequest<ResponseBodyDTO>(
   path: string,
   params?: any,
@@ -68,6 +75,13 @@ async function getRequest<ResponseBodyDTO>(
   return convertToResponse<null, ResponseBodyDTO>(response);
 }
 
+/**
+ * http post 요청 메서드입니다.
+ *
+ * @param path - url ex) '/user'
+ * @param data - 요청 Body 입니다.
+ * @param config - 요청 config 입니다.(필요 시 axios 공식문서 참고)
+ */
 async function postRequest<RequestBodyDTO, ResponseBodyDTO>(
   path: string,
   data?: RequestBodyDTO,
@@ -83,6 +97,13 @@ async function postRequest<RequestBodyDTO, ResponseBodyDTO>(
   return convertToResponse<RequestBodyDTO, ResponseBodyDTO>(response);
 }
 
+/**
+ * http patch 요청 메서드입니다.
+ *
+ * @param path - url ex) '/user'
+ * @param data - 요청 Body 입니다.
+ * @param config - 요청 config 입니다.(필요 시 axios 공식문서 참고)
+ */
 async function patchRequest<RequestBodyDTO, ResponseBodyDTO>(
   path: string,
   data?: RequestBodyDTO,
@@ -98,6 +119,13 @@ async function patchRequest<RequestBodyDTO, ResponseBodyDTO>(
   return convertToResponse<RequestBodyDTO, ResponseBodyDTO>(response);
 }
 
+/**
+ * http put 요청 메서드입니다.
+ *
+ * @param path - url ex) '/user'
+ * @param data - 요청 Body 입니다.
+ * @param config - 요청 config 입니다.(필요 시 axios 공식문서 참고)
+ */
 async function putRequest<RequestBodyDTO, ResponseBodyDTO>(
   path: string,
   data?: RequestBodyDTO,
@@ -113,6 +141,13 @@ async function putRequest<RequestBodyDTO, ResponseBodyDTO>(
   return convertToResponse<RequestBodyDTO, ResponseBodyDTO>(response);
 }
 
+/**
+ * http delete 요청 메서드입니다.
+ *
+ * @param path - url ex)'/user'
+ * @param params - 요청 파라미터(필요 시 axios 공식문서 참고)
+ * @param config - 요청 config(필요 시 axios 공식문서 참고)
+ */
 async function deleteRequest<ResponseBodyDTO>(
   path: string,
   params?: any,
