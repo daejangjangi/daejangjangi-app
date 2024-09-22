@@ -33,12 +33,11 @@ export default function CommonModal({subject, children}: ModalProps) {
       {children}
       <CommonButton
         text='저장'
-        widthprops={200}
-        heightprops={60}
-        backgroundcolor='#FF286A'
-        colorprops='#FFFFF'
-        fontSizeprops={19}
-        fontWeightprops={500}
+        width={200}
+        height={60}
+        backgroundColor='#FF286A'
+        fontSize={19}
+        fontWeight={500}
         paddingTB={16}
         paddingLR={64}
       />
