@@ -4,6 +4,7 @@ import {Image, Pressable} from 'react-native';
 
 type CheckBoxProps = {
   values: string[];
+  onChange: (value: boolean[]) => void;
 };
 
 const S = {
@@ -26,13 +27,16 @@ const S = {
   `,
 };
 
-export default function CommonCheckBox({values}: CheckBoxProps) {
+export default function CommonCheckBox({values, onChange}: CheckBoxProps) {
   const [selectedItems, setSelectedItems] = useState<boolean[]>(values.map(() => false));
 
   const onPressHandler = (index: number) => {
     const newSelectedItems = [...selectedItems];
     newSelectedItems[index] = !newSelectedItems[index];
     setSelectedItems(newSelectedItems);
+    if (onChange) {
+      onChange(newSelectedItems);
+    }
   };
 
   return (
