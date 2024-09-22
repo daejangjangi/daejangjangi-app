@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 type SearchBarProps = {
   placeholder: string;
+  maxLength: number;
+  setSearchBarValue: (value: string) => void;
 };
 
 const S = {
@@ -33,19 +35,27 @@ const S = {
   `,
 };
 
-export default function CommonSearchBar({placeholder}: SearchBarProps) {
+export default function CommonSearchBar({
+  placeholder,
+  maxLength,
+  setSearchBarValue,
+}: SearchBarProps) {
   const [text, setText] = useState('');
-  const maxLength = 5;
+
+  const handleTextChange = (newText: string) => {
+    if (newText.length <= maxLength) {
+      setText(newText);
+      if (setSearchBarValue) {
+        setSearchBarValue(newText);
+      }
+    }
+  };
 
   return (
     <S.StyledView text={text}>
       <S.StyledTextInput
         value={text}
-        onChangeText={(newText: string) => {
-          if (newText.length <= maxLength) {
-            setText(newText);
-          }
-        }}
+        onChangeText={handleTextChange}
         maxLength={maxLength}
         placeholder={placeholder}
       />

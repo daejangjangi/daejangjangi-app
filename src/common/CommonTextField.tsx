@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 
 type TextFieldProps = {
   placeholder: string;
+  maxLength: number;
+  setTextFieldValue: (value: string) => void;
 };
 
 const S = {
@@ -14,6 +16,10 @@ const S = {
     width: 200px;
     height: 100px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   `,
   StyledTextInput: styled.TextInput`
     width: 100%;
@@ -40,18 +46,26 @@ const S = {
   `,
 };
 
-export default function CommonTextField({placeholder}: TextFieldProps) {
+export default function CommonTextField({
+  placeholder,
+  maxLength,
+  setTextFieldValue,
+}: TextFieldProps) {
   const [text, setText] = useState('');
-  const maxLength = 5;
+
+  const handleTextChange = (newText: string) => {
+    if (newText.length <= maxLength) {
+      setText(newText);
+      if (setTextFieldValue) {
+        setTextFieldValue(newText);
+      }
+    }
+  };
   return (
     <S.StyledView text={text}>
       <S.StyledTextInput
         value={text}
-        onChangeText={(newText: string) => {
-          if (newText.length <= maxLength) {
-            setText(newText);
-          }
-        }}
+        onChangeText={handleTextChange}
         maxLength={maxLength}
         placeholder={placeholder}
       />

@@ -8,6 +8,8 @@ import CommonCheckBox from '@/src/common/CommonCheckBox';
 export default function Index() {
   const [checkedItems, setCheckedItems] = useState<boolean[]>([]);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [textFieldValue, setTextFieldValue] = useState<string>('');
+  const [searchBarValue, setSearchBarValue] = useState<string>('');
   const values = ['변비', '치질', '과민성 장 증후군'];
   const handleCheckBoxChange = (selectedItems: boolean[]) => {
     setCheckedItems(selectedItems);
@@ -39,8 +41,9 @@ export default function Index() {
       >
         <CommonCheckBox values={values} onChange={handleCheckBoxChange} />
       </CommonModal>
+      <CommonTextField placeholder='검색' maxLength={5} setTextFieldValue={setTextFieldValue} />
       {/* <CommonTextField placeholder='텍스트 입력' />
-      <CommonSearchBar placeholder='검색' /> */}
+      <CommonSearchBar placeholder='검색' setSearchBarValue={setSearchBarValue} /> */}
       {/* <Text>Edit app/index.tsx to edit this screen.</Text> */}
     </View>
   );
