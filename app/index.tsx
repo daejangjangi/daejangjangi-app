@@ -22,7 +22,21 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      <CommonModal subject='관심질환'>
+      <CommonModal
+        subject='관심질환'
+        buttonProps={{
+          text: '저장',
+          width: 200,
+          height: 60,
+          backgroundColor: '#FF286A',
+          color: '#ffffff',
+          fontSize: 19,
+          fontWeight: 500,
+          paddingTB: 16,
+          paddingLR: 64,
+          onPress: () => {},
+        }}
+      >
         <CommonCheckBox values={values} onChange={handleCheckBoxChange} />
       </CommonModal>
       {/* <CommonTextField placeholder='텍스트 입력' />
