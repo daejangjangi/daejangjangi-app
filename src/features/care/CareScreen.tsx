@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {Link} from 'expo-router';
 
-export default function Index() {
+export default function CareScreen() {
   return (
     <View
       style={{
@@ -11,10 +11,8 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-      <Link href='/signin'>SignIn</Link>
-      <Link href='/signup'>SignUp</Link>
-      <Link href='/(tabs)'>tabs</Link>
+      <Link href='/(care)/diagnosis'>배변 분석</Link>
+      <Link href='/(care)/diagnosis-result'>결과</Link>
     </View>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {Link} from 'expo-router';
 
-export default function Index() {
+export default function MarketScreen() {
   return (
     <View
       style={{
@@ -11,10 +11,8 @@ export default function Index() {
         alignItems: 'center',
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-      <Link href='/signin'>SignIn</Link>
-      <Link href='/signup'>SignUp</Link>
-      <Link href='/(tabs)'>tabs</Link>
+      <Link href='/(market)/search'>상품 검색</Link>
+      <Link href='/(market)/favorite'>관심 상품</Link>
     </View>
   );
 }
