@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Pressable} from 'react-native';
+import {AppText} from '@/src/common/AppComponents';
 
 type CheckBoxProps = {
   values: string[];
@@ -19,11 +20,10 @@ const S = {
     justify-content: space-between;
     align-items: center;
   `,
-  Text: styled.Text`
+  Text: styled(AppText)`
     font-size: 17px;
     font-weight: 500;
-    font-family: Pretendard;
-    color: '#2D3541';
+    color: ${props => props.theme.colors.text};
   `,
 };
 
