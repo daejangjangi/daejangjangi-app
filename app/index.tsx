@@ -7,7 +7,6 @@ import {theme} from '@/src/styles/theme';
 import {AppText} from '@/src/common/AppComponents';
 
 const StyledText = styled(AppText)`
-  font-size: 32px;
   margin-bottom: 20px;
   color: ${props => props.theme.colors.main};
 `;
@@ -22,7 +21,7 @@ export default function Index() {
           alignItems: 'center',
         }}
       >
-        <StyledText>프리텐다드</StyledText>
+        <StyledText textType='T5'>프리텐다드</StyledText>
         <Link href='/signin'>SignIn</Link>
         <Link href='/signup'>SignUp</Link>
         <Link href='/(tabs)'>tabs</Link>
