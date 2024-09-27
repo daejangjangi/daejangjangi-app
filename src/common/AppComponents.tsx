@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 interface CustomTextProps {
   // eslint-disable-next-line react/require-default-props
-  textType?: keyof FontsTypes | undefined;
+  textType?: keyof FontsTypes;
 }
 
 const S = {
@@ -30,7 +30,7 @@ export const AppText: React.FC<TextProps & CustomTextProps> = props => (
 );
 
 // eslint-disable-next-line react/function-component-definition
-export const AppTextInput: React.FC<TextProps> = props => (
+export const AppTextInput: React.FC<TextProps & CustomTextProps> = props => (
   // eslint-disable-next-line react/jsx-props-no-spreading,react/destructuring-assignment
   <S.CustomTextInput {...props} />
 );
