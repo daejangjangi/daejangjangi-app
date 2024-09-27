@@ -1,13 +1,9 @@
 import 'styled-components/native';
+import {ColorsTypes, FontsTypes} from '@/src/styles/theme';
 
 declare module 'styled-components/native' {
   export interface DefaultTheme {
-    colors: {
-      main: string;
-      mainLight: string;
-      text: string;
-      textLight: string;
-      textMedium: string;
-    };
+    colors: ColorsTypes;
+    fonts: FontsTypes;
   }
 }
