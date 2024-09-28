@@ -13,9 +13,20 @@ interface Font {
   size: number;
 }
 
+const WEIGHT_MAP = {
+  100: 'Thin',
+  200: 'ExtraLight',
+  300: 'Light',
+  400: 'Regular',
+  500: 'Medium',
+  600: 'SemiBold',
+  700: 'Bold',
+  800: 'ExtraBold',
+  900: 'Black',
+};
+
 const FONT = ({weight, size}: Font): string => `
-    font-family : 'PretendardVariable';
-    font-weight : ${weight};
+    font-family : Pretendard-${WEIGHT_MAP[weight]};
     font-size : ${size}px;
     `;
 
