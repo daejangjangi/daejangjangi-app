@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Text} from 'react-native';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import styled from 'styled-components/native';
+import {AppText, AppTextInput} from '@/src/common/AppComponents';
 
 type TextFieldProps = {
   placeholder: string;
@@ -12,7 +13,8 @@ type TextFieldProps = {
 const S = {
   StyledView: styled.View<{text: string}>`
     padding: 20px;
-    border: 1px solid ${props => (props.text.length > 0 ? '#FF286A' : '#9B99A2')};
+    border: 1px solid
+      ${props => (props.text.length > 0 ? props.theme.colors.main : props.theme.colors.textMedium)};
     width: 200px;
     height: 100px;
     border-radius: 8px;
@@ -21,7 +23,7 @@ const S = {
     justify-content: center;
     align-items: center;
   `,
-  StyledTextInput: styled.TextInput`
+  StyledTextInput: styled(AppTextInput)`
     width: 100%;
     height: 100%;
     color: #31302d;
@@ -29,7 +31,6 @@ const S = {
       color: #a29d99;
     }
     font-size: 17px;
-    font-family: Pretendard;
     font-weight: 500;
   `,
   StyledTextContainer: styled.View`
@@ -38,11 +39,11 @@ const S = {
     flex-direction: row;
     justify-content: flex-end;
   `,
-  NormalText: styled.Text`
-    color: #9b99a2;
+  NormalText: styled(AppText)`
+    color: ${props => props.theme.colors.textMedium};
   `,
   HighlightText: styled.Text`
-    color: #ff286a;
+    color: ${props => props.theme.colors.main};
   `,
 };
 

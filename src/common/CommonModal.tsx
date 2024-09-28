@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {Pressable} from 'react-native';
+import {AppText} from '@/src/common/AppComponents';
+import {theme} from '@/src/styles/theme';
 
 type ModalProps = {
   subject: string;
@@ -33,7 +35,7 @@ const S = {
     flex-direction: column;
     background-color: white;
   `,
-  Subject: styled.Text`
+  Subject: styled(AppText)`
     font-family: Pretendard;
     font-size: 20px;
     font-weight: 700;
@@ -56,7 +58,7 @@ const S = {
     justify-content: center;
     background-color: ${({backgroundColor}) => backgroundColor};
   `,
-  ButtonTxt: styled.Text<{
+  ButtonTxt: styled(AppText)<{
     color: string;
     fontSize: number;
     fontWeight: number;
@@ -64,7 +66,6 @@ const S = {
     color: ${({color}) => color};
     font-size: ${({fontSize}) => `${fontSize}px`};
     font-weight: ${({fontWeight}) => fontWeight};
-    font-family: 'Pretendard';
   `,
 };
 
@@ -74,7 +75,7 @@ export default function CommonModal({subject, children, buttonProps}: ModalProps
     text,
     width = '100%',
     height = 80,
-    backgroundColor = '#FF286A',
+    backgroundColor = theme.colors.main,
     color = '#ffffff',
     fontSize = 16,
     paddingTB = 10,

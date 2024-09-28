@@ -1,6 +1,7 @@
 import React from 'react';
 import {Pressable} from 'react-native';
 import styled from 'styled-components/native';
+import {AppText} from '@/src/common/AppComponents';
 
 type ButtonProps = {
   text: string;
@@ -34,7 +35,7 @@ const S = {
     justify-content: center;
     background-color: ${({backgroundColor}) => backgroundColor};
   `,
-  ButtonTxt: styled.Text<{
+  ButtonTxt: styled(AppText)<{
     color: string;
     fontSize: number;
     fontWeight: number;
@@ -42,7 +43,6 @@ const S = {
     color: ${({color}) => color};
     font-size: ${({fontSize}) => `${fontSize}px`};
     font-weight: ${({fontWeight}) => fontWeight};
-    font-family: 'Pretendard';
   `,
 };
 

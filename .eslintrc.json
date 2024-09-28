@@ -23,6 +23,7 @@
     "react-native/no-inline-styles": "off",
     "import/extensions": "off",
     "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
     "react/no-unstable-nested-components": "off",
     "react/jsx-filename-extension": [
       1,

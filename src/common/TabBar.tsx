@@ -1,24 +1,44 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
 import {useRouter} from 'expo-router';
-import {MaterialIcons} from '@expo/vector-icons';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
+import styled from 'styled-components/native';
+import {theme} from '@/src/styles/theme';
+import {IcCalendar, IcCommunity, IcHome, IcMarket, IcUser} from '@/assets/images/icons';
 
-// Custom Tab Bar Component
+const S = {
+  Container: styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 24px;
+    height: 84px;
+    border-top-width: 0.5px;
+    border-color: ${theme.colors.textMedium};
+  `,
+
+  TabButton: styled.Pressable`
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+
+    width: 48px;
+    height: 48px;
+  `,
+
+  TabTitle: styled.Text<{$isFocused?: boolean}>`
+    font-family: 'PretendardVariable';
+    font-size: 12px;
+    font-weight: 500;
+    color: ${props => (props.$isFocused ? '#31302D' : theme.colors.textMedium)};
+  `,
+};
+
 export default function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
   const router = useRouter();
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        height: 60,
-        backgroundColor: '#fff',
-        borderTopWidth: 1,
-        borderColor: '#e5e5e5',
-      }}
-    >
+    <S.Container>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -38,41 +58,30 @@ export default function TabBar({state, descriptors, navigation}: BottomTabBarPro
           }
         };
 
+        const fillColor = isFocused ? '#31302d' : theme.colors.textMedium;
+
         return (
-          <TouchableOpacity
+          <S.TabButton
             key={route.key}
             accessibilityRole='button'
             accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             onPress={onPress}
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
           >
-            {route.name === '(home)' && (
-              <MaterialIcons name='home' size={24} color={isFocused ? '#673ab7' : '#222'} />
-            )}
-            {route.name === '(care)' && (
-              <MaterialIcons name='event-note' size={24} color={isFocused ? '#673ab7' : '#222'} />
-            )}
+            {route.name === '(home)' && <IcHome width='24px' height='24px' color={fillColor} />}
+            {route.name === '(care)' && <IcCalendar width='24px' height='24px' color={fillColor} />}
             {route.name === '(community)' && (
-              <MaterialIcons name='people' size={24} color={isFocused ? '#673ab7' : '#222'} />
+              <IcCommunity width='24px' height='24px' color={fillColor} />
             )}
-            {route.name === '(market)' && (
-              <MaterialIcons name='build' size={24} color={isFocused ? '#673ab7' : '#222'} />
-            )}
-            <Text style={{color: isFocused ? '#673ab7' : '#222', fontSize: 12}}>
-              {label as string}
-            </Text>
-          </TouchableOpacity>
+            {route.name === '(market)' && <IcMarket width='24px' height='24px' color={fillColor} />}
+            <S.TabTitle $isFocused={isFocused}>{label as string}</S.TabTitle>
+          </S.TabButton>
         );
       })}
-      <TouchableOpacity
-        accessibilityRole='button'
-        onPress={() => router.push('/(mypage)')}
-        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-      >
-        <MaterialIcons name='person' size={24} color='#222' />
-        <Text style={{color: '#222', fontSize: 12}}>마이</Text>
-      </TouchableOpacity>
-    </View>
+      <S.TabButton accessibilityRole='button' onPress={() => router.push('/(mypage)')}>
+        <IcUser width='24px' height='24px' color={theme.colors.textMedium} />
+        <S.TabTitle>마이</S.TabTitle>
+      </S.TabButton>
+    </S.Container>
   );
 }
