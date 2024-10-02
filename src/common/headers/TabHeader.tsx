@@ -1,36 +1,46 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
+import {IcBell, IcDaejangjangi, IcUser} from '@/assets/images/icons';
+import {theme} from '@/src/styles/theme';
+import styled from 'styled-components/native';
 
-/**
- * @TODO: 스타일 컴포넌트로 변경 필요
- */
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    // padding: 10,
-  },
-  header: {
-    // backgroundColor: 'red',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    gap: 10,
-    height: 60,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: '#007AFF',
-  },
-});
+const S = {
+  SafeAreaContainer: styled(SafeAreaView)`
+    background-color: #fff;
+  `,
+
+  HeaderContainer: styled.View`
+    padding: 0 24px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 64px;
+  `,
+
+  HeaderMain: styled.View`
+    flex-direction: row;
+    gap: 13px;
+    align-items: center;
+  `,
+
+  HeaderTitle: styled.Text`
+    font-family: NanumSquareNeo-ExtraBold;
+    font-size: 20px;
+    line-height: 22.1px;
+  `,
+
+  Buttons: styled.View`
+    flex-direction: row;
+    gap: 8px;
+  `,
+
+  Button: styled.Pressable`
+    justify-content: center;
+    align-content: center;
+  `,
+};
 
 interface CustomHeaderProps {
   title: string;
@@ -38,19 +48,25 @@ interface CustomHeaderProps {
 
 export default function TabHeader({title}: CustomHeaderProps) {
   const router = useRouter();
+  const isHome = title === '홈';
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
+    <S.SafeAreaContainer>
+      <S.HeaderContainer>
+        <S.HeaderMain>
+          <IcDaejangjangi />
+          {!isHome && <S.HeaderTitle>{title}</S.HeaderTitle>}
+        </S.HeaderMain>
 
-        <TouchableOpacity onPress={() => router.push('/(mypage)')}>
-          <Text style={styles.buttonText}>내 정보</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/(notification)')}>
-          <Text style={styles.buttonText}>알림</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        <S.Buttons>
+          <S.Button onPress={() => router.push('/(mypage)')}>
+            <IcUser color={theme.colors.textMedium} />
+          </S.Button>
+          <S.Button onPress={() => router.push('/(notification)')}>
+            <IcBell color={theme.colors.textMedium} />
+          </S.Button>
+        </S.Buttons>
+      </S.HeaderContainer>
+    </S.SafeAreaContainer>
   );
 }
