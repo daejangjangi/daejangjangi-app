@@ -10,12 +10,10 @@ interface CustomTextProps {
 
 const S = {
   CustomText: styled.Text<CustomTextProps>`
-    font-family: 'PretendardVariable';
     ${props => (props.textType ? props.theme.fonts[props.textType] : '')};
   `,
 
   CustomTextInput: styled.TextInput`
-    font-family: 'PretendardVariable';
     ${props => (props.textType ? props.theme.fonts[props.textType] : '')};
   `,
 };
