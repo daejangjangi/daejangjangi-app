@@ -34,6 +34,7 @@ axiosInstance.interceptors.response.use(
 interface APIResponse<RequestBodyDTO, ResponseBodyDTO> {
   data: ResponseBodyDTO;
   status: number;
+  code: string;
   message: string;
   headers: RawAxiosResponseHeaders | AxiosResponseHeaders;
   config: InternalAxiosRequestConfig<RequestBodyDTO>;
@@ -45,7 +46,8 @@ function convertToResponse<RequestBodyDTO, ResponseBodyDTO>(
 ): APIResponse<RequestBodyDTO, ResponseBodyDTO> {
   return {
     data: response.data.data,
-    status: response.data.status,
+    status: response.status,
+    code: response.data.code,
     message: response.data.message,
     headers: response.headers,
     config: response.config,
