@@ -6,3 +6,4 @@ export {default as IcMarket} from './IcMarket.svg';
 export {default as IcNext} from './IcNext.svg';
 export {default as IcDaejangjangi} from './IcDaejangjangi.svg';
 export {default as IcBell} from './IcBell.svg';
+export {default as IcKakao} from './IcKakao.svg';
