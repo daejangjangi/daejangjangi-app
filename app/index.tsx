@@ -21,6 +21,7 @@ export default function Index() {
       <StyledText textType='T5'>프리텐다드</StyledText>
       <Link href='/signin'>SignIn</Link>
       <Link href='/signup'>SignUp</Link>
+      <Link href='/signup-extra'>signup-extra</Link>
       <Link href='/(tabs)'>tabs</Link>
     </View>
   );
