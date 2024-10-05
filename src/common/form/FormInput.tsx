@@ -23,6 +23,10 @@ const S = {
     padding: 16px;
   `,
 
+  DescriptionMessage: styled(AppText)`
+    color: ${props => props.theme.colors.textMedium};
+  `,
+
   ErrorMessage: styled(AppText)`
     color: ${props => props.theme.colors.main};
   `,
@@ -33,6 +37,7 @@ interface FormInputProps<T extends FieldValues> extends UseControllerProps<T> {
   control: Control<T>;
   errors: FieldErrors<T>;
   secure?: boolean;
+  description?: string;
 }
 
 export default function FormInput<T extends FieldValues>({
@@ -42,6 +47,7 @@ export default function FormInput<T extends FieldValues>({
   control,
   rules = {},
   secure = false,
+  description,
 }: FormInputProps<T>) {
   return (
     <Controller
@@ -61,6 +67,9 @@ export default function FormInput<T extends FieldValues>({
             $isDirty={isDirty && value}
             $isError={!!errors[name]}
           />
+          {!errors[name] && description && (
+            <S.DescriptionMessage>{description}</S.DescriptionMessage>
+          )}
           {errors[name] && <S.ErrorMessage>{errors[name]?.message}</S.ErrorMessage>}
         </S.Container>
       )}
