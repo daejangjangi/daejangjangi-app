@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Animated} from 'react-native';
+import {useSignUpStore} from '@/src/stores';
 
 const S = {
   SafeAreaContainer: styled(SafeAreaView)``,
@@ -20,11 +21,8 @@ const S = {
   `,
 };
 
-interface SignUpExtraHeaderProps {
-  step: number;
-}
-
-export default function SignUpExtraHeader({step}: SignUpExtraHeaderProps) {
+export default function SignUpExtraHeader() {
+  const {step} = useSignUpStore(state => state);
   const percentage = (step / 5) * 100;
   const widthAnim = useRef(new Animated.Value(0)).current;
 

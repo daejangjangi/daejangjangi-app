@@ -3,7 +3,7 @@ import {Stack} from 'expo-router';
 import 'expo-dev-client';
 import {theme} from '@/src/styles/theme';
 import {ThemeProvider} from 'styled-components/native';
-import SignUpHeader from '@/src/features/signup/components/SignUpHeader';
+import SignUpHeader from '@/src/features/signup/components/layout/SignUpHeader';
 
 export default function RootLayout() {
   return (

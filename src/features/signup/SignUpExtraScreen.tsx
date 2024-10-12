@@ -1,8 +1,14 @@
-import React, {useState} from 'react';
-import {Alert, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Keyboard, KeyboardEvent, View} from 'react-native';
 import styled from 'styled-components/native';
-import SignUpExtraHeader from '@/src/features/signup/components/SignUpExtraHeader';
-import {AppText} from '@/src/common/AppComponents';
+import SignUpExtraHeader from '@/src/features/signup/components/layout/SignUpExtraHeader';
+import SignUpNickName from '@/src/features/signup/components/SignUpNickName';
+import SignUpTermsOfService from '@/src/features/signup/components/SignUpTermsOfService';
+import SignUpBasicInfo from '@/src/features/signup/components/SignUpBasicInfo';
+import SignUpHealthConcerns from '@/src/features/signup/components/SignUpHealthConcerns';
+import SignUpProducts from '@/src/features/signup/components/SignUpProducts';
+import {useSignUpStore} from '@/src/stores';
+import SignUpExtraFooter from '@/src/features/signup/components/layout/SignUpExtraFooter';
 
 const S = {
   Container: styled.View`
@@ -10,66 +16,49 @@ const S = {
     flex: 1;
     padding: 20px;
   `,
-
-  Buttons: styled.View`
+  FooterContainer: styled.View`
     position: absolute;
-    bottom: 45px;
-    left: 20px;
-
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-  `,
-
-  Button: styled.Pressable<{$sub?: boolean}>`
-    flex: 1;
-    padding: 16px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    background-color: ${props =>
-      props.$sub ? props.theme.colors.textLight : props.theme.colors.main};
-  `,
-
-  ButtonText: styled(AppText)<{$sub?: boolean}>`
-    color: ${props => (props.$sub ? props.theme.colors.textMedium : '#fff')};
+    padding: 20px;
+    bottom: 0;
+    left: 0;
+    right: 0;
   `,
 };
 
 export default function SignUpExtraScreen() {
-  const [step, setStep] = useState(0);
-  const handleNextStep = () => {
-    if (step === 5) {
-      Alert.alert('Last!');
-      return;
-    }
-    setStep(prev => prev + 1);
-  };
-  const handlePrevStep = () => {
-    if (step === 0) {
-      Alert.alert('First!');
-      return;
-    }
-    setStep(prev => prev - 1);
-  };
+  const {step} = useSignUpStore(state => state);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
     <S.Container>
-      <SignUpExtraHeader step={step} />
+      <SignUpExtraHeader />
 
-      <Text>{step}</Text>
+      {step === 1 && <SignUpNickName />}
+      {step === 2 && <SignUpTermsOfService />}
+      {step === 3 && <SignUpBasicInfo />}
+      {step === 4 && <SignUpHealthConcerns />}
+      {step === 5 && <SignUpProducts />}
 
-      <S.Buttons>
-        <S.Button onPress={() => handlePrevStep()} $sub>
-          <S.ButtonText textType='B3' $sub>
-            이전
-          </S.ButtonText>
-        </S.Button>
-        <S.Button onPress={() => handleNextStep()}>
-          <S.ButtonText textType='B3'>다음</S.ButtonText>
-        </S.Button>
-      </S.Buttons>
+      {/* Footer가 키보드 위로 나오지 않게 항상 고정 */}
+      {!isKeyboardVisible && (
+        <S.FooterContainer>
+          <SignUpExtraFooter />
+        </S.FooterContainer>
+      )}
     </S.Container>
   );
 }
