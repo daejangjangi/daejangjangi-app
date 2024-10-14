@@ -30,7 +30,7 @@ const S = {
 };
 
 export default function SignUpBasicInfo() {
-  const {nickname, basicInfo, updateGender} = useSignUpStore(state => state);
+  const {nickname, basicInfo, updateGender, updateBirthday} = useSignUpStore(state => state);
 
   return (
     <S.Container>
@@ -69,7 +69,7 @@ export default function SignUpBasicInfo() {
         </S.SectionHeader>
 
         <S.BirthdaySection>
-          <Birthday year={2024} />
+          <Birthday defaultDate={basicInfo.birthday} onChangeDate={updateBirthday} />
         </S.BirthdaySection>
       </S.Section>
     </S.Container>

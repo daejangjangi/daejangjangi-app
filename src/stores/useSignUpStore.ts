@@ -11,7 +11,7 @@ type TermsOfService = {
 
 type BasicInfo = {
   gender: 'MALE' | 'FEMALE' | undefined;
-  birthday: string;
+  birthday: Date | undefined;
 };
 
 /**
@@ -39,6 +39,8 @@ interface SignUpAction {
 
   updateNickname: (name: string) => void;
   updateTermsOfService: (target: string) => void;
+  updateGender: (target: 'MALE' | 'FEMALE') => void;
+  updateBirthday: (target: Date) => void;
 }
 
 export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
@@ -53,7 +55,7 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   },
   basicInfo: {
     gender: undefined,
-    birthday: '',
+    birthday: undefined,
   },
   concerns: [],
   products: [],
@@ -82,4 +84,20 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
         [target]: !state.termsOfService[target],
       },
     })),
+  updateGender: (target: 'MALE' | 'FEMALE') => {
+    set(state => ({
+      basicInfo: {
+        ...state.basicInfo,
+        gender: target,
+      },
+    }));
+  },
+  updateBirthday: (target: Date) => {
+    set(state => ({
+      basicInfo: {
+        ...state.basicInfo,
+        birthday: target,
+      },
+    }));
+  },
 }));
