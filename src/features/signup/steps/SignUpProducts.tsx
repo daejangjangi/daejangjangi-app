@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
 import {CATEGORIES} from '@/src/common/data/health-concerns';
@@ -27,7 +27,12 @@ const S = {
 };
 
 export default function SignUpProducts() {
-  const {categories, updateCategories} = useSignUpStore(state => state);
+  const {categories, updateCategories, updateCanGoNext} = useSignUpStore(state => state);
+
+  useEffect(() => {
+    const canGoNext = categories.length > 0;
+    updateCanGoNext(5, canGoNext);
+  }, [categories, updateCanGoNext]);
 
   return (
     <S.Container>
