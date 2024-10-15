@@ -91,6 +91,7 @@ export default function Birthday({defaultDate, onChangeDate}: BirthdayProps) {
       <DatePicker
         modal
         mode='date'
+        title='날짜 선택'
         open={open}
         date={date}
         onConfirm={handleChangeDate}
