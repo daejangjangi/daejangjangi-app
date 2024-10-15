@@ -6,12 +6,12 @@ import {AppText} from '@/src/common/AppComponents';
 const S = {
   Box: styled(Pressable)<{$selected?: boolean}>`
     border-radius: 40px;
-    padding: 16px 64px;
+    padding: 16px 0;
     justify-content: center;
     align-items: center;
 
     background-color: ${props => (props.$selected ? '#ffe7ee' : props.theme.colors.textLight)};
-    min-width: 168px;
+    width: 168px;
   `,
 };
 
@@ -24,7 +24,7 @@ interface SelectBoxProps {
 export default function SelectBox({selected, onPress, label}: SelectBoxProps) {
   return (
     <S.Box $selected={selected} onPress={onPress}>
-      <AppText textType='B3' colorType='text'>
+      <AppText textType='B3' colorType='text' style={{textAlign: 'center'}}>
         {label}
       </AppText>
     </S.Box>
