@@ -49,6 +49,25 @@
             "./assets/fonts/NanumSquareNeo-Heavy.otf"
           ]
         }
+      ],
+      "expo-build-properties",
+      [
+        "@react-native-seoul/kakao-login",
+        {
+          "kakaoAppKey": "{{kakao api key}}",
+          "overrideKakaoSDKVersion": "2.11.2",
+          "kotlinVersion": "1.9.0"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "extraMavenRepos": [
+              "https://devrepo.kakao.com/nexus/content/groups/public/"
+            ]
+          }
+        }
       ]
     ],
     "experiments": {
