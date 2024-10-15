@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
-import {AppText, AppTextInput} from '@/src/common/AppComponents';
+import React, {useEffect, useState} from 'react';
+import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
+import {useSignUpStore} from '@/src/stores';
+import {Alert} from 'react-native';
 
 type InputSuccess = boolean | undefined;
 
@@ -70,8 +72,24 @@ const S = {
 };
 
 export default function SignUpNickName() {
+  const {nickname, updateNickname, updateCanGoNext} = useSignUpStore(state => state);
+
+  const [isNotDuplicated, setIsNotDuplicated] = useState<InputSuccess>();
   const [input, setInput] = useState('');
-  const [inputSuccess, setInputSuccess] = useState<InputSuccess>();
+
+  const checkNicknameDuplicated = () => {
+    /**
+     * @Todo: 닉네임 중복체크 구현
+     */
+    Alert.alert('닉네임 중복 체크');
+    setIsNotDuplicated(true);
+    updateCanGoNext(1, true);
+  };
+
+  useEffect(() => {
+    setIsNotDuplicated(undefined);
+    updateCanGoNext(1, false);
+  }, [input, updateCanGoNext]);
 
   return (
     <S.Container>
@@ -81,9 +99,9 @@ export default function SignUpNickName() {
 
       <S.Body>
         <S.Description textType='T3'>우선 닉네임을 정해주세요.</S.Description>
-        <S.InputContainer $status={inputSuccess}>
-          <S.Input placeholder='텍스트입력' />
-          <S.DuplicateCheckButton>
+        <S.InputContainer $status={isNotDuplicated}>
+          <S.Input value={input} onChangeText={setInput} placeholder='텍스트입력' />
+          <S.DuplicateCheckButton onPress={() => checkNicknameDuplicated()}>
             <S.DuplicateCheckText>중복확인</S.DuplicateCheckText>
           </S.DuplicateCheckButton>
         </S.InputContainer>
