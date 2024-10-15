@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {AppText, AppTextInput} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
 
-type InputStatus = 'success' | 'error' | 'none';
+type InputSuccess = boolean | undefined;
 
 const S = {
   Container: styled.View`
@@ -26,30 +26,52 @@ const S = {
     color: ${props => props.theme.colors.text};
   `,
 
-  Input: styled.TextInput<{$status?: InputStatus}>`
+  InputContainer: styled.View<{$status?: InputSuccess}>`
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
     margin-top: 20px;
     padding: 16px;
     border: 1px solid
       ${props => {
         switch (props.$status) {
-          case 'success':
+          case true:
             return '#20CE6C';
-          case 'error':
+          case false:
             return props.theme.colors.main;
           default:
             return props.theme.colors.textLight;
         }
       }};
     border-radius: 8px;
+  `,
 
+  Input: styled.TextInput<{$status?: InputSuccess}>`
+    flex: 1;
     font-family: Pretendard-Medium;
     font-size: 19px;
     color: ${props => props.theme.colors.text};
+  `,
+
+  DuplicateCheckButton: styled.Pressable`
+    padding: 4px 8px;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    background-color: ${props => props.theme.colors.textLight};
+  `,
+
+  DuplicateCheckText: styled.Text`
+    font-family: Pretendard-Medium;
+    font-size: 13px;
+    line-height: 15.51px;
   `,
 };
 
 export default function SignUpNickName() {
   const [input, setInput] = useState('');
+  const [inputSuccess, setInputSuccess] = useState<InputSuccess>();
 
   return (
     <S.Container>
@@ -59,7 +81,12 @@ export default function SignUpNickName() {
 
       <S.Body>
         <S.Description textType='T3'>우선 닉네임을 정해주세요.</S.Description>
-        <S.Input placeholder='텍스트입력' />
+        <S.InputContainer $status={inputSuccess}>
+          <S.Input placeholder='텍스트입력' />
+          <S.DuplicateCheckButton>
+            <S.DuplicateCheckText>중복확인</S.DuplicateCheckText>
+          </S.DuplicateCheckButton>
+        </S.InputContainer>
       </S.Body>
     </S.Container>
   );
