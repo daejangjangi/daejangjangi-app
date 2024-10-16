@@ -4,6 +4,7 @@ import {AppText} from '@/src/common/AppComponents';
 import MyPageMenuItem from '@/src/features/mypage/components/MyPageMenuItem';
 import {IcHeadphone, IcLock, IcQuestion} from '@/assets/images/icons';
 import {useRouter} from 'expo-router';
+import {Alert} from 'react-native';
 
 const S = {
   Container: styled.View`
@@ -30,7 +31,11 @@ export default function MyPageEtc() {
 
       {/* @Todo: 문의하기 구현 필요 */}
       <S.Menu>
-        <MyPageMenuItem title='문의하기' onPress={() => {}} Icon={<IcHeadphone />} />
+        <MyPageMenuItem
+          title='문의하기'
+          onPress={() => Alert.alert('구현 중입니다.')}
+          Icon={<IcHeadphone />}
+        />
         <MyPageMenuItem
           title='자주 묻는 질문'
           onPress={() => router.navigate('/(mypage)/faq')}
