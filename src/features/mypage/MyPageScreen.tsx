@@ -1,19 +1,37 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {Link} from 'expo-router';
+import styled from 'styled-components/native';
+import MyPageProfile from '@/src/features/mypage/components/MyPageProfile';
+import MyPageMyActivity from '@/src/features/mypage/components/MyPageMyActivity';
+import MyPageEtc from '@/src/features/mypage/components/MyPageEtc';
+
+const S = {
+  Container: styled.View`
+    flex: 1;
+    background-color: #fff;
+  `,
+
+  Divider: styled.View`
+    height: 8px;
+    background-color: #fbfbfe;
+  `,
+
+  Main: styled.View`
+    padding: 42px 20px;
+    gap: 32px;
+  `,
+};
 
 export default function MyPageScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Link href='/(mypage)/profile'>프로필</Link>
-      <Link href='/(mypage)/faq'>자주묻는 질문</Link>
-      <Link href='/(mypage)/account'>계정</Link>
-    </View>
+    <S.Container>
+      <MyPageProfile />
+
+      <S.Divider />
+
+      <S.Main>
+        <MyPageMyActivity />
+        <MyPageEtc />
+      </S.Main>
+    </S.Container>
   );
 }
