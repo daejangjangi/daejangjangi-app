@@ -5,11 +5,6 @@ import {useSignUpStore} from '@/src/stores';
 
 const S = {
   Buttons: styled.View`
-    //position: absolute;
-    //bottom: 45px;
-    //left: 20px;
-    margin-bottom: 30px;
-
     flex-direction: row;
     justify-content: space-between;
     align-items: center;

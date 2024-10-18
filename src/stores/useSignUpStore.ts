@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import {Alert} from 'react-native';
+import {DISEASES, CATEGORIES} from '@/src/common/data/health-concerns';
 
 type TermsOfService = {
   isOver14: boolean;
@@ -11,26 +12,20 @@ type TermsOfService = {
 
 type BasicInfo = {
   gender: 'MALE' | 'FEMALE' | undefined;
-  birthday: string;
+  birthday: Date | undefined;
 };
 
-/**
- * @TODO: 장 건강 관련 질환 목록 추가
- */
-type Concern = '1' | '2';
+type Disease = (typeof DISEASES)[number];
 
-/**
- * @TODO: 장 건강 관련 상품 목록 추가
- */
-type Product = '1' | '2';
+type Category = (typeof CATEGORIES)[number];
 
 interface SignUpState {
   step: number;
   nickname: string;
   termsOfService: TermsOfService;
   basicInfo: BasicInfo;
-  concerns: Concern[];
-  products: Product[];
+  diseases: Disease[];
+  categories: Category[];
 }
 
 interface SignUpAction {
@@ -39,6 +34,10 @@ interface SignUpAction {
 
   updateNickname: (name: string) => void;
   updateTermsOfService: (target: string) => void;
+  updateGender: (target: 'MALE' | 'FEMALE') => void;
+  updateBirthday: (target: Date) => void;
+  updateDiseases: (target: Disease) => void;
+  updateCategories: (target: Category) => void;
 }
 
 export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
@@ -53,10 +52,10 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   },
   basicInfo: {
     gender: undefined,
-    birthday: '',
+    birthday: undefined,
   },
-  concerns: [],
-  products: [],
+  diseases: [],
+  categories: [],
 
   handleNextStep: () =>
     set(state => {
@@ -82,4 +81,42 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
         [target]: !state.termsOfService[target],
       },
     })),
+  updateGender: (target: 'MALE' | 'FEMALE') => {
+    set(state => ({
+      basicInfo: {
+        ...state.basicInfo,
+        gender: target,
+      },
+    }));
+  },
+  updateBirthday: (target: Date) => {
+    set(state => ({
+      basicInfo: {
+        ...state.basicInfo,
+        birthday: target,
+      },
+    }));
+  },
+  updateDiseases: (target: Disease) => {
+    set(state => {
+      const newDiseases = state.diseases.includes(target)
+        ? state.diseases.filter(d => d !== target)
+        : state.diseases.concat(target);
+
+      return {
+        diseases: newDiseases,
+      };
+    });
+  },
+  updateCategories: (target: Category) => {
+    set(state => {
+      const newDiseases = state.categories.includes(target)
+        ? state.categories.filter(c => c !== target)
+        : state.categories.concat(target);
+
+      return {
+        categories: newDiseases,
+      };
+    });
+  },
 }));
