@@ -4,13 +4,13 @@ import TabBar from '@/src/common/TabBar';
 
 export default function TabLayout() {
   const pathname = usePathname();
-
-  const displayTabBar = pathname === '/' ? 'flex' : 'none';
+  const displayTabBar = pathname === '/';
 
   return (
     <Tabs
-      screenOptions={{headerShown: false, tabBarStyle: {display: displayTabBar}}}
-      tabBar={props => <TabBar {...props} />}
+      screenOptions={{headerShown: false}}
+      tabBar={props => displayTabBar && <TabBar {...props} />}
+      initialRouteName='(home)'
     >
       <Tabs.Screen name='(home)' options={{tabBarLabel: '홈'}} />
       <Tabs.Screen name='(care)' options={{tabBarLabel: '배변일지'}} />

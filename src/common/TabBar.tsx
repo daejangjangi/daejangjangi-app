@@ -39,45 +39,52 @@ export default function TabBar({state, descriptors, navigation}: BottomTabBarPro
 
   return (
     <S.Container>
-      {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined ? options.tabBarLabel : (route.name as string);
+      {state.routes
+        .filter(route => route.name !== 'index')
+        .map((route, index) => {
+          const {options} = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined ? options.tabBarLabel : (route.name as string);
 
-        const isFocused = state.index === index;
+          const isFocused = state.index === index;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
+            if (!isFocused && !event.defaultPrevented) {
+              // @ts-ignore
+              router.replace(`/${route.name.toString()}`);
+            }
+          };
 
-        const fillColor = isFocused ? '#31302d' : theme.colors.textMedium;
+          const fillColor = isFocused ? '#31302d' : theme.colors.textMedium;
 
-        return (
-          <S.TabButton
-            key={route.key}
-            accessibilityRole='button'
-            accessibilityState={isFocused ? {selected: true} : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            onPress={onPress}
-          >
-            {route.name === '(home)' && <IcHome width='24px' height='24px' color={fillColor} />}
-            {route.name === '(care)' && <IcCalendar width='24px' height='24px' color={fillColor} />}
-            {route.name === '(community)' && (
-              <IcCommunity width='24px' height='24px' color={fillColor} />
-            )}
-            {route.name === '(market)' && <IcMarket width='24px' height='24px' color={fillColor} />}
-            <S.TabTitle $isFocused={isFocused}>{label as string}</S.TabTitle>
-          </S.TabButton>
-        );
-      })}
+          return (
+            <S.TabButton
+              key={route.key}
+              accessibilityRole='button'
+              accessibilityState={isFocused ? {selected: true} : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              onPress={onPress}
+            >
+              {route.name === '(home)' && <IcHome width='24px' height='24px' color={fillColor} />}
+              {route.name === '(care)' && (
+                <IcCalendar width='24px' height='24px' color={fillColor} />
+              )}
+              {route.name === '(community)' && (
+                <IcCommunity width='24px' height='24px' color={fillColor} />
+              )}
+              {route.name === '(market)' && (
+                <IcMarket width='24px' height='24px' color={fillColor} />
+              )}
+              <S.TabTitle $isFocused={isFocused}>{label as string}</S.TabTitle>
+            </S.TabButton>
+          );
+        })}
       <S.TabButton accessibilityRole='button' onPress={() => router.push('/(mypage)')}>
         <IcUser width='24px' height='24px' color={theme.colors.textMedium} />
         <S.TabTitle>마이</S.TabTitle>

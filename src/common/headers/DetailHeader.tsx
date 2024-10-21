@@ -16,6 +16,8 @@ const S = {
     align-items: center;
     padding: 8px;
     gap: 12px;
+    border-bottom-width: 1px;
+    border-bottom-color: ${props => props.theme.colors.textLight};
   `,
 
   Title: styled.Text`

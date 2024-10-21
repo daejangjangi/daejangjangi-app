@@ -1,20 +1,25 @@
 import React from 'react';
 import {TextProps} from 'react-native';
-import {FontsTypes} from '@/src/styles/theme';
+import {ColorsTypes, FontsTypes} from '@/src/styles/theme';
 import styled from 'styled-components/native';
 
 interface CustomTextProps {
   // eslint-disable-next-line react/require-default-props
   textType?: keyof FontsTypes;
+  colorType?: keyof ColorsTypes;
 }
 
 const S = {
   CustomText: styled.Text<CustomTextProps>`
     ${props => (props.textType ? props.theme.fonts[props.textType] : '')};
+    color: ${props =>
+      props.colorType ? props.theme.colors[props.colorType] : props.theme.colors.text};
   `,
 
   CustomTextInput: styled.TextInput`
     ${props => (props.textType ? props.theme.fonts[props.textType] : '')};
+    color: ${props =>
+      props.colorType ? props.theme.colors[props.colorType] : props.theme.colors.text};
   `,
 };
 

@@ -27,13 +27,13 @@ export default function PersonalDataAgreementModal({
   return (
     <SignUpModal title='대장장이 개인정보 수집 이용동의' isVisible={isVisible} onClose={onClose}>
       {PERSONAL_DATA_AGREEMENT.map(v => (
-        <>
+        <React.Fragment key={v.order}>
           <S.AgreementTitle textType='C2Bold'>{`${v.order}. ${v.title}`}</S.AgreementTitle>
           <S.AgreementBody>
             {v.content}
             {'\n'}
           </S.AgreementBody>
-        </>
+        </React.Fragment>
       ))}
     </SignUpModal>
   );

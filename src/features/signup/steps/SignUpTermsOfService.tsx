@@ -21,7 +21,6 @@ const S = {
   `,
 
   Checkbox: styled.Pressable`
-    //background-color: blue;
     justify-items: center;
     align-items: center;
   `,
@@ -47,12 +46,6 @@ const S = {
     color: ${props => props.theme.colors.main};
   `,
 };
-
-/**
- * 1. 체크박스 만들기(상태별 색상 변경)
- * 2. 전체동의 기능 만들기
- * 3. 개인정보, 민감정보 자세히 보기 만들기
- */
 
 interface CheckboxProps {
   checked: boolean;
@@ -98,7 +91,7 @@ function Option({title, checked, onToggle, bold, hasDetail, onClickDetail}: Opti
 
 export default function SignUpTermsOfService() {
   const {termsOfService, updateTermsOfService} = useSignUpStore(state => state);
-  const [allChecked, setAllChecked] = useState(false);
+  const [allChecked, setAllChecked] = useState(Object.values(termsOfService).every(v => v));
   const [modalOpen, setModalOpen] = useState({
     termsOfService: false,
     sensitiveData: false,

@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Keyboard, KeyboardEvent, View} from 'react-native';
+import {Keyboard} from 'react-native';
 import styled from 'styled-components/native';
 import SignUpExtraHeader from '@/src/features/signup/components/layout/SignUpExtraHeader';
-import SignUpNickName from '@/src/features/signup/components/SignUpNickName';
-import SignUpTermsOfService from '@/src/features/signup/components/SignUpTermsOfService';
-import SignUpBasicInfo from '@/src/features/signup/components/SignUpBasicInfo';
-import SignUpHealthConcerns from '@/src/features/signup/components/SignUpHealthConcerns';
-import SignUpProducts from '@/src/features/signup/components/SignUpProducts';
+import SignUpNickName from '@/src/features/signup/steps/SignUpNickName';
+import SignUpTermsOfService from '@/src/features/signup/steps/SignUpTermsOfService';
+import SignUpBasicInfo from '@/src/features/signup/steps/SignUpBasicInfo';
+import SignUpHealthConcerns from '@/src/features/signup/steps/SignUpHealthConcerns';
+import SignUpProducts from '@/src/features/signup/steps/SignUpProducts';
 import {useSignUpStore} from '@/src/stores';
 import SignUpExtraFooter from '@/src/features/signup/components/layout/SignUpExtraFooter';
 
@@ -16,13 +16,12 @@ const S = {
     flex: 1;
     padding: 20px;
   `,
-  FooterContainer: styled.View`
-    position: absolute;
-    padding: 20px;
-    bottom: 0;
-    left: 0;
-    right: 0;
+
+  Main: styled.View`
+    flex: 1;
   `,
+
+  Footer: styled.View``,
 };
 
 export default function SignUpExtraScreen() {
@@ -47,17 +46,18 @@ export default function SignUpExtraScreen() {
     <S.Container>
       <SignUpExtraHeader />
 
-      {step === 1 && <SignUpNickName />}
-      {step === 2 && <SignUpTermsOfService />}
-      {step === 3 && <SignUpBasicInfo />}
-      {step === 4 && <SignUpHealthConcerns />}
-      {step === 5 && <SignUpProducts />}
+      <S.Main>
+        {step === 1 && <SignUpNickName />}
+        {step === 2 && <SignUpTermsOfService />}
+        {step === 3 && <SignUpBasicInfo />}
+        {step === 4 && <SignUpHealthConcerns />}
+        {step === 5 && <SignUpProducts />}
+      </S.Main>
 
-      {/* Footer가 키보드 위로 나오지 않게 항상 고정 */}
       {!isKeyboardVisible && (
-        <S.FooterContainer>
+        <S.Footer>
           <SignUpExtraFooter />
-        </S.FooterContainer>
+        </S.Footer>
       )}
     </S.Container>
   );
