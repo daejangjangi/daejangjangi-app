@@ -16,3 +16,7 @@ export {default as IcLock} from './IcLock.svg';
 export {default as IcPost} from './IcPost.svg';
 export {default as IcQuestion} from './IcQuestion.svg';
 export {default as IcArrowRightS} from './IcArrowRightS.svg';
+export {default as IcDaejangToon} from './IcDaejangToon.svg';
+export {default as IcRecipe} from './IcRecipe.svg';
+export {default as IcPill} from './IcPill.svg';
+export {default as IcCartColor} from './IcCartColor.svg';
