@@ -13,7 +13,10 @@ export default function HomeLayout() {
   return (
     <Stack
       screenOptions={({route}) => ({
-        header: () => <CommonHeader routeName={route.name} routeMap={homeRouteMap} title='홈' />,
+        header: () =>
+          route.name !== 'index' && (
+            <CommonHeader routeName={route.name} routeMap={homeRouteMap} title='홈' />
+          ),
       })}
     >
       <Stack.Screen name='index' />
