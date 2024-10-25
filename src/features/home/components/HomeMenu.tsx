@@ -104,10 +104,10 @@ export default function HomeMenu() {
     <S.Container>
       <AppText textType='B2Bold'>내 장건강과 한걸음 가까워지기</AppText>
       {MENU_LIST.map(item => (
-        <>
+        <React.Fragment key={item.title}>
           <S.Line />
-          <HomeMenuItem key={item.title} {...item} />
-        </>
+          <HomeMenuItem {...item} />
+        </React.Fragment>
       ))}
     </S.Container>
   );
