@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
-import HomeBannerItem from '@/src/features/home/components/HomeBannerItem';
+import HomeBannerItem from '@/src/features/home/main/components/HomeBannerItem';
 import Carousel from 'react-native-reanimated-carousel/src/Carousel';
 import {Dimensions} from 'react-native';
 import {runOnJS} from 'react-native-reanimated';
-import HomeBannerNavigation from '@/src/features/home/components/HomeBannerNavigation';
+import HomeBannerNavigation from '@/src/features/home/main/components/HomeBannerNavigation';
 
 const S = {
   Container: styled.View`

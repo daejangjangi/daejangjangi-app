@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import HomeHeader from '@/src/features/home/components/HomeHeader';
-import HomeMenu from '@/src/features/home/components/HomeMenu';
+import HomeHeader from '@/src/features/home/main/components/HomeHeader';
+import HomeMenu from '@/src/features/home/main/components/HomeMenu';
 
 const S = {
   Container: styled.View`

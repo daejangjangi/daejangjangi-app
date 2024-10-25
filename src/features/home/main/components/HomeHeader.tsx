@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {LinearGradient} from 'expo-linear-gradient';
-import HomeBanner from '@/src/features/home/components/HomeBanner';
-import HomeHeaderBar from '@/src/features/home/components/HomeHeaderBar';
+import HomeBanner from '@/src/features/home/main/components/HomeBanner';
+import HomeHeaderBar from '@/src/features/home/main/components/HomeHeaderBar';
 
 const S = {
   Container: styled(LinearGradient)`
