@@ -1,10 +1,10 @@
 # 대장 항문 질환 일상관리 및 맞춤화된 이커머스 서비스 대장장이
-![1922](https://github.com/user-attachments/assets/5c540aa4-f3d6-4d11-89a5-20c784e884d6)
-![1923](https://github.com/user-attachments/assets/1fd548d1-9d84-4158-a8b2-6eaea16d77e5)
-![1924](https://github.com/user-attachments/assets/daf4d2f2-5666-4b2a-8459-ab9d16cfc382)
-![1925](https://github.com/user-attachments/assets/459d510b-d183-4431-936d-c5c53ef4dd96)
-![1926](https://github.com/user-attachments/assets/c441ddb7-9603-4677-9741-7a7b0216ef8b)
-![1927](https://github.com/user-attachments/assets/d32ed190-ef22-4d7e-af0a-7708482e8d48)
+<img src='https://github.com/user-attachments/assets/5c540aa4-f3d6-4d11-89a5-20c784e884d6' width='150' />
+<img src='https://github.com/user-attachments/assets/1fd548d1-9d84-4158-a8b2-6eaea16d77e5' width='150' />
+<img src='https://github.com/user-attachments/assets/daf4d2f2-5666-4b2a-8459-ab9d16cfc382' width='150' />
+<img src='https://github.com/user-attachments/assets/459d510b-d183-4431-936d-c5c53ef4dd96' width='150' />
+<img src='https://github.com/user-attachments/assets/c441ddb7-9603-4677-9741-7a7b0216ef8b' width='150' />
+<img src='https://github.com/user-attachments/assets/d32ed190-ef22-4d7e-af0a-7708482e8d48' width='150' />
 
 
 ## 개발 컨벤션
