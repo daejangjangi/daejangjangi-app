@@ -1,16 +1,20 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text} from 'react-native';
+import styled from 'styled-components/native';
+import NewCartoonPreview from '@/src/features/home/cartoon/components/NewCartoonPreview';
+import CartoonList from '@/src/features/home/cartoon/components/CartoonList';
+import CartoonIntroduce from '@/src/features/home/cartoon/components/CartoonIntroduce';
+
+const S = {
+  Container: styled.View``,
+};
 
 export default function CartoonScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Text>CartoonScreen</Text>
-    </View>
+    <S.Container>
+      <NewCartoonPreview />
+      <CartoonIntroduce />
+      <CartoonList />
+    </S.Container>
   );
 }

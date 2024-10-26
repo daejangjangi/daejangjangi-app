@@ -20,3 +20,5 @@ export {default as IcDaejangToon} from './IcDaejangToon.svg';
 export {default as IcRecipe} from './IcRecipe.svg';
 export {default as IcPill} from './IcPill.svg';
 export {default as IcCartColor} from './IcCartColor.svg';
+export {default as IcHeartColorEmpty} from './IcHeartColorEmpty.svg';
+export {default as IcEye} from './IcEye.svg';
