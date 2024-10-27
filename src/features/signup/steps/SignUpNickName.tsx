@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {AppText, AppTextInput} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
+import {MemberApi} from '@/src/api/member';
+import {useSignUpStore} from '@/src/stores';
 
-type InputSuccess = boolean | undefined;
+type ValidationStatus = 'none' | 'success' | 'error';
 
 const S = {
   Container: styled.View`
@@ -26,7 +28,7 @@ const S = {
     color: ${props => props.theme.colors.text};
   `,
 
-  InputContainer: styled.View<{$status?: InputSuccess}>`
+  InputContainer: styled.View<{$status: ValidationStatus}>`
     flex-direction: row;
     align-items: center;
     gap: 8px;
@@ -36,9 +38,9 @@ const S = {
     border: 1px solid
       ${props => {
         switch (props.$status) {
-          case true:
+          case 'success':
             return '#20CE6C';
-          case false:
+          case 'error':
             return props.theme.colors.main;
           default:
             return props.theme.colors.textLight;
@@ -67,11 +69,56 @@ const S = {
     font-size: 13px;
     line-height: 15.51px;
   `,
+
+  ErrorMessage: styled(AppText)`
+    margin-top: 8px;
+    color: ${props => props.theme.colors.main};
+  `,
+
+  Message: styled(AppText)<{$status: ValidationStatus}>`
+    margin-top: 8px;
+    color: ${props => {
+      switch (props.$status) {
+        case 'success':
+          return '#20CE6C';
+        case 'error':
+          return props.theme.colors.main;
+        default:
+          return props.theme.colors.text;
+      }
+    }};
+  `,
 };
 
 export default function SignUpNickName() {
   const [input, setInput] = useState('');
-  const [inputSuccess, setInputSuccess] = useState<InputSuccess>();
+  const [validationStatus, setValidationStatus] = useState<ValidationStatus>('none');
+  const [message, setMessage] = useState<string>('');
+  const {updateNickname} = useSignUpStore(state => state);
+
+  const handleInputChange = (text: string) => {
+    setInput(text);
+    setValidationStatus('none');
+    setMessage('');
+  };
+
+  const handleDuplicateCheck = async () => {
+    if (!input.trim()) {
+      setValidationStatus('error');
+      setMessage('닉네임을 입력해주세요.');
+      return;
+    }
+
+    try {
+      await MemberApi.checkNicknameDuplicated(input);
+      setValidationStatus('success');
+      setMessage('사용 가능한 닉네임입니다.');
+      updateNickname(input);
+    } catch (error) {
+      setValidationStatus('error');
+      setMessage('이미 사용 중인 닉네임입니다.');
+    }
+  };
 
   return (
     <S.Container>
@@ -81,12 +128,17 @@ export default function SignUpNickName() {
 
       <S.Body>
         <S.Description textType='T3'>우선 닉네임을 정해주세요.</S.Description>
-        <S.InputContainer $status={inputSuccess}>
-          <S.Input placeholder='텍스트입력' />
-          <S.DuplicateCheckButton>
+        <S.InputContainer $status={validationStatus}>
+          <S.Input placeholder='텍스트입력' value={input} onChangeText={handleInputChange} />
+          <S.DuplicateCheckButton onPress={handleDuplicateCheck}>
             <S.DuplicateCheckText>중복확인</S.DuplicateCheckText>
           </S.DuplicateCheckButton>
         </S.InputContainer>
+        {message && (
+          <S.Message textType='B2' $status={validationStatus}>
+            {message}
+          </S.Message>
+        )}
       </S.Body>
     </S.Container>
   );
