@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {AppText, AppTextInput} from '@/src/common/AppComponents';
+import React, {useEffect, useState} from 'react';
+import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
 import {MemberApi} from '@/src/api/member';
 import {useSignUpStore} from '@/src/stores';
@@ -91,6 +91,9 @@ const S = {
 };
 
 export default function SignUpNickName() {
+  const {nickname, updateNickname, updateCanGoNext} = useSignUpStore(state => state);
+
+  const [isNotDuplicated, setIsNotDuplicated] = useState<InputSuccess>();
   const [input, setInput] = useState('');
   const [validationStatus, setValidationStatus] = useState<ValidationStatus>('none');
   const [message, setMessage] = useState<string>('');

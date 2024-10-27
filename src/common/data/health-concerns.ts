@@ -12,7 +12,7 @@ export const DISEASES = [
   '크론병',
   '궤양성 대장염',
   '복부팽만',
-  '기타',
+  '없음',
 ] as const;
 
 export const CATEGORIES = ['유산균', '식이섬유', '저포드맵', '비건', '기타 장건강 간식'] as const;

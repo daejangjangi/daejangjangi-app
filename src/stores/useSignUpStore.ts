@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import {Alert} from 'react-native';
-import {DISEASES, CATEGORIES} from '@/src/common/data/health-concerns';
+import {CATEGORIES, DISEASES} from '@/src/common/data/health-concerns';
 
 type TermsOfService = {
   isOver14: boolean;
@@ -21,6 +21,8 @@ type Category = (typeof CATEGORIES)[number];
 
 interface SignUpState {
   step: number;
+  canGoNext: [boolean, boolean, boolean, boolean, boolean];
+
   nickname: string;
   termsOfService: TermsOfService;
   basicInfo: BasicInfo;
@@ -31,6 +33,7 @@ interface SignUpState {
 interface SignUpAction {
   handlePrevStep: () => void;
   handleNextStep: () => void;
+  updateCanGoNext: (step: number, can: boolean) => void;
 
   updateNickname: (name: string) => void;
   updateTermsOfService: (target: string) => void;
@@ -42,6 +45,8 @@ interface SignUpAction {
 
 export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   step: 1,
+  canGoNext: [false, false, false, false, false],
+
   nickname: '',
   termsOfService: {
     isOver14: false,
@@ -57,8 +62,20 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   diseases: [],
   categories: [],
 
+  updateCanGoNext: (step: number, can: boolean) =>
+    set(state => {
+      const newCanGoNext = state.canGoNext;
+      newCanGoNext[step - 1] = can;
+
+      return {canGoNext: newCanGoNext};
+    }),
   handleNextStep: () =>
     set(state => {
+      if (!state.canGoNext[state.step - 1]) {
+        Alert.alert('다음 페이지 이동 불가');
+        return state;
+      }
+
       if (state.step === 5) {
         Alert.alert('회원가입 완료');
         return state;

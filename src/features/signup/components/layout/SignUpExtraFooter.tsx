@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {useSignUpStore} from '@/src/stores';
+import {useRouter} from 'expo-router';
 
 const S = {
   Buttons: styled.View`
@@ -27,16 +28,34 @@ const S = {
 };
 
 export default function SignUpExtraFooter() {
-  const {handlePrevStep, handleNextStep} = useSignUpStore(state => state);
+  const router = useRouter();
+  const {step, handlePrevStep, handleNextStep} = useSignUpStore(state => state);
+
+  const goPrevStep = () => {
+    if (step === 1) {
+      router.back();
+      return;
+    }
+
+    handlePrevStep();
+  };
+
+  const goNextStep = () => {
+    if (step === 5) {
+      // 회원가입 완료 로직 추가
+    }
+
+    handleNextStep();
+  };
 
   return (
     <S.Buttons>
-      <S.Button onPress={() => handlePrevStep()} $sub>
+      <S.Button onPress={() => goPrevStep()} $sub>
         <S.ButtonText textType='B3' $sub>
           이전
         </S.ButtonText>
       </S.Button>
-      <S.Button onPress={() => handleNextStep()}>
+      <S.Button onPress={() => goNextStep()}>
         <S.ButtonText textType='B3'>다음</S.ButtonText>
       </S.Button>
     </S.Buttons>
