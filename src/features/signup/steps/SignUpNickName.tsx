@@ -93,11 +93,9 @@ const S = {
 export default function SignUpNickName() {
   const {nickname, updateNickname, updateCanGoNext} = useSignUpStore(state => state);
 
-  const [isNotDuplicated, setIsNotDuplicated] = useState<InputSuccess>();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(nickname);
   const [validationStatus, setValidationStatus] = useState<ValidationStatus>('none');
   const [message, setMessage] = useState<string>('');
-  const {updateNickname} = useSignUpStore(state => state);
 
   const handleInputChange = (text: string) => {
     setInput(text);
@@ -117,11 +115,16 @@ export default function SignUpNickName() {
       setValidationStatus('success');
       setMessage('사용 가능한 닉네임입니다.');
       updateNickname(input);
+      updateCanGoNext(1, true);
     } catch (error) {
       setValidationStatus('error');
       setMessage('이미 사용 중인 닉네임입니다.');
     }
   };
+
+  useEffect(() => {
+    updateCanGoNext(1, false);
+  }, [input, updateCanGoNext]);
 
   return (
     <S.Container>
