@@ -43,6 +43,14 @@ interface SignUpAction {
   updateCategories: (target: Category) => void;
 }
 
+const ERROR_MESSAGES = {
+  1: '닉네임 중복확인을 완료해주세요.',
+  2: '필수 약관에 모두 동의해주세요.',
+  3: '성별과 생년월일을 모두 입력해주세요.',
+  4: '장 건강 관련 질환을 1개 이상 선택해주세요.',
+  5: '관심있는 장 건강 관련 상품을 1개 이상 선택해주세요.',
+} as const;
+
 export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   step: 1,
   canGoNext: [false, false, false, false, false],
@@ -72,12 +80,12 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   handleNextStep: () =>
     set(state => {
       if (!state.canGoNext[state.step - 1]) {
-        Alert.alert('다음 페이지 이동 불가');
+        Alert.alert('알림', ERROR_MESSAGES[state.step as keyof typeof ERROR_MESSAGES]);
         return state;
       }
 
       if (state.step === 5) {
-        Alert.alert('회원가입 완료');
+        Alert.alert('알림', '회원가입이 완료되었습니다.');
         return state;
       }
       return {step: state.step + 1};
@@ -85,7 +93,7 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   handlePrevStep: () =>
     set(state => {
       if (state.step === 1) {
-        Alert.alert('뒤로 돌아갈 수 없음');
+        Alert.alert('알림', '첫 단계입니다.');
         return state;
       }
       return {step: state.step - 1};
