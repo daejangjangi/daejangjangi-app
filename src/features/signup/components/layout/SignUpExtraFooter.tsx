@@ -3,6 +3,9 @@ import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {useSignUpStore} from '@/src/stores';
 import {useRouter} from 'expo-router';
+import {Alert} from 'react-native';
+import {useJoin} from '@/src/hooks/queries/member';
+import {convertSignUpStateToJoinForm} from '@/src/utils/converter';
 
 const S = {
   Buttons: styled.View`
@@ -29,23 +32,41 @@ const S = {
 
 export default function SignUpExtraFooter() {
   const router = useRouter();
-  const {step, handlePrevStep, handleNextStep} = useSignUpStore(state => state);
+  const signUpState = useSignUpStore();
+  const {mutateAsync: join} = useJoin();
+
+  const handleJoin = async () => {
+    try {
+      const joinForm = convertSignUpStateToJoinForm(signUpState);
+      await join(joinForm);
+      Alert.alert('알림', '회원가입이 완료되었습니다.', [
+        {
+          text: '확인',
+          onPress: () => router.replace('/auth/signin'),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('오류', '회원가입에 실패했습니다. 다시 시도해주세요.');
+      console.error(error);
+    }
+  };
 
   const goPrevStep = () => {
-    if (step === 1) {
+    if (signUpState.step === 1) {
       router.back();
       return;
     }
 
-    handlePrevStep();
+    signUpState.handlePrevStep();
   };
 
   const goNextStep = () => {
-    if (step === 5) {
-      // 회원가입 완료 로직 추가
+    if (signUpState.step === 5) {
+      handleJoin();
+      return;
     }
 
-    handleNextStep();
+    signUpState.handleNextStep();
   };
 
   return (
@@ -56,7 +77,7 @@ export default function SignUpExtraFooter() {
         </S.ButtonText>
       </S.Button>
       <S.Button onPress={() => goNextStep()}>
-        <S.ButtonText textType='B3'>다음</S.ButtonText>
+        <S.ButtonText textType='B3'>{signUpState.step === 5 ? '완료' : '다음'}</S.ButtonText>
       </S.Button>
     </S.Buttons>
   );
