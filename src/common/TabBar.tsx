@@ -27,9 +27,8 @@ const S = {
   `,
 
   TabTitle: styled.Text<{$isFocused?: boolean}>`
-    font-family: 'PretendardVariable';
+    font-family: Pretendard-Medium;
     font-size: 12px;
-    font-weight: 500;
     color: ${props => (props.$isFocused ? '#31302D' : theme.colors.textMedium)};
   `,
 };
