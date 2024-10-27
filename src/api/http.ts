@@ -1,12 +1,15 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import {useAuthStore} from '@/src/stores/auth';
 import axios, {
   AxiosRequestConfig,
   AxiosResponse,
-  RawAxiosResponseHeaders,
   AxiosResponseHeaders,
   InternalAxiosRequestConfig,
+  RawAxiosResponseHeaders,
 } from 'axios';
+import {useRouter} from 'expo-router';
 
 const axiosInstance = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -15,22 +18,57 @@ const axiosInstance = axios.create({
   },
 });
 
-/**
- * @TODO: accessToken 헤더 관련 구현 필요
- */
-axiosInstance.interceptors.request.use(async config => config);
+// 요청 인터셉터
+axiosInstance.interceptors.request.use(async config => {
+  const {tokens} = useAuthStore.getState();
+  const accessToken = tokens?.accessToken;
 
-/**
- * @TODO: 인증 처리 실패 구현 필요
- */
+  if (accessToken) {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  return config;
+});
+
+// 응답 인터셉터
 axiosInstance.interceptors.response.use(
-  res => res,
-  async err => Promise.reject(err),
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+
+    // 토큰 만료로 인한 401 에러이고, 재시도하지 않은 요청인 경우
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const {tokens} = useAuthStore.getState();
+
+        // refreshToken으로 새로운 토큰 발급 요청
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/auth/refresh`, {
+          refreshToken: tokens?.refreshToken,
+        });
+
+        const newTokens = response.data;
+        useAuthStore.getState().setTokens(newTokens);
+
+        // 새로운 accessToken으로 원래 요청 재시도
+        originalRequest.headers.Authorization = `Bearer ${newTokens.accessToken}`;
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        // refreshToken도 만료된 경우
+        useAuthStore.getState().clearTokens();
+        const router = useRouter();
+        router.replace('/auth/signin');
+
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  },
 );
 
-/**
- * @TODO: 백엔드 응답형식 결정되면 변경 필요
- */
 interface APIResponse<RequestBodyDTO, ResponseBodyDTO> {
   data: ResponseBodyDTO;
   status: number;
