@@ -4,6 +4,8 @@ import 'expo-dev-client';
 import {theme} from '@/src/styles/theme';
 import {ThemeProvider} from 'styled-components/native';
 import SignUpHeader from '@/src/features/signup/components/layout/SignUpHeader';
+import {QueryClientProvider} from '@tanstack/react-query';
+import {queryClient} from '@/src/lib/react-query';
 
 function AuthenticationGuard() {
   const segments = useSegments();
@@ -29,8 +31,10 @@ function AuthenticationGuard() {
 
 export default function RootLayout() {
   return (
-    <ThemeProvider theme={theme}>
-      <AuthenticationGuard />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <AuthenticationGuard />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
