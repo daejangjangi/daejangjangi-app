@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import {Alert} from 'react-native';
 import {CATEGORIES, DISEASES} from '@/src/common/data/health-concerns';
+import {Gender} from '../api/types/member.types';
 
 type TermsOfService = {
   isOver14: boolean;
@@ -11,7 +12,7 @@ type TermsOfService = {
 };
 
 type BasicInfo = {
-  gender: 'MALE' | 'FEMALE' | undefined;
+  gender: Gender | undefined;
   birthday: Date | undefined;
 };
 
@@ -23,6 +24,8 @@ interface SignUpState {
   step: number;
   canGoNext: [boolean, boolean, boolean, boolean, boolean];
 
+  email: string;
+  password: string;
   nickname: string;
   termsOfService: TermsOfService;
   basicInfo: BasicInfo;
@@ -35,9 +38,11 @@ interface SignUpAction {
   handleNextStep: () => void;
   updateCanGoNext: (step: number, can: boolean) => void;
 
+  updateEmail: (email: string) => void;
+  updatePassword: (password: string) => void;
   updateNickname: (name: string) => void;
   updateTermsOfService: (target: string) => void;
-  updateGender: (target: 'MALE' | 'FEMALE') => void;
+  updateGender: (target: 'm' | 'w') => void;
   updateBirthday: (target: Date) => void;
   updateDiseases: (target: Disease) => void;
   updateCategories: (target: Category) => void;
@@ -55,6 +60,8 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   step: 1,
   canGoNext: [false, false, false, false, false],
 
+  email: '',
+  password: '',
   nickname: '',
   termsOfService: {
     isOver14: false,
@@ -86,6 +93,8 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
 
       if (state.step === 5) {
         Alert.alert('알림', '회원가입이 완료되었습니다.');
+        console.log(state);
+
         return state;
       }
       return {step: state.step + 1};
@@ -106,7 +115,7 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
         [target]: !state.termsOfService[target],
       },
     })),
-  updateGender: (target: 'MALE' | 'FEMALE') => {
+  updateGender: (target: 'm' | 'w') => {
     set(state => ({
       basicInfo: {
         ...state.basicInfo,
@@ -144,4 +153,6 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
       };
     });
   },
+  updateEmail: (email: string) => set({email}),
+  updatePassword: (password: string) => set({password}),
 }));

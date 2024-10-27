@@ -54,13 +54,13 @@ export default function SignUpBasicInfo() {
         <S.SelectGroups>
           <SelectBox
             label='남성'
-            selected={basicInfo.gender === 'MALE'}
-            onPress={() => updateGender('MALE')}
+            selected={basicInfo.gender === 'm'}
+            onPress={() => updateGender('m')}
           />
           <SelectBox
             label='여성'
-            selected={basicInfo.gender === 'FEMALE'}
-            onPress={() => updateGender('FEMALE')}
+            selected={basicInfo.gender === 'w'}
+            onPress={() => updateGender('w')}
           />
         </S.SelectGroups>
       </S.Section>
