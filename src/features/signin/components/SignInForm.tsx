@@ -93,7 +93,7 @@ export default function SignInForm() {
       </S.Buttons>
 
       <S.SignUpSection>
-        <S.SignUpLink href='/signup'>
+        <S.SignUpLink href='/auth/signup'>
           <S.SignUpText>회원가입</S.SignUpText>
         </S.SignUpLink>
       </S.SignUpSection>
