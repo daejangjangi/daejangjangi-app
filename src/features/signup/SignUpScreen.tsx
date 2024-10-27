@@ -6,6 +6,7 @@ import {SubmitHandler, useForm, useWatch} from 'react-hook-form';
 import FormInput from '@/src/common/form/FormInput';
 import {useRouter} from 'expo-router';
 import {MemberApi} from '@/src/api/member';
+import {useSignUpStore} from '@/src/stores/useSignUpStore';
 
 const S = {
   Container: styled.View`
@@ -39,6 +40,7 @@ export default function SignUpScreen() {
     setError,
   } = useForm<Inputs>();
   const router = useRouter();
+  const {updateEmail, updatePassword} = useSignUpStore();
 
   const passwordValue = useWatch({
     control,
@@ -75,7 +77,9 @@ export default function SignUpScreen() {
   const onSubmit: SubmitHandler<Inputs> = async data => {
     try {
       await MemberApi.checkEmailDuplicated(data.email);
-      router.push('/signup-extra');
+      updateEmail(data.email);
+      updatePassword(data.password);
+      router.push('/auth/signup-extra');
     } catch (error) {
       setError('email', {
         type: 'manual',
