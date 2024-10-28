@@ -70,21 +70,17 @@ export default function TabBar({state, descriptors, navigation}: BottomTabBarPro
               accessibilityLabel={options.tabBarAccessibilityLabel}
               onPress={onPress}
             >
-              {route.name === '(home)' && <IcHome width='24px' height='24px' color={fillColor} />}
-              {route.name === '(care)' && (
-                <IcCalendar width='24px' height='24px' color={fillColor} />
-              )}
-              {route.name === '(community)' && (
+              {route.name === 'home' && <IcHome width='24px' height='24px' color={fillColor} />}
+              {route.name === 'care' && <IcCalendar width='24px' height='24px' color={fillColor} />}
+              {route.name === 'community' && (
                 <IcCommunity width='24px' height='24px' color={fillColor} />
               )}
-              {route.name === '(market)' && (
-                <IcMarket width='24px' height='24px' color={fillColor} />
-              )}
+              {route.name === 'market' && <IcMarket width='24px' height='24px' color={fillColor} />}
               <S.TabTitle $isFocused={isFocused}>{label as string}</S.TabTitle>
             </S.TabButton>
           );
         })}
-      <S.TabButton accessibilityRole='button' onPress={() => router.push('/(mypage)')}>
+      <S.TabButton accessibilityRole='button' onPress={() => router.push('/others/mypage')}>
         <IcUser width='24px' height='24px' color={theme.colors.textMedium} />
         <S.TabTitle>마이</S.TabTitle>
       </S.TabButton>
