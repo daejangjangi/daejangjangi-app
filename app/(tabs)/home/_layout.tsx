@@ -4,6 +4,7 @@ import CommonHeader from '@/src/common/headers';
 
 const homeRouteMap = {
   cartoon: '대장툰',
+  'cartoon/[episode]': '대장툰',
   'card-news': '카드뉴스',
   'news-letter': '상품추천 뉴스레터',
   reels: '레시피 릴스',
@@ -21,6 +22,7 @@ export default function HomeLayout() {
     >
       <Stack.Screen name='index' />
       <Stack.Screen name='cartoon' />
+      <Stack.Screen name='cartoon/[episode]' />
       <Stack.Screen name='card-news' />
       <Stack.Screen name='news-letter' />
       <Stack.Screen name='reels' />
