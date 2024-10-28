@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
-import {IcArrowRightS, IcCartColor, IcDaejangToon, IcPill, IcRecipe} from '@/assets/images/icons';
 import {Image} from 'expo-image';
+import {IcArrowRightS, IcCartColor, IcDaejangToon, IcPill, IcRecipe} from '@/assets/images/icons';
 import {Href, useRouter} from 'expo-router';
 
 const S = {
@@ -77,25 +77,25 @@ const MENU_LIST: HomeMenuItemProps[] = [
     title: '대장툰',
     description: '또양이가 장건강 상식을 쉽게 얘기해요',
     Icon: <IcDaejangToon />,
-    href: '/(home)/cartoon',
+    href: '/home/cartoon',
   },
   {
     title: '레시피 릴스',
     description: '장이 편해지는 식단을 1분 이내에 보여줘요',
     Icon: <IcRecipe />,
-    href: '/(home)/reels',
+    href: '/home/reels',
   },
   {
     title: '약 카드뉴스',
     description: '전문인력들이 장관련 약 정보를 알려줘요',
     Icon: <IcPill />,
-    href: '/(home)/card-news',
+    href: '/home/card-news',
   },
   {
     title: '상품추천 뉴스레터',
     description: '전문인력들이 장건강에 필요한 상품을 추천해요',
     Icon: <IcCartColor />,
-    href: '/(home)/news-letter',
+    href: '/home/news-letter',
   },
 ];
 
