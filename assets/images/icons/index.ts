@@ -23,3 +23,4 @@ export {default as IcCartColor} from './IcCartColor.svg';
 export {default as IcHeartColorEmpty} from './IcHeartColorEmpty.svg';
 export {default as IcEye} from './IcEye.svg';
 export {default as IcSpeechBubble} from './IcSpeechBubble.svg';
+export {default as IcListButton} from './IcListButton.svg';
