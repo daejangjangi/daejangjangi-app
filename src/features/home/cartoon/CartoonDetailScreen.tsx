@@ -7,14 +7,15 @@ const S = {
   Container: styled.View``,
 };
 
-interface CartoonDetailScreenProps {}
-
-export default function CartoonDetailScreen({}: CartoonDetailScreenProps) {
-  const {episode} = useLocalSearchParams();
+export default function CartoonDetailScreen() {
+  const {episode, title} = useLocalSearchParams<{episode: string; title: string}>();
+  console.log('CartoonDetailHeader params:', {episode, title});
 
   return (
     <S.Container>
-      <AppText>카툰 디테일 {episode}</AppText>
+      <AppText>
+        카툰 디테일 {episode} {title}
+      </AppText>
     </S.Container>
   );
 }

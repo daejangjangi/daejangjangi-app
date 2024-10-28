@@ -84,7 +84,17 @@ export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
       <S.EpisodeList>
         {episodes.map(episode => (
           <React.Fragment key={episode.id}>
-            <S.Episode onPress={() => router.push(`/home/cartoon/${episode.id}`)}>
+            <S.Episode
+              onPress={() =>
+                router.push({
+                  pathname: '/home/cartoon/[episode]',
+                  params: {
+                    episode: episode.id.toString(),
+                    title: episode.title,
+                  },
+                })
+              }
+            >
               <S.EpisodeImage source={episode.previewImageUrl} />
               <S.EpisodeInfo>
                 <AppText textType='B1'>{`[${episode.id}화] ${truncateText(episode.title)}`}</AppText>
