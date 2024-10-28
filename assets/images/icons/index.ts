@@ -22,3 +22,4 @@ export {default as IcPill} from './IcPill.svg';
 export {default as IcCartColor} from './IcCartColor.svg';
 export {default as IcHeartColorEmpty} from './IcHeartColorEmpty.svg';
 export {default as IcEye} from './IcEye.svg';
+export {default as IcSpeechBubble} from './IcSpeechBubble.svg';
