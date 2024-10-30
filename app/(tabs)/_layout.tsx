@@ -2,11 +2,11 @@ import React from 'react';
 import {Tabs, usePathname} from 'expo-router';
 import TabBar from '@/src/common/TabBar';
 
+const tabBarDisplayList = ['/home', '/care', '/community', '/market'];
+
 export default function TabLayout() {
   const pathname = usePathname();
-  const displayTabBar = pathname === '/';
-
-  console.log('pathname:', pathname);
+  const displayTabBar = tabBarDisplayList.includes(pathname);
 
   return (
     <Tabs

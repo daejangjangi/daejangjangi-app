@@ -4,8 +4,11 @@ import styled from 'styled-components/native';
 import CommonTextField from '@/src/common/CommonTextField';
 import FormInput from '@/src/common/form/FormInput';
 import FormButton from '@/src/common/form/FormButton';
-import {Link} from 'expo-router';
+import {Link, useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
+import {useLogin} from '@/src/hooks/queries/member';
+import {useAuthStore} from '@/src/stores/auth';
+import {Alert} from 'react-native';
 
 const S = {
   Container: styled.View`
@@ -66,7 +69,23 @@ export default function SignInForm() {
     control,
     formState: {errors},
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+
+  const router = useRouter();
+  const {mutateAsync: login, isPending} = useLogin();
+  const {setTokens} = useAuthStore();
+
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+    try {
+      const response = await login(data);
+      setTokens({
+        accessToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+      });
+      router.replace('/(tabs)/home');
+    } catch (error) {
+      Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
+    }
+  };
 
   return (
     <S.Container>
@@ -89,7 +108,12 @@ export default function SignInForm() {
       </S.InputGroup>
 
       <S.Buttons>
-        <FormButton title='이메일로 로그인' onPress={handleSubmit(onSubmit)} />
+        <FormButton
+          title='이메일로 로그인'
+          onPress={handleSubmit(onSubmit)}
+          disabled={isPending}
+          loading={isPending}
+        />
       </S.Buttons>
 
       <S.SignUpSection>

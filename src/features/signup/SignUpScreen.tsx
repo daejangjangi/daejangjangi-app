@@ -5,6 +5,8 @@ import FormButton from '@/src/common/form/FormButton';
 import {SubmitHandler, useForm, useWatch} from 'react-hook-form';
 import FormInput from '@/src/common/form/FormInput';
 import {useRouter} from 'expo-router';
+import {MemberApi} from '@/src/api/member';
+import {useSignUpStore} from '@/src/stores/useSignUpStore';
 
 const S = {
   Container: styled.View`
@@ -35,8 +37,10 @@ export default function SignUpScreen() {
     handleSubmit,
     control,
     formState: {errors},
+    setError,
   } = useForm<Inputs>();
   const router = useRouter();
+  const {updateEmail, updatePassword} = useSignUpStore();
 
   const passwordValue = useWatch({
     control,
@@ -70,13 +74,18 @@ export default function SignUpScreen() {
     },
   };
 
-  /**
-   * @TODO: 이메일 중복 검사
-   * @TODO: 회원가입 전반적인 상태관리 추가
-   */
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log(data);
-    router.push('/signup-extra');
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+    try {
+      await MemberApi.checkEmailDuplicated(data.email);
+      updateEmail(data.email);
+      updatePassword(data.password);
+      router.push('/auth/signup-extra');
+    } catch (error) {
+      setError('email', {
+        type: 'manual',
+        message: '이미 사용 중인 이메일입니다.',
+      });
+    }
   };
 
   return (

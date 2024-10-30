@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import {Alert} from 'react-native';
-import {DISEASES, CATEGORIES} from '@/src/common/data/health-concerns';
+import {CATEGORIES, DISEASES} from '@/src/common/data/health-concerns';
+import {Gender} from '../api/types/member.types';
 
 type TermsOfService = {
   isOver14: boolean;
@@ -11,7 +12,7 @@ type TermsOfService = {
 };
 
 type BasicInfo = {
-  gender: 'MALE' | 'FEMALE' | undefined;
+  gender: Gender | undefined;
   birthday: Date | undefined;
 };
 
@@ -21,6 +22,10 @@ type Category = (typeof CATEGORIES)[number];
 
 interface SignUpState {
   step: number;
+  canGoNext: [boolean, boolean, boolean, boolean, boolean];
+
+  email: string;
+  password: string;
   nickname: string;
   termsOfService: TermsOfService;
   basicInfo: BasicInfo;
@@ -31,17 +36,32 @@ interface SignUpState {
 interface SignUpAction {
   handlePrevStep: () => void;
   handleNextStep: () => void;
+  updateCanGoNext: (step: number, can: boolean) => void;
 
+  updateEmail: (email: string) => void;
+  updatePassword: (password: string) => void;
   updateNickname: (name: string) => void;
   updateTermsOfService: (target: string) => void;
-  updateGender: (target: 'MALE' | 'FEMALE') => void;
+  updateGender: (target: 'm' | 'w') => void;
   updateBirthday: (target: Date) => void;
   updateDiseases: (target: Disease) => void;
   updateCategories: (target: Category) => void;
 }
 
+const ERROR_MESSAGES = {
+  1: '닉네임 중복확인을 완료해주세요.',
+  2: '필수 약관에 모두 동의해주세요.',
+  3: '성별과 생년월일을 모두 입력해주세요.',
+  4: '장 건강 관련 질환을 1개 이상 선택해주세요.',
+  5: '관심있는 장 건강 관련 상품을 1개 이상 선택해주세요.',
+} as const;
+
 export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   step: 1,
+  canGoNext: [false, false, false, false, false],
+
+  email: '',
+  password: '',
   nickname: '',
   termsOfService: {
     isOver14: false,
@@ -57,10 +77,24 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   diseases: [],
   categories: [],
 
+  updateCanGoNext: (step: number, can: boolean) =>
+    set(state => {
+      const newCanGoNext = state.canGoNext;
+      newCanGoNext[step - 1] = can;
+
+      return {canGoNext: newCanGoNext};
+    }),
   handleNextStep: () =>
     set(state => {
+      if (!state.canGoNext[state.step - 1]) {
+        Alert.alert('알림', ERROR_MESSAGES[state.step as keyof typeof ERROR_MESSAGES]);
+        return state;
+      }
+
       if (state.step === 5) {
-        Alert.alert('회원가입 완료');
+        Alert.alert('알림', '회원가입이 완료되었습니다.');
+        console.log(state);
+
         return state;
       }
       return {step: state.step + 1};
@@ -68,7 +102,7 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   handlePrevStep: () =>
     set(state => {
       if (state.step === 1) {
-        Alert.alert('뒤로 돌아갈 수 없음');
+        Alert.alert('알림', '첫 단계입니다.');
         return state;
       }
       return {step: state.step - 1};
@@ -81,7 +115,7 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
         [target]: !state.termsOfService[target],
       },
     })),
-  updateGender: (target: 'MALE' | 'FEMALE') => {
+  updateGender: (target: 'm' | 'w') => {
     set(state => ({
       basicInfo: {
         ...state.basicInfo,
@@ -119,4 +153,6 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
       };
     });
   },
+  updateEmail: (email: string) => set({email}),
+  updatePassword: (password: string) => set({password}),
 }));

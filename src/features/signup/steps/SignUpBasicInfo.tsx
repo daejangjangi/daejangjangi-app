@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
 import SelectBox from '@/src/features/signup/components/SelectBox';
@@ -30,7 +30,14 @@ const S = {
 };
 
 export default function SignUpBasicInfo() {
-  const {nickname, basicInfo, updateGender, updateBirthday} = useSignUpStore(state => state);
+  const {nickname, basicInfo, updateGender, updateBirthday, updateCanGoNext} = useSignUpStore(
+    state => state,
+  );
+
+  useEffect(() => {
+    const canGoNext = !!basicInfo.gender && !!basicInfo.birthday;
+    updateCanGoNext(3, canGoNext);
+  }, [basicInfo, updateCanGoNext]);
 
   return (
     <S.Container>
@@ -47,13 +54,13 @@ export default function SignUpBasicInfo() {
         <S.SelectGroups>
           <SelectBox
             label='남성'
-            selected={basicInfo.gender === 'MALE'}
-            onPress={() => updateGender('MALE')}
+            selected={basicInfo.gender === 'm'}
+            onPress={() => updateGender('m')}
           />
           <SelectBox
             label='여성'
-            selected={basicInfo.gender === 'FEMALE'}
-            onPress={() => updateGender('FEMALE')}
+            selected={basicInfo.gender === 'w'}
+            onPress={() => updateGender('w')}
           />
         </S.SelectGroups>
       </S.Section>

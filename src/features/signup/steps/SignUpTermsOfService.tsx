@@ -90,7 +90,7 @@ function Option({title, checked, onToggle, bold, hasDetail, onClickDetail}: Opti
 }
 
 export default function SignUpTermsOfService() {
-  const {termsOfService, updateTermsOfService} = useSignUpStore(state => state);
+  const {termsOfService, updateTermsOfService, updateCanGoNext} = useSignUpStore(state => state);
   const [allChecked, setAllChecked] = useState(Object.values(termsOfService).every(v => v));
   const [modalOpen, setModalOpen] = useState({
     termsOfService: false,
@@ -116,11 +116,17 @@ export default function SignUpTermsOfService() {
   };
 
   useEffect(() => {
-    const all = Object.values(termsOfService).every(v => v);
-    if (!all) {
-      setAllChecked(false);
-    }
-  }, [termsOfService]);
+    // 전체동의 여부
+    setAllChecked(Object.values(termsOfService).every(v => v));
+
+    // 필수동의 여부 확인
+    const {isOver14, termsOfServiceAgreement, sensitiveDataAgreement, personalDataAgreement} =
+      termsOfService;
+
+    const canGoNext =
+      isOver14 && termsOfServiceAgreement && sensitiveDataAgreement && personalDataAgreement;
+    updateCanGoNext(2, canGoNext);
+  }, [termsOfService, updateCanGoNext]);
 
   return (
     <>
