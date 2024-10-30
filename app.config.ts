@@ -2,7 +2,7 @@ import 'dotenv/config';
 import {ExpoConfig, ConfigContext} from '@expo/config';
 
 export default ({config}: ConfigContext): ExpoConfig => ({
-  name: 'daejangjangi-app',
+  name: '대장장이',
   slug: 'daejangjangi-app',
   version: '1.0.0',
   orientation: 'portrait',
