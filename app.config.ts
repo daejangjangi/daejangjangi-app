@@ -23,9 +23,6 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       backgroundColor: '#ffffff',
     },
     package: 'com.daejangjangi',
-    // strings: {
-    //   app_name: 'daejangjangi',
-    // },
   },
   web: {
     bundler: 'metro',
