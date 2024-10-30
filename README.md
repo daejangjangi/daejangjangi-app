@@ -6,6 +6,13 @@
 <img src='https://github.com/user-attachments/assets/c441ddb7-9603-4677-9741-7a7b0216ef8b' width='150' />
 <img src='https://github.com/user-attachments/assets/d32ed190-ef22-4d7e-af0a-7708482e8d48' width='150' />
 
+## 프로젝트 빌드 방법
+
+안드로이드
+```
+npx expo prebuild --platform android
+eas build --profile development --platform android
+```
 
 ## 개발 컨벤션
 
