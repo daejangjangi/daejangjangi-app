@@ -6,7 +6,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   slug: 'daejangjangi-app',
   version: '1.0.0',
   orientation: 'portrait',
-  icon: './assets/images/icon.png',
+  icon: './assets/icon.png',
   scheme: 'myapp',
   userInterfaceStyle: 'automatic',
   splash: {
@@ -19,7 +19,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/images/adaptive-icon.png',
+      foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
     package: 'com.daejangjangi',
