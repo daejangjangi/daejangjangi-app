@@ -28,13 +28,21 @@ export function useCheckEmail(email: string) {
 export function useMemberInfo() {
   return useQuery({
     queryKey: memberKeys.info(),
-    queryFn: () => MemberApi.getMemberInfo(),
+    queryFn: () => MemberApi.getMemberInfo().then(res => res.data),
+    staleTime: 1000 * 60 * 5,
   });
 }
 
 export function useLogin() {
   return useMutation({
     mutationFn: (credentials: AuthCredentials) => MemberApi.login(credentials),
+  });
+}
+
+export function useKakaoLogin() {
+  return useMutation({
+    mutationFn: (credentials: {email: string; snsId: string}) =>
+      MemberApi.loginWithKakao(credentials),
   });
 }
 

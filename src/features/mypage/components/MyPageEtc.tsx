@@ -38,12 +38,12 @@ export default function MyPageEtc() {
         />
         <MyPageMenuItem
           title='자주 묻는 질문'
-          onPress={() => router.navigate('/(mypage)/faq')}
+          onPress={() => router.navigate('/others/mypage/faq')}
           Icon={<IcQuestion />}
         />
         <MyPageMenuItem
           title='계정'
-          onPress={() => router.navigate('/(mypage)/account')}
+          onPress={() => router.navigate('/others/mypage/account')}
           Icon={<IcLock />}
         />
       </S.Menu>

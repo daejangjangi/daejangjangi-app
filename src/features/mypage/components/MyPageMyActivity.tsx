@@ -31,17 +31,17 @@ export default function MyPageMyActivity() {
       <S.Menu>
         <MyPageMenuItem
           title='내가 쓴 글'
-          onPress={() => router.navigate('/(community)/my-posts')}
+          onPress={() => router.navigate('/(tabs)/community/my-posts')}
           Icon={<IcPost />}
         />
         <MyPageMenuItem
           title='댓글 단 글'
-          onPress={() => router.navigate('/(community)/commented-posts')}
+          onPress={() => router.navigate('/(tabs)/community/commented-posts')}
           Icon={<IcChat />}
         />
         <MyPageMenuItem
           title='관심상품'
-          onPress={() => router.navigate('/(market)/favorite')}
+          onPress={() => router.navigate('/(tabs)/market/favorite')}
           Icon={<IcHeart />}
         />
       </S.Menu>
