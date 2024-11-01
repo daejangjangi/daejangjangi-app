@@ -41,10 +41,10 @@ export default function HomeHeaderBar() {
       </S.HeaderMain>
 
       <S.Buttons>
-        <S.Button onPress={() => router.push('/(mypage)')}>
+        <S.Button onPress={() => router.push('/others/mypage')}>
           <IcUser color={theme.colors.textMedium} />
         </S.Button>
-        <S.Button onPress={() => router.push('/(notification)')}>
+        <S.Button onPress={() => router.push('/others/notification')}>
           <IcBell color={theme.colors.textMedium} />
         </S.Button>
       </S.Buttons>
