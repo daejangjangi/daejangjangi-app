@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import HotPosts from './components/HotPosts';
 import MyPosts from './components/MyPosts';
+import BoardPosts from './components/BoardPosts';
 
 const S = {
   Container: styled.ScrollView`
@@ -15,6 +16,7 @@ export default function CommunityScreen() {
     <S.Container>
       <HotPosts />
       <MyPosts />
+      <BoardPosts />
     </S.Container>
   );
 }
