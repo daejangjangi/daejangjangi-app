@@ -39,6 +39,13 @@ export function useLogin() {
   });
 }
 
+export function useKakaoLogin() {
+  return useMutation({
+    mutationFn: (credentials: {email: string; snsId: string}) =>
+      MemberApi.loginWithKakao(credentials),
+  });
+}
+
 export function useJoin() {
   return useMutation({
     mutationFn: (joinForm: JoinForm) => MemberApi.join(joinForm),

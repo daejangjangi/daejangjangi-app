@@ -38,7 +38,11 @@ export default function SignUpScreen() {
     control,
     formState: {errors},
     setError,
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      email: useSignUpStore.getState().email,
+    },
+  });
   const router = useRouter();
   const {updateEmail, updatePassword} = useSignUpStore();
 

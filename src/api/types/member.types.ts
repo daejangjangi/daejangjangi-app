@@ -35,6 +35,12 @@ export interface AuthCredentials {
   password: string;
 }
 
+export interface KakaoAuthCredentials {
+  email: string;
+  snsId: string;
+  provider: 'KAKAO';
+}
+
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;

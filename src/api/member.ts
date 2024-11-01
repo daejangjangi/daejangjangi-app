@@ -5,6 +5,7 @@ import {
   MemberInfo,
   AuthTokens,
   AuthCredentials,
+  KakaoAuthCredentials,
 } from '@/src/api/types/member.types';
 
 async function checkNicknameDuplicated(nickname: string) {
@@ -34,6 +35,15 @@ async function login(authCredentials: AuthCredentials) {
   return response;
 }
 
+async function loginWithKakao(authCredentials: {email: string; snsId: string}) {
+  const response = await httpInstance.post<KakaoAuthCredentials, AuthTokens>('/v1/socials/login', {
+    ...authCredentials,
+    provider: 'KAKAO',
+  });
+
+  return response;
+}
+
 async function join(joinForm: JoinForm) {
   const response = await httpInstance.post<JoinForm, null>('/v1/members/join', joinForm);
 
@@ -51,6 +61,7 @@ export const MemberApi = {
   getMemberInfo,
   checkEmailDuplicated,
   login,
+  loginWithKakao,
   join,
   updateMemberInfo,
 };
