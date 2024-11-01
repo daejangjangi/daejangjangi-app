@@ -2,15 +2,15 @@ import 'dotenv/config';
 import {ExpoConfig, ConfigContext} from '@expo/config';
 
 export default ({config}: ConfigContext): ExpoConfig => ({
-  name: 'daejangjangi-app',
+  name: '대장장이',
   slug: 'daejangjangi-app',
   version: '1.0.0',
   orientation: 'portrait',
-  icon: './assets/images/icon.png',
+  icon: './assets/icon.png',
   scheme: 'myapp',
   userInterfaceStyle: 'automatic',
   splash: {
-    image: './assets/images/splash.png',
+    image: './assets/splash.png',
     resizeMode: 'contain',
     backgroundColor: '#ffffff',
   },
@@ -19,7 +19,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/images/adaptive-icon.png',
+      foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
     package: 'com.daejangjangi',
