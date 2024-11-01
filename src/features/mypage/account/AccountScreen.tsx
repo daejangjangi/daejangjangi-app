@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import MyPageMenuItem from '@/src/features/mypage/components/MyPageMenuItem';
 import MyPageQuestionModal from '@/src/features/mypage/account/modal/MyPageQuestionModal';
+import {useAuthStore} from '@/src/stores/auth';
+import {Alert} from 'react-native';
+import {useRouter} from 'expo-router';
 
 const S = {
   Container: styled.View`
@@ -21,19 +24,25 @@ export default function AccountScreen() {
   const [exitModalOpen, setExitModalOpen] = useState(false);
   const [exitCompleteModalOpen, setExitCompleteModalOpen] = useState(false);
 
+  const router = useRouter();
+  const {clearTokens} = useAuthStore();
+
   const handleLogout = () => {
-    /**
-     * @Todo: 로그아웃 로직 구현
-     */
+    clearTokens();
+    router.replace('/auth/signin');
     setLogoutModalOpen(false);
   };
 
-  const handleExit = () => {
-    /**
-     * @Todo: 회원탈퇴 로직 구현
-     */
-    setExitModalOpen(false);
-    setExitCompleteModalOpen(true);
+  const handleExit = async () => {
+    Alert.alert('구현 중입니다!');
+
+    // try {
+    //   clearTokens();
+    //   setExitModalOpen(false);
+    //   setExitCompleteModalOpen(true);
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   const handleExitComplete = () => {
