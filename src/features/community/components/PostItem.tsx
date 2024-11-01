@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {getTimeAgo} from '@/src/utils/date';
-import {PostBody} from './PostBody';
+import PostBody from './PostBody';
 
 const S = {
   Container: styled.Pressable`

@@ -1,29 +1,25 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
-import PostItem from './PostItem';
+import SmallPostItem from './SmallPostItem';
 
 const S = {
   Container: styled.View`
     padding: 16px;
   `,
 
-  HotPosts: styled.View`
-    gap: 12px;
-    margin-bottom: 12px;
+  MyPosts: styled.ScrollView.attrs({
+    horizontal: true,
+    showsHorizontalScrollIndicator: false,
+  })``,
+
+  PostContainer: styled.View`
+    margin-right: 12px;
+    width: 221px;
   `,
 
   Title: styled(AppText)`
     margin-bottom: 16px;
-  `,
-
-  Button: styled.Pressable`
-    background-color: ${props => props.theme.colors.mainLight};
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    padding: 16px;
   `,
 };
 
@@ -37,7 +33,7 @@ const TEMP_POSTS = [
     comments: 10,
     views: 10,
     createdAt: '2024-01-01',
-    isPopular: true,
+    isUnread: true,
   },
   {
     id: 2,
@@ -47,11 +43,11 @@ const TEMP_POSTS = [
     comments: 10,
     views: 10,
     createdAt: '2024-01-01',
-    isPopular: true,
+    isUnread: false,
   },
 ];
 
-export default function HotPosts() {
+export default function MyPosts() {
   // @TODO: 인기게시글 데이터 조회
   // @TODO: 게시글 상세 페이지 이동
   const handlePostPress = (postId: number) => {
@@ -64,27 +60,22 @@ export default function HotPosts() {
 
   return (
     <S.Container>
-      <S.Title textType='T1'>인기게시글</S.Title>
-      <S.HotPosts>
+      <S.Title textType='T1'>내가 쓴 글</S.Title>
+      <S.MyPosts>
         {TEMP_POSTS.map(post => (
-          <PostItem
-            key={post.id}
-            title={post.title}
-            content={post.content}
-            likes={post.likes}
-            comments={post.comments}
-            views={post.views}
-            createdAt={post.createdAt}
-            isPopular={post.isPopular}
-            onPress={() => handlePostPress(post.id)}
-          />
+          <S.PostContainer key={post.id}>
+            <SmallPostItem
+              title={post.title}
+              content={post.content}
+              likes={post.likes}
+              comments={post.comments}
+              views={post.views}
+              isUnread={post.isUnread}
+              onPress={() => handlePostPress(post.id)}
+            />
+          </S.PostContainer>
         ))}
-      </S.HotPosts>
-      <S.Button onPress={handleMorePress}>
-        <AppText textType='B2Bold' colorType='main'>
-          더보기
-        </AppText>
-      </S.Button>
+      </S.MyPosts>
     </S.Container>
   );
 }

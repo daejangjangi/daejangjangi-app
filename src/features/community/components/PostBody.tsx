@@ -9,6 +9,7 @@ const S = {
   `,
 
   Content: styled(AppText)`
+    height: 45px;
     margin-bottom: 4px;
   `,
 
@@ -33,7 +34,7 @@ interface PostBodyProps {
   views: number;
 }
 
-export function PostBody({title, content, likes, comments, views}: PostBodyProps) {
+export default function PostBody({title, content, likes, comments, views}: PostBodyProps) {
   return (
     <>
       <S.Title textType='B2Bold'>{title}</S.Title>
