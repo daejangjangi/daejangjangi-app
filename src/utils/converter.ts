@@ -1,3 +1,4 @@
+import {format} from 'date-fns';
 import {JoinForm} from '@/src/api/types/member.types';
 import {SignUpState} from '@/src/stores/useSignUpStore';
 
@@ -27,16 +28,16 @@ const CATEGORY_MAPPING: Record<string, string> = {
 };
 
 export function convertSignUpStateToJoinForm(state: SignUpState): JoinForm {
-  const birthdayYear = state.basicInfo.birthday?.getFullYear() ?? '';
-  const birthdayMonth = (state.basicInfo.birthday?.getMonth() ?? -1) + 1;
-  const birthdayDate = state.basicInfo.birthday?.getDate() ?? '';
-
   return {
     email: state.email,
     password: state.password,
     nickname: state.nickname,
     gender: state.basicInfo.gender,
-    birth: `${birthdayYear}-${birthdayMonth}-${birthdayDate}`,
+    birth: format(state.basicInfo.birthday, 'yyyy-MM-dd'),
+    serviceUsage: state.termsOfService.termsOfServiceAgreement,
+    personnelInfo: state.termsOfService.personalDataAgreement,
+    sensitiveInfo: state.termsOfService.sensitiveDataAgreement,
+    promotionReception: state.termsOfService.promotionalInfoAgreement,
     diseases: state.diseases.map(disease => DISEASE_MAPPING[disease]),
     categories: state.categories.map(category => CATEGORY_MAPPING[category]),
   };

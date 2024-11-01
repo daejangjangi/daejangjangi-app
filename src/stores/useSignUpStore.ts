@@ -46,6 +46,7 @@ interface SignUpAction {
   updateBirthday: (target: Date) => void;
   updateDiseases: (target: Disease) => void;
   updateCategories: (target: Category) => void;
+  clear: () => void;
 }
 
 const ERROR_MESSAGES = {
@@ -155,4 +156,25 @@ export const useSignUpStore = create<SignUpState & SignUpAction>(set => ({
   },
   updateEmail: (email: string) => set({email}),
   updatePassword: (password: string) => set({password}),
+  clear: () =>
+    set({
+      step: 1,
+      canGoNext: [false, false, false, false, false],
+      email: '',
+      password: '',
+      nickname: '',
+      termsOfService: {
+        isOver14: false,
+        termsOfServiceAgreement: false,
+        personalDataAgreement: false,
+        sensitiveDataAgreement: false,
+        promotionalInfoAgreement: false,
+      },
+      basicInfo: {
+        gender: undefined,
+        birthday: undefined,
+      },
+      diseases: [],
+      categories: [],
+    }),
 }));

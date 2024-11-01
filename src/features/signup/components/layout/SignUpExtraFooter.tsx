@@ -45,6 +45,7 @@ export default function SignUpExtraFooter() {
           onPress: () => router.replace('/auth/signin'),
         },
       ]);
+      signUpState.clear();
     } catch (error) {
       Alert.alert('오류', '회원가입에 실패했습니다. 다시 시도해주세요.');
       console.error(error);

@@ -23,6 +23,13 @@ export interface MemberInfo {
   categories: Category[];
 }
 
+export interface Agreement {
+  serviceUsage: boolean;
+  personnelInfo: boolean;
+  sensitiveInfo: boolean;
+  promotionReception: boolean;
+}
+
 export interface AuthCredentials {
   email: string;
   password: string;
@@ -33,5 +40,5 @@ export interface AuthTokens {
   refreshToken: string;
 }
 
-export type JoinForm = MemberInfo & AuthCredentials;
+export type JoinForm = MemberInfo & AuthCredentials & Agreement;
 export type UpdateForm = Partial<MemberInfo>;
