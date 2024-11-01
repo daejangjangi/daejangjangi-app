@@ -6,6 +6,7 @@ import {AppText} from '@/src/common/AppComponents';
 import {IcPencil} from '@/assets/images/icons';
 import EditNicknameModal from './components/EditNicknameModal';
 import EditBirthdayModal from './components/EditBirthdayModal';
+import EditDiseasesModal from './components/EditDiseasesModal';
 
 const S = {
   Container: styled.View`
@@ -67,6 +68,7 @@ export default function ProfileScreen() {
   const {data: memberInfo} = useMemberInfo();
   const [isNicknameModalVisible, setIsNicknameModalVisible] = useState(false);
   const [isBirthdayModalVisible, setIsBirthdayModalVisible] = useState(false);
+  const [isDiseasesModalVisible, setIsDiseasesModalVisible] = useState(false);
 
   const profileItems: (ProfileItemProps & {id: string})[] = [
     {
@@ -84,7 +86,13 @@ export default function ProfileScreen() {
       onEdit: () => setIsBirthdayModalVisible(true),
     },
     {id: 'gender', title: '성별', value: memberInfo?.gender === 'm' ? '남성' : '여성'},
-    {id: 'diseases', title: '관심질환', value: memberInfo?.diseases || [], editable: true},
+    {
+      id: 'diseases',
+      title: '관심질환',
+      value: memberInfo?.diseases || [],
+      editable: true,
+      onEdit: () => setIsDiseasesModalVisible(true),
+    },
     {id: 'categories', title: '관심상품', value: memberInfo?.categories || [], editable: true},
   ];
 
@@ -106,6 +114,11 @@ export default function ProfileScreen() {
         isVisible={isBirthdayModalVisible}
         onClose={() => setIsBirthdayModalVisible(false)}
         currentBirthday={memberInfo?.birth || ''}
+      />
+      <EditDiseasesModal
+        isVisible={isDiseasesModalVisible}
+        onClose={() => setIsDiseasesModalVisible(false)}
+        currentDiseases={memberInfo?.diseases || []}
       />
     </S.Container>
   );
