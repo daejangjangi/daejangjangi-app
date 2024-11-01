@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {useMemberInfo, useUpdateMemberInfo} from '@/src/hooks/queries/member';
-import {Pressable, Alert} from 'react-native';
+import {useMemberInfo} from '@/src/hooks/queries/member';
+import {Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {IcPencil} from '@/assets/images/icons';
 import EditNicknameModal from './components/EditNicknameModal';
+import EditBirthdayModal from './components/EditBirthdayModal';
 
 const S = {
   Container: styled.View`
@@ -65,6 +66,7 @@ function ProfileItem({title, value, editable = false, onEdit}: ProfileItemProps)
 export default function ProfileScreen() {
   const {data: memberInfo} = useMemberInfo();
   const [isNicknameModalVisible, setIsNicknameModalVisible] = useState(false);
+  const [isBirthdayModalVisible, setIsBirthdayModalVisible] = useState(false);
 
   const profileItems: (ProfileItemProps & {id: string})[] = [
     {
@@ -74,7 +76,13 @@ export default function ProfileScreen() {
       editable: true,
       onEdit: () => setIsNicknameModalVisible(true),
     },
-    {id: 'birth', title: '생년월일', value: memberInfo?.birth || '', editable: true},
+    {
+      id: 'birth',
+      title: '생년월일',
+      value: memberInfo?.birth || '',
+      editable: true,
+      onEdit: () => setIsBirthdayModalVisible(true),
+    },
     {id: 'gender', title: '성별', value: memberInfo?.gender === 'm' ? '남성' : '여성'},
     {id: 'diseases', title: '관심질환', value: memberInfo?.diseases || [], editable: true},
     {id: 'categories', title: '관심상품', value: memberInfo?.categories || [], editable: true},
@@ -93,6 +101,11 @@ export default function ProfileScreen() {
         isVisible={isNicknameModalVisible}
         onClose={() => setIsNicknameModalVisible(false)}
         currentNickname={memberInfo?.nickname || ''}
+      />
+      <EditBirthdayModal
+        isVisible={isBirthdayModalVisible}
+        onClose={() => setIsBirthdayModalVisible(false)}
+        currentBirthday={memberInfo?.birth || ''}
       />
     </S.Container>
   );
