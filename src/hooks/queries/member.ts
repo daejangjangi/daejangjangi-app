@@ -28,7 +28,8 @@ export function useCheckEmail(email: string) {
 export function useMemberInfo() {
   return useQuery({
     queryKey: memberKeys.info(),
-    queryFn: () => MemberApi.getMemberInfo(),
+    queryFn: () => MemberApi.getMemberInfo().then(res => res.data),
+    staleTime: 1000 * 60 * 5,
   });
 }
 
