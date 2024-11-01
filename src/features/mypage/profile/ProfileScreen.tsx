@@ -7,6 +7,7 @@ import {IcPencil} from '@/assets/images/icons';
 import EditNicknameModal from './components/EditNicknameModal';
 import EditBirthdayModal from './components/EditBirthdayModal';
 import EditDiseasesModal from './components/EditDiseasesModal';
+import EditCategoriesModal from './components/EditCategoriesModal';
 
 const S = {
   Container: styled.View`
@@ -69,6 +70,7 @@ export default function ProfileScreen() {
   const [isNicknameModalVisible, setIsNicknameModalVisible] = useState(false);
   const [isBirthdayModalVisible, setIsBirthdayModalVisible] = useState(false);
   const [isDiseasesModalVisible, setIsDiseasesModalVisible] = useState(false);
+  const [isCategoriesModalVisible, setIsCategoriesModalVisible] = useState(false);
 
   const profileItems: (ProfileItemProps & {id: string})[] = [
     {
@@ -93,7 +95,13 @@ export default function ProfileScreen() {
       editable: true,
       onEdit: () => setIsDiseasesModalVisible(true),
     },
-    {id: 'categories', title: '관심상품', value: memberInfo?.categories || [], editable: true},
+    {
+      id: 'categories',
+      title: '관심상품',
+      value: memberInfo?.categories || [],
+      editable: true,
+      onEdit: () => setIsCategoriesModalVisible(true),
+    },
   ];
 
   return (
@@ -119,6 +127,11 @@ export default function ProfileScreen() {
         isVisible={isDiseasesModalVisible}
         onClose={() => setIsDiseasesModalVisible(false)}
         currentDiseases={memberInfo?.diseases || []}
+      />
+      <EditCategoriesModal
+        isVisible={isCategoriesModalVisible}
+        onClose={() => setIsCategoriesModalVisible(false)}
+        currentCategories={memberInfo?.categories || []}
       />
     </S.Container>
   );
