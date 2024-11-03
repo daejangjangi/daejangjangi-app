@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
+import {useRouter} from 'expo-router';
 import PostItem from './PostItem';
 
 const S = {
@@ -52,6 +53,8 @@ const TEMP_POSTS = [
 ];
 
 export default function HotPosts() {
+  const router = useRouter();
+
   // @TODO: 인기게시글 데이터 조회
   // @TODO: 게시글 상세 페이지 이동
   const handlePostPress = (postId: number) => {
@@ -60,6 +63,7 @@ export default function HotPosts() {
 
   const handleMorePress = () => {
     // @TODO: 인기게시글 페이지 이동
+    router.push('/(tabs)/community/board');
   };
 
   return (
