@@ -1,6 +1,7 @@
 import React from 'react';
 import {Stack} from 'expo-router';
 import CommonHeader from '@/src/common/headers';
+import BoardHeader from '@/src/features/community/board/components/BoardHeader';
 
 const communityRouteMap = {
   board: '커뮤니티',
@@ -15,9 +16,14 @@ export default function CommunityLayout() {
   return (
     <Stack
       screenOptions={{
-        header: ({route}) => (
-          <CommonHeader routeMap={communityRouteMap} routeName={route.name} title='커뮤니티' />
-        ),
+        header: ({route}) => {
+          if (route.name === 'board') {
+            return <BoardHeader />;
+          }
+          return (
+            <CommonHeader routeMap={communityRouteMap} routeName={route.name} title='커뮤니티' />
+          );
+        },
       }}
     >
       <Stack.Screen name='index' />
