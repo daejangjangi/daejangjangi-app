@@ -55,7 +55,10 @@ export default function BoardScreen() {
   };
 
   const handlePostPress = (postId: number) => {
-    // router.push(`/community/post/${postId}`);
+    router.push({
+      pathname: '/(tabs)/community/post',
+      params: {id: postId},
+    });
   };
 
   return (

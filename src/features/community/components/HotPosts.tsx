@@ -58,7 +58,10 @@ export default function HotPosts() {
   // @TODO: 인기게시글 데이터 조회
   // @TODO: 게시글 상세 페이지 이동
   const handlePostPress = (postId: number) => {
-    // router.push(`/(tabs)/community/post/${postId}`);
+    router.push({
+      pathname: '/(tabs)/community/post',
+      params: {id: postId},
+    });
   };
 
   const handleMorePress = () => {

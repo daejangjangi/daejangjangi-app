@@ -1,3 +1,5 @@
+import {format} from 'date-fns';
+
 export const getTimeAgo = (dateString: string) => {
   const now = new Date();
   const date = new Date(dateString);
@@ -11,6 +13,10 @@ export const getTimeAgo = (dateString: string) => {
   if (hours < 24) {
     return `${hours}시간 전`;
   }
-  const days = Math.floor(hours / 24);
-  return `${days}일 전`;
+  if (hours < 168) {
+    const days = Math.floor(hours / 24);
+    return `${days}일 전`;
+  }
+
+  return format(date, 'yyyy.MM.dd. HH:mm');
 };

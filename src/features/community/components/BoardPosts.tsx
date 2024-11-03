@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {IcAdd} from '@/assets/images/icons';
+import {useRouter} from 'expo-router';
 import BoardAccordion from './BoardAccordion';
 
 const S = {
@@ -52,7 +53,7 @@ const TEMP_POSTS = [
     id: 3,
     title: '쾌변 부르는 생활습관',
     content:
-      '식습관은 장의 운동에 큰 영향을 미친다. 특히 쇠고기, 돼지고기, 닭고기 등 육류를 지나치게 많이 ���으면 변비가...',
+      '식습관은 장의 운동에 큰 영향을 미친다. 특히 쇠고기, 돼지고기, 닭고기 등 육류를 지나치게 많이 먹으면 변비가...',
     likes: 16,
     comments: 4,
     views: 112,
@@ -81,10 +82,15 @@ const BOARD_CATEGORIES = [
 ];
 
 export default function BoardPosts() {
+  const router = useRouter();
+
   // @TODO: 게시글 데이터 조회
   // @TODO: 게시글 상세 페이지 이동
   const handlePostPress = (postId: number) => {
-    // router.push(`/(tabs)/community/post/${postId}`);
+    router.push({
+      pathname: '/(tabs)/community/post',
+      params: {id: postId},
+    });
   };
 
   const handleMorePress = () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
+import {useRouter} from 'expo-router';
 import SmallPostItem from './SmallPostItem';
 
 const S = {
@@ -48,10 +49,15 @@ const TEMP_POSTS = [
 ];
 
 export default function MyPosts() {
+  const router = useRouter();
+
   // @TODO: 인기게시글 데이터 조회
   // @TODO: 게시글 상세 페이지 이동
   const handlePostPress = (postId: number) => {
-    // router.push(`/(tabs)/community/post/${postId}`);
+    router.push({
+      pathname: '/(tabs)/community/post',
+      params: {id: postId},
+    });
   };
 
   const handleMorePress = () => {
