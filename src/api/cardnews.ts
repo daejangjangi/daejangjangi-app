@@ -3,7 +3,9 @@ import {CardNews, CardNewsListItem} from './types/cardnews.type';
 
 // 목록 조회
 async function getCardNewsList() {
-  const response = await httpInstance.get<CardNewsListItem[]>('/v1/cardnews');
+  const response = await httpInstance.get<{
+    cardnewsItems: CardNewsListItem[];
+  }>('/v1/cardnews');
 
   return response;
 }

@@ -1,11 +1,11 @@
 export interface CardNews {
   title: string;
   createdAt: string;
-  newImages: string[];
+  newsImages: string[];
 }
 
 export interface CardNewsListItem {
-  id: string;
+  id: number;
   title: string;
   profile: string;
 }
