@@ -5,7 +5,7 @@ const DAEJANGTOON_ID = 1;
 
 // 대장툰 조회
 async function getCartoons() {
-  const response = await httpInstance.get<Cartoon[]>(`/v1/daejangtoons/${DAEJANGTOON_ID}`);
+  const response = await httpInstance.get<Cartoon>(`/v1/daejangtoons/${DAEJANGTOON_ID}`);
 
   return response;
 }

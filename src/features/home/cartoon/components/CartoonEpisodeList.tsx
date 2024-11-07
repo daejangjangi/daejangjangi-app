@@ -8,7 +8,7 @@ import {CartoonChapter} from '@/src/api/types/cartoon.type';
 
 const truncateText = (text: string, maxLength: number = 15) => {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+  return `${text.slice(0, maxLength)}...`;
 };
 
 const S = {
@@ -81,7 +81,7 @@ export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
                 router.push({
                   pathname: '/home/cartoon/[episode]',
                   params: {
-                    episode: episode.id.toString(),
+                    episode: episode.chapter.toString(),
                     title: episode.title,
                   },
                 })
@@ -89,7 +89,7 @@ export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
             >
               <S.EpisodeImage source={episode.profile} />
               <S.EpisodeInfo>
-                <AppText textType='B1'>{`[${episode.id}화] ${truncateText(episode.title)}`}</AppText>
+                <AppText textType='B1'>{`[${episode.chapter}화] ${truncateText(episode.title)}`}</AppText>
                 <S.EpisodeStats>
                   <S.StatItem>
                     <IcEye />

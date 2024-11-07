@@ -36,22 +36,18 @@ export default function CartoonScreen() {
   const {data: cartoons} = useCartoons();
   const {data: latestEpisode} = useCartoonLatestChapter();
 
-  console.log('cartoons:', cartoons);
-
-  const daejangtoon = cartoons?.[0];
-
   return (
     <S.Container>
       <CartoonThumbnail episode={latestEpisode} />
 
       <S.Header>
-        <S.Title textType='T2'>{daejangtoon?.title}</S.Title>
-        <S.Author textType='C2'>정수아 • 매주 {daejangtoon?.yoil}요일 연재</S.Author>
+        <S.Title textType='T2'>{cartoons?.title}</S.Title>
+        <S.Author textType='C2'>정수아 • 매주 {cartoons?.yoil}요일 연재</S.Author>
       </S.Header>
 
-      <S.Description textType='C2'>{daejangtoon?.overview}</S.Description>
+      <S.Description textType='C2'>{cartoons?.overview}</S.Description>
 
-      <CartoonEpisodeList episodes={daejangtoon?.chapters ?? []} />
+      <CartoonEpisodeList episodes={cartoons?.chapters ?? []} />
     </S.Container>
   );
 }
