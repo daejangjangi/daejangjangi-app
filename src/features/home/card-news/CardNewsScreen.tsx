@@ -11,12 +11,16 @@ const S = {
     background-color: #fff;
     padding: 20px;
   `,
+
+  CardNewsList: styled.View`
+    margin-bottom: 20px;
+  `,
 };
 
 export default function CardNewsScreen() {
   const {data: cardNewsList} = useCardNewsList();
   const cardnewsItems = cardNewsList?.cardnewsItems || [];
-  const [selectedNewsId, setSelectedNewsId] = useState(cardnewsItems?.[0].id);
+  const [selectedNewsId, setSelectedNewsId] = useState(cardNewsList?.cardnewsItems?.[0].id);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleSelectNews = (newsId: number) => {
@@ -28,9 +32,11 @@ export default function CardNewsScreen() {
     <S.Container ref={scrollViewRef}>
       <CardNewsContent id={selectedNewsId} />
 
-      {cardnewsItems?.map(item => (
-        <CardNewsItem key={item.id} onSelect={handleSelectNews} info={item} />
-      ))}
+      <S.CardNewsList>
+        {cardnewsItems?.map(item => (
+          <CardNewsItem key={item.id} onSelect={handleSelectNews} info={item} />
+        ))}
+      </S.CardNewsList>
     </S.Container>
   );
 }
