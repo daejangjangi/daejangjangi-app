@@ -1,6 +1,7 @@
 import React from 'react';
 import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
+import {useCartoonLatestChapter, useCartoons} from '@/src/hooks/queries/cartoon';
 import {CartoonEpisodeList} from './components/CartoonEpisodeList';
 import {CartoonThumbnail} from './components/CartoonThumbnail';
 
@@ -32,60 +33,25 @@ const S = {
 };
 
 export default function CartoonScreen() {
-  // @todo: 실제 데이터 변경 필요
-  const episodes = [
-    {
-      id: 4,
-      title: '치핵이 뭔데? 2',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-    {
-      id: 3,
-      title: '치핵이 뭔데? 1',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-    {
-      id: 2,
-      title: '대장을 사랑한 남자, 가우디',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-    {
-      id: 1,
-      title: '우울증 해결의 비밀이 장에서 온다고?',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-  ];
+  const {data: cartoons} = useCartoons();
+  const {data: latestEpisode} = useCartoonLatestChapter();
 
-  const latestEpisode = episodes[0];
+  console.log('cartoons:', cartoons);
+
+  const daejangtoon = cartoons?.[0];
 
   return (
     <S.Container>
       <CartoonThumbnail episode={latestEpisode} />
 
       <S.Header>
-        <S.Title textType='T2'>대장툰</S.Title>
-        <S.Author textType='C2'>정수아 • 매주 화요일 연재</S.Author>
+        <S.Title textType='T2'>{daejangtoon?.title}</S.Title>
+        <S.Author textType='C2'>정수아 • 매주 {daejangtoon?.yoil}요일 연재</S.Author>
       </S.Header>
 
-      <S.Description textType='C2'>
-        본 캐릭을 회상하시면 됩니다-Lorem ipsum dolor sit amet consectetur. Euismod dentean
-        adipiscing vel urna sit amet. Aenean sed duis ultricies massa sit moncus. Eget proin tempor
-        velit nec et morbi risus. Ut ipsum egestas suspendisse viverra ornare ornates et.
-      </S.Description>
+      <S.Description textType='C2'>{daejangtoon?.overview}</S.Description>
 
-      <CartoonEpisodeList episodes={episodes} />
+      <CartoonEpisodeList episodes={daejangtoon?.chapters ?? []} />
     </S.Container>
   );
 }
