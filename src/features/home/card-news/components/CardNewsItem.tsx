@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {Image} from 'expo-image';
+import {CardNewsListItem} from '@/src/api/types/cardnews.type';
 
 const S = {
   Container: styled.TouchableOpacity`
@@ -19,23 +20,16 @@ const S = {
   `,
 };
 
-interface CardNewsAccordionItemProps {
-  title: string;
-  date: string;
-  images: string[];
-  onSelect: (news: any) => void;
+interface CardNewsItemProps {
+  info: CardNewsListItem;
+  onSelect: (id: number) => void;
 }
 
-export default function CardNewsAccordionItem({
-  title,
-  date,
-  images,
-  onSelect,
-}: CardNewsAccordionItemProps) {
+export default function CardNewsItem({info, onSelect}: CardNewsItemProps) {
   return (
-    <S.Container onPress={() => onSelect({title, date, images})}>
-      <S.CardNewsThumbnail source={images[0]} />
-      <AppText textType='B1'>{title}</AppText>
+    <S.Container onPress={() => onSelect(info.id)}>
+      <S.CardNewsThumbnail source={info.profile} />
+      <AppText textType='B1'>{info.title}</AppText>
     </S.Container>
   );
 }
