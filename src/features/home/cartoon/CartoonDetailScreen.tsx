@@ -86,9 +86,6 @@ export default function CartoonDetailScreen() {
   const {mutate: likeCartoon} = useCartoonLike(Number(episode));
   const router = useRouter();
 
-  console.log('episode', episode);
-  console.log('cartoonChapterDetail', cartoonChapterDetail);
-
   const currentChapter = cartoonChapterDetail?.chapter ?? 0;
   const nextCartoon = cartoons?.chapters.find(chapter => chapter.chapter === Number(episode) + 1);
 

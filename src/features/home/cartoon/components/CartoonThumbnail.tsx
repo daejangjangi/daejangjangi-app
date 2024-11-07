@@ -5,14 +5,15 @@ import {LinearGradient} from 'expo-linear-gradient';
 import styled from 'styled-components/native';
 import {IcHeartColorEmpty, IcEye} from '@/assets/images/icons';
 import {CartoonChapter} from '@/src/api/types/cartoon.type';
+import {useRouter} from 'expo-router';
 
 const truncateText = (text: string, maxLength: number = 15) => {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+  return `${text.slice(0, maxLength)}...`;
 };
 
 const S = {
-  ThumbnailContainer: styled.View`
+  ThumbnailContainer: styled.Pressable`
     width: 100%;
   `,
 
@@ -80,8 +81,20 @@ interface CartoonThumbnailProps {
 }
 
 export function CartoonThumbnail({episode}: CartoonThumbnailProps) {
+  const router = useRouter();
+
+  const handleThumbnailPress = () => {
+    router.push({
+      pathname: '/home/cartoon/[episode]',
+      params: {
+        episode: episode?.chapter?.toString() ?? '',
+        title: episode?.title ?? '',
+      },
+    });
+  };
+
   return (
-    <S.ThumbnailContainer>
+    <S.ThumbnailContainer onPress={handleThumbnailPress}>
       <S.ThumbnailGradient colors={['rgba(244, 15, 84, 1)', 'rgba(255, 163, 208, 1)']} />
       <S.ThumbnailContent>
         {episode && (
