@@ -1,4 +1,4 @@
-export interface CartoonDetail {
+export interface CartoonChapterDetail {
   chapter: number;
   title: string;
   profile: string;
@@ -6,7 +6,7 @@ export interface CartoonDetail {
   likeCount: number;
 }
 
-export interface CartoonListItem {
+export interface CartoonChapter {
   id: number;
   chapter: number;
   title: string;
@@ -15,10 +15,10 @@ export interface CartoonListItem {
   likeCount: number;
 }
 
-export interface CartoonList {
+export interface Cartoon {
   id: number;
   title: string;
   overview: string;
   yoil: string;
-  chapters: CartoonListItem[];
+  chapters: CartoonChapter[];
 }

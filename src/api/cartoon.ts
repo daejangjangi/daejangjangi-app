@@ -1,18 +1,18 @@
 import httpInstance from './http';
-import {CartoonDetail, CartoonList, CartoonListItem} from './types/cartoon.type';
+import {CartoonChapterDetail, Cartoon, CartoonChapter} from './types/cartoon.type';
 
 const DAEJANGTOON_ID = 1;
 
 // 대장툰 조회
-async function getCartoonList() {
-  const response = await httpInstance.get<CartoonList>(`/v1/daejangtoons/${DAEJANGTOON_ID}`);
+async function getCartoons() {
+  const response = await httpInstance.get<Cartoon[]>(`/v1/daejangtoons/${DAEJANGTOON_ID}`);
 
   return response;
 }
 
 // 대장툰 특정회차 조회
-async function getCartoonDetail(chapter: number) {
-  const response = await httpInstance.get<CartoonDetail>(
+async function getCartoonChapterDetail(chapter: number) {
+  const response = await httpInstance.get<CartoonChapterDetail>(
     `/v1/daejangtoons/${DAEJANGTOON_ID}/${chapter}`,
   );
 
@@ -20,8 +20,8 @@ async function getCartoonDetail(chapter: number) {
 }
 
 // 최신 대장툰 조회
-async function getCartoonLatest() {
-  const response = await httpInstance.get<CartoonListItem>(
+async function getCartoonLatestChapter() {
+  const response = await httpInstance.get<CartoonChapter>(
     `/v1/daejangtoons/${DAEJANGTOON_ID}/recent`,
   );
 
@@ -36,8 +36,8 @@ async function likeCartoon(chapter: number) {
 }
 
 export const CartoonApi = {
-  getCartoonList,
-  getCartoonDetail,
-  getCartoonLatest,
+  getCartoons,
+  getCartoonChapterDetail,
+  getCartoonLatestChapter,
   likeCartoon,
 };

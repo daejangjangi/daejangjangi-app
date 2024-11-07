@@ -9,26 +9,26 @@ export const cartoonKeys = {
 };
 
 // 대장툰 목록 조회
-export function useCartoonList() {
+export function useCartoons() {
   return useQuery({
     queryKey: cartoonKeys.lists(),
-    queryFn: () => CartoonApi.getCartoonList().then(res => res.data),
+    queryFn: () => CartoonApi.getCartoons().then(res => res.data),
   });
 }
 
 // 대장툰 상세 조회
-export function useCartoonDetail(chapter: number) {
+export function useCartoonChapterDetail(chapter: number) {
   return useQuery({
     queryKey: cartoonKeys.detail(chapter),
-    queryFn: () => CartoonApi.getCartoonDetail(chapter).then(res => res.data),
+    queryFn: () => CartoonApi.getCartoonChapterDetail(chapter).then(res => res.data),
   });
 }
 
 // 최신 대장툰 조회
-export function useCartoonLatest() {
+export function useCartoonLatestChapter() {
   return useQuery({
     queryKey: cartoonKeys.latest(),
-    queryFn: () => CartoonApi.getCartoonLatest().then(res => res.data),
+    queryFn: () => CartoonApi.getCartoonLatestChapter().then(res => res.data),
   });
 }
 
