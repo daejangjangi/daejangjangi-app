@@ -3,7 +3,9 @@ import {NewsLetter} from './types/news-letter.type';
 
 // 뉴스레터 목록 조회
 async function getNewsLetterList() {
-  const response = await httpInstance.get<NewsLetter[]>('/v1/newsletters');
+  const response = await httpInstance.get<{
+    newsletterInfoList: NewsLetter[];
+  }>('/v1/newsletters');
 
   return response.data;
 }
