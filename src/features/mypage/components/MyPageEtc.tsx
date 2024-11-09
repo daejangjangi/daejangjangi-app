@@ -33,7 +33,7 @@ export default function MyPageEtc() {
       <S.Menu>
         <MyPageMenuItem
           title='문의하기'
-          onPress={() => Alert.alert('구현 중입니다.')}
+          onPress={() => router.navigate('/others/mypage/qna')}
           Icon={<IcHeadphone />}
         />
         <MyPageMenuItem
