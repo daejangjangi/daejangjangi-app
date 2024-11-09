@@ -3,7 +3,9 @@ import {Answer, Question} from './types/qna.type';
 
 // 회원 QnA 목록
 async function getQnaList() {
-  const response = await httpInstance.get<Answer[]>('/v1/qnas');
+  const response = await httpInstance.get<{
+    myInfoList: Answer[];
+  }>('/v1/qnas');
 
   return response.data;
 }

@@ -9,6 +9,8 @@ const myPageRouteMap = {
   account: '계정',
   notification: '알림',
   qna: '문의하기',
+  'qna-write': '문의하기',
+  'qna-detail': '문의하기',
 };
 
 export default function MyPageLayout() {
@@ -25,6 +27,8 @@ export default function MyPageLayout() {
       <Stack.Screen name='faq' />
       <Stack.Screen name='account' />
       <Stack.Screen name='qna' />
+      <Stack.Screen name='qna-write' />
+      <Stack.Screen name='qna-detail' />
     </Stack>
   );
 }

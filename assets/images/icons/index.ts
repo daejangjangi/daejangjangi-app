@@ -25,3 +25,4 @@ export {default as IcEye} from './IcEye.svg';
 export {default as IcSpeechBubble} from './IcSpeechBubble.svg';
 export {default as IcListButton} from './IcListButton.svg';
 export {default as IcPencil} from './IcPencil.svg';
+export {default as IcPencilFill} from './IcPencilFill.svg';
