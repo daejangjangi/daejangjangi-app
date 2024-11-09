@@ -1,4 +1,3 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import {useLocalSearchParams} from 'expo-router';
 import {useQnaList} from '@/src/hooks/queries/qna';
@@ -26,8 +25,6 @@ export default function QnaDetail() {
   const {id} = useLocalSearchParams();
   const {data} = useQnaList();
   const qna = data?.myInfoList.find(q => q.id === Number(id));
-
-  console.log('qna', qna);
 
   return (
     <S.Container>
