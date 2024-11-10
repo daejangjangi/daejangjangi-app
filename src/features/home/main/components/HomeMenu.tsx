@@ -91,12 +91,12 @@ const MENU_LIST: HomeMenuItemProps[] = [
     Icon: <IcPill />,
     href: '/home/card-news',
   },
-  // {
-  //   title: '상품추천 뉴스레터',
-  //   description: '전문인력들이 장건강에 필요한 상품을 추천해요',
-  //   Icon: <IcCartColor />,
-  //   href: '/home/news-letter',
-  // },
+  {
+    title: '상품추천 뉴스레터',
+    description: '전문인력들이 장건강에 필요한 상품을 추천해요',
+    Icon: <IcCartColor />,
+    href: '/home/news-letter',
+  },
 ];
 
 export default function HomeMenu() {

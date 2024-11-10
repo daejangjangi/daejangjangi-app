@@ -1,4 +1,3 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import {Answer, QnaStatus} from '@/src/api/types/qna.type';
 import styled from 'styled-components/native';
