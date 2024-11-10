@@ -15,10 +15,21 @@ const S = {
     padding: 20px;
   `,
 
+  NewsLetterTitle: styled.Text`
+    font-size: 24px;
+    font-family: NanumSquareNeo-ExtraBold;
+
+    width: 70%;
+    color: rgb(252, 95, 58);
+    padding-bottom: 12px;
+    border-bottom-width: 2px;
+    border-bottom-color: rgb(252, 95, 58);
+    margin-bottom: 20px;
+  `,
+
   Header: styled.View`
     flex-direction: row;
     justify-content: space-between;
-    padding: 20px;
   `,
 
   Title: styled.View`
@@ -39,10 +50,12 @@ export default function NewsLetterDetailScreen() {
   return (
     <S.Container>
       <S.ContentContainer>
+        <S.NewsLetterTitle>대장장이 MD 뉴스레터</S.NewsLetterTitle>
+
         <S.Header>
           <S.Title>
-            <AppText textType='T3'>{data?.title}</AppText>
-            <AppText textType='B2' colorType='textMedium'>
+            <AppText textType='T1'>{data?.title}</AppText>
+            <AppText textType='B1' colorType='textMedium'>
               {data?.subTitle}
             </AppText>
           </S.Title>
