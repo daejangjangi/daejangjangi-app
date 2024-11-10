@@ -79,12 +79,12 @@ const MENU_LIST: HomeMenuItemProps[] = [
     Icon: <IcDaejangToon />,
     href: '/home/cartoon',
   },
-  // {
-  //   title: '레시피 릴스',
-  //   description: '장이 편해지는 식단을 1분 이내에 보여줘요',
-  //   Icon: <IcRecipe />,
-  //   href: '/home/reels',
-  // },
+  {
+    title: '레시피 릴스',
+    description: '장이 편해지는 식단을 1분 이내에 보여줘요',
+    Icon: <IcRecipe />,
+    href: '/home/reels',
+  },
   {
     title: '약 카드뉴스',
     description: '전문인력들이 장관련 약 정보를 알려줘요',
