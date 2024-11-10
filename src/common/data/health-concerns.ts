@@ -15,4 +15,13 @@ export const DISEASES = [
   '없음',
 ] as const;
 
-export const CATEGORIES = ['유산균', '식이섬유', '저포드맵', '비건', '기타 장건강 간식'] as const;
+export const CATEGORIES = [
+  '유산균',
+  '식이섬유',
+  '저포드맵',
+  '간식',
+  '비건',
+  '욕실용품',
+  '아동',
+  '운동기구',
+] as const;

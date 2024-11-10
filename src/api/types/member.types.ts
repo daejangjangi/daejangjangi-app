@@ -13,7 +13,15 @@ export type Disease =
   | '궤양성대장염'
   | '복부팽만'
   | '없음';
-export type Category = '유산균' | '식이섬유' | '저포드맵' | '비건' | '기타_장건강_간식';
+export type Category =
+  | '유산균'
+  | '식이섬유'
+  | '저포드맵'
+  | '간식'
+  | '비건'
+  | '욕실용품'
+  | '아동'
+  | '운동기구';
 
 export interface MemberInfo {
   nickname: string;
