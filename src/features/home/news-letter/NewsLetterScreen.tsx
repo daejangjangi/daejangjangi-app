@@ -1,5 +1,5 @@
-import {useNewsLetterList} from '@/src/hooks/queries/news-letter';
 import React from 'react';
+import {useNewsLetterList} from '@/src/hooks/queries/news-letter';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import NewsLetterListItem from './components/NewsLetterListItem';
@@ -14,17 +14,7 @@ const S = {
 
 export default function NewsLetterScreen() {
   const {data} = useNewsLetterList();
-  // const newsletterInfoList = data?.newsletterInfoList ?? [];
-  const newsletterInfoList = [
-    {
-      id: 0,
-      title: '그릭요거트',
-      subTitle: '그릭요거트 소개',
-      description: '그릭요거트 소개',
-      profileImage: '',
-      category: '유산균',
-    },
-  ];
+  const newsletterInfoList = data?.newsletterInfoList ?? [];
 
   return (
     <S.Container>
