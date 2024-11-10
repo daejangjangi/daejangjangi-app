@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect, useMemo} from 'react';
 import {useCardNewsList} from '@/src/hooks/queries/cardnews';
 import styled from 'styled-components/native';
 import {ScrollView} from 'react-native';
@@ -19,8 +19,8 @@ const S = {
 
 export default function CardNewsScreen() {
   const {data: cardNewsList} = useCardNewsList();
-  const cardnewsItems = cardNewsList?.cardnewsItems || [];
-  const [selectedNewsId, setSelectedNewsId] = useState(cardNewsList?.cardnewsItems?.[0].id);
+  const cardnewsItems = useMemo(() => cardNewsList?.cardnewsItems || [], [cardNewsList]);
+  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleSelectNews = (newsId: number) => {
@@ -28,9 +28,15 @@ export default function CardNewsScreen() {
     scrollViewRef.current?.scrollTo({y: 0, animated: true});
   };
 
+  useEffect(() => {
+    if (cardnewsItems.length > 0) {
+      setSelectedNewsId(cardnewsItems[cardnewsItems.length - 1].id);
+    }
+  }, [cardnewsItems]);
+
   return (
     <S.Container ref={scrollViewRef}>
-      <CardNewsContent id={selectedNewsId} />
+      {selectedNewsId && <CardNewsContent id={selectedNewsId} />}
 
       <S.CardNewsList>
         {cardnewsItems?.map(item => (
