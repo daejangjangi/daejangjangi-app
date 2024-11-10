@@ -13,8 +13,8 @@ const S = {
 };
 
 export default function FaqScreen() {
-  const {data: faqList} = useFaqList();
-  const faqItems = faqList?.faqItems || [];
+  const {data} = useFaqList();
+  const faqItems = data?.faqList || [];
 
   return (
     <S.Container>
