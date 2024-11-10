@@ -1,16 +1,322 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import styled from 'styled-components/native';
+import {useLocalSearchParams} from 'expo-router';
+import {AppText} from '@/src/common/AppComponents';
+import {getTimeAgo} from '@/src/utils/date';
+import {
+  IcHeartColorEmpty,
+  IcHeartColor,
+  IcSpeechBubble,
+  IcEye,
+  IcSend,
+} from '@/assets/images/icons';
+import {TEMP_POSTS} from '../data/tempPosts';
 
-export default function PostScreen() {
+// 임시 댓글 데이터
+const TEMP_COMMENTS = [
+  {
+    id: 1,
+    nickname: '건강하자',
+    content: '저도 비슷한 증상이 있었는데, 병원에서 약 처방받고 좋아졌어요!',
+    createdAt: '2024-03-15T10:30:22',
+    likes: 5,
+  },
+  {
+    id: 2,
+    nickname: '배아파',
+    content: '운동하면서 식단 조절하니까 많이 좋아졌습니다. 힘내세요!',
+    createdAt: '2024-03-15T11:45:33',
+    likes: 3,
+  },
+  {
+    id: 3,
+    nickname: '장건강',
+    content: '저는 유산균이랑 운동이 도움 됐어요.',
+    createdAt: '2024-03-15T12:15:10',
+    likes: 2,
+  },
+];
+
+const S = {
+  Container: styled.ScrollView`
+    flex: 1;
+    background-color: #fff;
+  `,
+
+  Header: styled.View`
+    flex-direction: row;
+    gap: 12px;
+    padding: 12px 20px;
+  `,
+
+  UserInfo: styled.View`
+    margin-bottom: 4px;
+  `,
+
+  Avatar: styled.View`
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #eee;
+  `,
+
+  Nickname: styled(AppText)``,
+
+  Time: styled(AppText)``,
+
+  Content: styled.View`
+    padding: 12px 20px;
+  `,
+
+  Title: styled(AppText)`
+    margin-bottom: 16px;
+  `,
+
+  Text: styled(AppText)``,
+
+  Stats: styled.View`
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 20px;
+  `,
+
+  StatItem: styled.Pressable`
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+  `,
+
+  CommentInput: styled.View`
+    background-color: #fbfcfe;
+    padding: 12px 20px;
+  `,
+
+  InputContainer: styled.View`
+    flex-direction: row;
+    align-items: flex-end;
+    background-color: #fff;
+    border: 1px solid ${props => props.theme.colors.textMedium};
+    border-radius: 8px;
+    padding-right: 12px;
+    min-height: 48px;
+  `,
+
+  Input: styled.TextInput`
+    flex: 1;
+    padding: 12px 16px;
+    max-height: 100px;
+    text-align-vertical: center;
+  `,
+
+  SendButton: styled.Pressable`
+    padding: 4px;
+    margin-bottom: 12px;
+  `,
+
+  CommentsContainer: styled.View`
+    padding: 20px;
+    background-color: #fbfcfe;
+  `,
+
+  CommentCount: styled(AppText)`
+    margin-bottom: 16px;
+  `,
+
+  CommentItem: styled.View`
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  `,
+
+  CommentHeader: styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  `,
+
+  CommentUserInfo: styled.View`
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  `,
+
+  CommentAvatar: styled.View`
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: #eee;
+  `,
+
+  Divider: styled.View`
+    height: 8px;
+    background-color: #fbfcfe;
+  `,
+
+  CommentFooter: styled.View`
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+  `,
+
+  CommentLikeButton: styled.Pressable`
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+  `,
+};
+
+// Comment 컴포넌트
+function Comment({
+  id,
+  nickname,
+  content,
+  createdAt,
+  likes,
+}: {
+  id: number;
+  nickname: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+}) {
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [likeCount, setLikeCount] = React.useState(likes);
+  const timeAgo = getTimeAgo(createdAt);
+
+  const handleLikePress = () => {
+    if (isLiked) {
+      setLikeCount(prev => prev - 1);
+    } else {
+      setLikeCount(prev => prev + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Text>PostScreen</Text>
-    </View>
+    <S.CommentItem>
+      <S.CommentHeader>
+        <S.CommentUserInfo>
+          <S.CommentAvatar />
+          <AppText textType='B1'>{nickname}</AppText>
+        </S.CommentUserInfo>
+        <AppText textType='C1' colorType='textMedium'>
+          {timeAgo}
+        </AppText>
+      </S.CommentHeader>
+      <AppText textType='C2'>{content}</AppText>
+      <S.CommentFooter>
+        <S.CommentLikeButton onPress={handleLikePress}>
+          {isLiked ? <IcHeartColor /> : <IcHeartColorEmpty />}
+          <AppText textType='C1' colorType={isLiked ? 'main' : 'textMedium'}>
+            {likeCount}
+          </AppText>
+        </S.CommentLikeButton>
+      </S.CommentFooter>
+    </S.CommentItem>
+  );
+}
+
+// @TODO: 실제 데이터 연동 필요
+export default function PostScreen() {
+  const {id} = useLocalSearchParams<{id: string}>();
+  const post = TEMP_POSTS.find(p => p.id === Number(id));
+  const [comment, setComment] = React.useState('');
+  const [isPostLiked, setIsPostLiked] = React.useState(false);
+  const [postLikeCount, setPostLikeCount] = React.useState(post?.likes || 0);
+
+  if (!post) return null;
+
+  const timeAgo = getTimeAgo(post.createdAt);
+
+  const handlePostLikePress = () => {
+    if (isPostLiked) {
+      setPostLikeCount(prev => prev - 1);
+    } else {
+      setPostLikeCount(prev => prev + 1);
+    }
+    setIsPostLiked(!isPostLiked);
+  };
+
+  const handleSendComment = () => {
+    if (comment.trim()) {
+      console.log('Send comment:', comment);
+      setComment('');
+    }
+  };
+
+  return (
+    <>
+      <S.Container>
+        <S.Header>
+          <S.Avatar />
+          <S.UserInfo>
+            <S.Nickname textType='B1'>닉네임</S.Nickname>
+            <S.Time textType='C1' colorType='textMedium'>
+              {timeAgo}
+            </S.Time>
+          </S.UserInfo>
+        </S.Header>
+
+        <S.Content>
+          <S.Title textType='T1'>{post.title}</S.Title>
+          <S.Text textType='B1'>{post.content}</S.Text>
+        </S.Content>
+
+        <S.Stats>
+          <S.StatItem>
+            <IcSpeechBubble />
+            <AppText textType='C1' colorType='textMedium'>
+              {post.comments}
+            </AppText>
+          </S.StatItem>
+          <S.StatItem onPress={handlePostLikePress}>
+            {isPostLiked ? <IcHeartColor /> : <IcHeartColorEmpty />}
+            <AppText textType='C1' colorType={isPostLiked ? 'main' : 'textMedium'}>
+              {postLikeCount}
+            </AppText>
+          </S.StatItem>
+          <S.StatItem>
+            <IcEye />
+            <AppText textType='C1' colorType='textMedium'>
+              {post.views}
+            </AppText>
+          </S.StatItem>
+        </S.Stats>
+
+        <S.Divider />
+
+        <S.CommentsContainer>
+          <S.CommentCount textType='B2'>댓글 {TEMP_COMMENTS.length}</S.CommentCount>
+          {TEMP_COMMENTS.map(c => (
+            <Comment
+              key={c.id}
+              id={c.id}
+              nickname={c.nickname}
+              content={c.content}
+              createdAt={c.createdAt}
+              likes={c.likes}
+            />
+          ))}
+        </S.CommentsContainer>
+      </S.Container>
+
+      <S.CommentInput>
+        <S.InputContainer>
+          <S.Input
+            placeholder='댓글을 남겨보세요 :)'
+            multiline
+            value={comment}
+            onChangeText={setComment}
+            textAlignVertical='top'
+          />
+          <S.SendButton onPress={handleSendComment}>
+            <IcSend />
+          </S.SendButton>
+        </S.InputContainer>
+      </S.CommentInput>
+    </>
   );
 }
