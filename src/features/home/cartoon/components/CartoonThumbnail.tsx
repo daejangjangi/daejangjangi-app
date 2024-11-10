@@ -1,17 +1,19 @@
+import React from 'react';
 import {AppText} from '@/src/common/AppComponents';
 import {Image} from 'expo-image';
 import {LinearGradient} from 'expo-linear-gradient';
-import React from 'react';
 import styled from 'styled-components/native';
-import {IcHeartColorEmpty, IcEye, IcSpeechBubble} from '@/assets/images/icons';
+import {IcHeartColorEmpty, IcEye, IcHeartColorFill} from '@/assets/images/icons';
+import {CartoonChapter} from '@/src/api/types/cartoon.type';
+import {useRouter} from 'expo-router';
 
 const truncateText = (text: string, maxLength: number = 15) => {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+  return `${text.slice(0, maxLength)}...`;
 };
 
 const S = {
-  ThumbnailContainer: styled.View`
+  ThumbnailContainer: styled.Pressable`
     width: 100%;
   `,
 
@@ -65,45 +67,62 @@ const S = {
     align-items: center;
     gap: 4px;
   `,
+
+  ThumbnailSkeleton: styled.View`
+    width: 100%;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+  `,
 };
 
 interface CartoonThumbnailProps {
-  episode: {
-    id: number;
-    title: string;
-    previewImageUrl: string;
-    views: number;
-    likes: number;
-    comments: number;
-  };
+  episode?: CartoonChapter;
 }
 
 export function CartoonThumbnail({episode}: CartoonThumbnailProps) {
+  const router = useRouter();
+
+  const handleThumbnailPress = () => {
+    router.push({
+      pathname: '/home/cartoon/[episode]',
+      params: {
+        episode: episode?.chapter?.toString() ?? '',
+        title: episode?.title ?? '',
+      },
+    });
+  };
+
   return (
-    <S.ThumbnailContainer>
+    <S.ThumbnailContainer onPress={handleThumbnailPress}>
       <S.ThumbnailGradient colors={['rgba(244, 15, 84, 1)', 'rgba(255, 163, 208, 1)']} />
       <S.ThumbnailContent>
-        <S.ThumbnailImage source={episode.previewImageUrl} />
-        <S.ThumbnailInfo>
-          <S.NewBadge textType='C1'>신규</S.NewBadge>
-          <S.ThumbnailTitle textType='B2Bold'>
-            [{episode.id}화] {truncateText(episode.title)}
-          </S.ThumbnailTitle>
-          <S.StatsContainer>
-            <S.StatItem>
-              <IcEye />
-              <S.StatText textType='C1'>{episode.views}</S.StatText>
-            </S.StatItem>
-            <S.StatItem>
-              <IcHeartColorEmpty />
-              <S.StatText textType='C1'>{episode.likes}</S.StatText>
-            </S.StatItem>
-            <S.StatItem>
-              <IcSpeechBubble />
-              <S.StatText textType='C1'>{episode.comments}</S.StatText>
-            </S.StatItem>
-          </S.StatsContainer>
-        </S.ThumbnailInfo>
+        {episode && (
+          <>
+            <S.ThumbnailImage source={episode.profile} />
+            <S.ThumbnailInfo>
+              <S.NewBadge textType='C1'>신규</S.NewBadge>
+              <S.ThumbnailTitle textType='B2Bold'>
+                [{episode.chapter}화] {truncateText(episode.title)}
+              </S.ThumbnailTitle>
+              <S.StatsContainer>
+                <S.StatItem>
+                  <IcEye />
+                  <S.StatText textType='C1'>{episode.hit}</S.StatText>
+                </S.StatItem>
+                <S.StatItem>
+                  {episode.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
+                  <S.StatText textType='C1'>{episode.likeCount}</S.StatText>
+                </S.StatItem>
+              </S.StatsContainer>
+            </S.ThumbnailInfo>
+          </>
+        )}
+        {!episode && (
+          <S.ThumbnailSkeleton>
+            <AppText textType='B3'>최신화가 없습니다.</AppText>
+          </S.ThumbnailSkeleton>
+        )}
       </S.ThumbnailContent>
     </S.ThumbnailContainer>
   );

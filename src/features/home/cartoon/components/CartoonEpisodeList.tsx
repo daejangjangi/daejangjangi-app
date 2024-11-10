@@ -3,11 +3,12 @@ import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React from 'react';
 import styled from 'styled-components/native';
-import {IcHeartColorEmpty, IcEye, IcSpeechBubble} from '@/assets/images/icons';
+import {IcHeartColorEmpty, IcEye, IcHeartColorFill} from '@/assets/images/icons';
+import {CartoonChapter} from '@/src/api/types/cartoon.type';
 
 const truncateText = (text: string, maxLength: number = 15) => {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+  return `${text.slice(0, maxLength)}...`;
 };
 
 const S = {
@@ -62,17 +63,8 @@ const S = {
   `,
 };
 
-interface Episode {
-  id: number;
-  title: string;
-  previewImageUrl: string;
-  views: number;
-  likes: number;
-  comments: number;
-}
-
 interface CartoonEpisodeListProps {
-  episodes: Episode[];
+  episodes: CartoonChapter[];
 }
 
 export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
@@ -89,27 +81,23 @@ export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
                 router.push({
                   pathname: '/home/cartoon/[episode]',
                   params: {
-                    episode: episode.id.toString(),
+                    episode: episode.chapter.toString(),
                     title: episode.title,
                   },
                 })
               }
             >
-              <S.EpisodeImage source={episode.previewImageUrl} />
+              <S.EpisodeImage source={episode.profile} />
               <S.EpisodeInfo>
-                <AppText textType='B1'>{`[${episode.id}화] ${truncateText(episode.title)}`}</AppText>
+                <AppText textType='B1'>{`[${episode.chapter}화] ${truncateText(episode.title)}`}</AppText>
                 <S.EpisodeStats>
                   <S.StatItem>
                     <IcEye />
-                    <S.StatText textType='C1'>{episode.views}</S.StatText>
+                    <S.StatText textType='C1'>{episode.hit}</S.StatText>
                   </S.StatItem>
                   <S.StatItem>
-                    <IcHeartColorEmpty />
-                    <S.StatText textType='C1'>{episode.likes}</S.StatText>
-                  </S.StatItem>
-                  <S.StatItem>
-                    <IcSpeechBubble />
-                    <S.StatText textType='C1'>{episode.comments}</S.StatText>
+                    {episode.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
+                    <S.StatText textType='C1'>{episode.likeCount}</S.StatText>
                   </S.StatItem>
                 </S.EpisodeStats>
               </S.EpisodeInfo>

@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {IcArrowRightS} from '@/assets/images/icons';
 import CardNewsContent from './CardNewsContent';
-import CardNewsAccordionItem from './CardNewsAccordionItem';
+import CardNewsItem from './CardNewsItem';
 
 const S = {
   Container: styled.View`
@@ -46,7 +46,7 @@ export default function CardNewsAccordion({category, items, onSelect}: CardNewsA
       {isOpen && (
         <S.Content>
           {items.map(item => (
-            <CardNewsAccordionItem key={item.id} onSelect={onSelect} {...item} />
+            <CardNewsItem key={item.id} onSelect={onSelect} {...item} />
           ))}
         </S.Content>
       )}

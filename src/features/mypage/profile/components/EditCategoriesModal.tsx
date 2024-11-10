@@ -45,8 +45,11 @@ const CATEGORY_MAPPING: Record<string, string> = {
   유산균: '유산균',
   식이섬유: '식이섬유',
   저포드맵: '저포드맵',
+  간식: '간식',
   비건: '비건',
-  '기타 장건강 간식': '기타_장건강_간식',
+  욕실용품: '욕실용품',
+  아동: '아동',
+  운동기구: '운동기구',
 };
 
 const REVERSE_CATEGORY_MAPPING = Object.entries(CATEGORY_MAPPING).reduce(

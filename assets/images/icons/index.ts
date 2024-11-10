@@ -30,3 +30,5 @@ export {default as IcAdd} from './IcAdd.svg';
 export {default as IcSend} from './IcSend.svg';
 export {default as IcHeartColor} from './IcHeartColor.svg';
 export {default as IcSearch} from './IcSearch.svg';
+export {default as IcPencilFill} from './IcPencilFill.svg';
+export {default as IcHeartColorFill} from './IcHeartColorFill.svg';

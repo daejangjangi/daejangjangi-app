@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {Image} from 'expo-image';
 import {useLocalSearchParams, useRouter} from 'expo-router';
-import {IcListButton, IcNext} from '@/assets/images/icons';
+import {IcListButton, IcNext, IcHeartColorEmpty, IcHeartColorFill} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
+import {useCartoonChapterDetail, useCartoons, useCartoonLike} from '@/src/hooks/queries/cartoon';
+import {AppText} from '@/src/common/AppComponents';
 
 const S = {
   Container: styled.View`
@@ -11,13 +13,27 @@ const S = {
     background-color: #fff;
   `,
 
-  Content: styled.View`
+  Content: styled.ScrollView`
     flex: 1;
   `,
 
   WebtoonImage: styled(Image)`
     width: 100%;
-    height: 100%;
+    aspect-ratio: 0.7;
+  `,
+
+  LikeContainer: styled.View`
+    padding: 20px 32px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+  `,
+
+  LikeButton: styled.TouchableOpacity`
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
   `,
 
   NavigationBar: styled.View`
@@ -40,63 +56,54 @@ const S = {
   MenuButton: styled.TouchableOpacity`
     padding: 8px;
   `,
+
+  NextCartoonContainer: styled.Pressable`
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid ${props => props.theme.colors.textLight};
+    border-radius: 8px;
+    padding: 12px 8px;
+    margin: 12px 20px;
+    background-color: #fbfbfe;
+  `,
+
+  NextCartoonImage: styled(Image)`
+    width: 108px;
+    height: 73px;
+    border-radius: 8px;
+  `,
+
+  NextCartoonTexts: styled.View`
+    gap: 4px;
+  `,
 };
 
 export default function CartoonDetailScreen() {
-  const {episode, title} = useLocalSearchParams<{episode: string; title: string}>();
+  const {episode} = useLocalSearchParams<{episode: string}>();
+  const {data: cartoons} = useCartoons();
+  const {data: cartoonChapterDetail} = useCartoonChapterDetail(Number(episode));
+  const {mutate: likeCartoon} = useCartoonLike(Number(episode));
   const router = useRouter();
-  const currentEpisode = Number(episode);
 
-  // 실제 에피소드 데이터
-  const episodes = [
-    {
-      id: 4,
-      title: '치핵이 뭔데? 2',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-    {
-      id: 3,
-      title: '치핵이 뭔데? 1',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-    {
-      id: 2,
-      title: '대장을 사랑한 남자, 가우디',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-    {
-      id: 1,
-      title: '우울증 해결의 비밀이 장에서 온다고?',
-      previewImageUrl: 'https://placehold.co/200',
-      views: 350,
-      likes: 120,
-      comments: 12,
-    },
-  ];
+  const currentChapter = cartoonChapterDetail?.chapter ?? 0;
+  const nextCartoon = cartoons?.chapters.find(chapter => chapter.chapter === Number(episode) + 1);
 
-  // 현재 에피소드의 인덱스 찾기
-  const currentEpisodeIndex = episodes.findIndex(ep => ep.id === currentEpisode);
+  const canMoveToNextEpisode = () => (cartoons?.chapters?.length ?? 0) > currentChapter;
+  const canMoveToPrevEpisode = () => currentChapter > 1;
 
-  const canMoveToNextEpisode = () => currentEpisodeIndex > 0;
-  const canMoveToPrevEpisode = () => currentEpisodeIndex < episodes.length - 1;
+  const handleLike = () => {
+    likeCartoon();
+  };
 
   const handleNextEpisode = () => {
     if (canMoveToNextEpisode()) {
-      const nextEpisode = episodes[currentEpisodeIndex - 1];
+      const nextEpisode = cartoons?.chapters[currentChapter];
       router.replace({
         pathname: '/home/cartoon/[episode]',
         params: {
-          episode: nextEpisode.id.toString(),
-          title: nextEpisode.title,
+          episode: (currentChapter + 1).toString(),
+          title: nextEpisode?.title ?? '',
         },
       });
     }
@@ -104,12 +111,12 @@ export default function CartoonDetailScreen() {
 
   const handlePrevEpisode = () => {
     if (canMoveToPrevEpisode()) {
-      const prevEpisode = episodes[currentEpisodeIndex + 1];
+      const prevEpisode = cartoons?.chapters[currentChapter - 2];
       router.replace({
         pathname: '/home/cartoon/[episode]',
         params: {
-          episode: prevEpisode.id.toString(),
-          title: prevEpisode.title,
+          episode: (currentChapter - 1).toString(),
+          title: prevEpisode?.title ?? '',
         },
       });
     }
@@ -118,7 +125,28 @@ export default function CartoonDetailScreen() {
   return (
     <S.Container>
       <S.Content>
-        <S.WebtoonImage source='https://placehold.co/400x600' contentFit='contain' />
+        {cartoonChapterDetail?.toonImages.map(image => (
+          <S.WebtoonImage key={image} source={image} contentFit='contain' />
+        ))}
+
+        <S.LikeContainer>
+          <S.LikeButton onPress={handleLike}>
+            {cartoonChapterDetail?.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
+            <AppText textType='B2'>{cartoonChapterDetail?.likeCount ?? 0}</AppText>
+          </S.LikeButton>
+        </S.LikeContainer>
+
+        {nextCartoon && (
+          <S.NextCartoonContainer onPress={handleNextEpisode}>
+            <S.NextCartoonImage source={nextCartoon.profile} contentFit='cover' />
+            <S.NextCartoonTexts>
+              <AppText textType='B1'>다음화 보기</AppText>
+              <AppText textType='C1'>
+                {nextCartoon.chapter}화 {nextCartoon.title}
+              </AppText>
+            </S.NextCartoonTexts>
+          </S.NextCartoonContainer>
+        )}
       </S.Content>
 
       <S.NavigationBar>
