@@ -3,7 +3,7 @@ import {AppText} from '@/src/common/AppComponents';
 import {Image} from 'expo-image';
 import {LinearGradient} from 'expo-linear-gradient';
 import styled from 'styled-components/native';
-import {IcHeartColorEmpty, IcEye} from '@/assets/images/icons';
+import {IcHeartColorEmpty, IcEye, IcHeartColorFill} from '@/assets/images/icons';
 import {CartoonChapter} from '@/src/api/types/cartoon.type';
 import {useRouter} from 'expo-router';
 
@@ -111,7 +111,7 @@ export function CartoonThumbnail({episode}: CartoonThumbnailProps) {
                   <S.StatText textType='C1'>{episode.hit}</S.StatText>
                 </S.StatItem>
                 <S.StatItem>
-                  <IcHeartColorEmpty />
+                  {episode.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
                   <S.StatText textType='C1'>{episode.likeCount}</S.StatText>
                 </S.StatItem>
               </S.StatsContainer>
