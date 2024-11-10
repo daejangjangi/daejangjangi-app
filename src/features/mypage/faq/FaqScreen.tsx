@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import FaqAccordion from '@/src/features/mypage/faq/FaqAccordion';
+import {useFaqList} from '@/src/hooks/queries/faq';
+import {AppText} from '@/src/common/AppComponents';
 
 const S = {
   Container: styled.ScrollView`
@@ -11,17 +13,18 @@ const S = {
 };
 
 export default function FaqScreen() {
-  /**
-   * @Todo: 내용 불러오기 로직 구현
-   */
+  const {data: faqList} = useFaqList();
+  const faqItems = faqList?.faqItems || [];
 
   return (
     <S.Container>
-      <FaqAccordion title='비밀번호를 잊어버렸어요.' body='비밀번호를 잊어버렸어요.' />
-      <FaqAccordion
-        title='추가 등록 회원도 맞춤 상품 추천 받을 수 있나요?'
-        body='추가 등록 회원도 맞춤 상품 추천 받을 수 있나요?'
-      />
+      {faqItems.length > 0 ? (
+        faqItems?.map(item => (
+          <FaqAccordion key={item.id} title={item.question} body={item.answer} />
+        ))
+      ) : (
+        <AppText textType='B2'>자주 묻는 질문이 없습니다.</AppText>
+      )}
     </S.Container>
   );
 }
