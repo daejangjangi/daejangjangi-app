@@ -3,7 +3,7 @@ import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React from 'react';
 import styled from 'styled-components/native';
-import {IcHeartColorEmpty, IcEye} from '@/assets/images/icons';
+import {IcHeartColorEmpty, IcEye, IcHeartColorFill} from '@/assets/images/icons';
 import {CartoonChapter} from '@/src/api/types/cartoon.type';
 
 const truncateText = (text: string, maxLength: number = 15) => {
@@ -96,7 +96,7 @@ export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
                     <S.StatText textType='C1'>{episode.hit}</S.StatText>
                   </S.StatItem>
                   <S.StatItem>
-                    <IcHeartColorEmpty />
+                    {episode.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
                     <S.StatText textType='C1'>{episode.likeCount}</S.StatText>
                   </S.StatItem>
                 </S.EpisodeStats>

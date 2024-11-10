@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {Image} from 'expo-image';
 import {useLocalSearchParams, useRouter} from 'expo-router';
-import {IcListButton, IcNext, IcHeartColorEmpty} from '@/assets/images/icons';
+import {IcListButton, IcNext, IcHeartColorEmpty, IcHeartColorFill} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
 import {useCartoonChapterDetail, useCartoons, useCartoonLike} from '@/src/hooks/queries/cartoon';
 import {AppText} from '@/src/common/AppComponents';
@@ -131,7 +131,7 @@ export default function CartoonDetailScreen() {
 
         <S.LikeContainer>
           <S.LikeButton onPress={handleLike}>
-            <IcHeartColorEmpty />
+            {cartoonChapterDetail?.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
             <AppText textType='B2'>{cartoonChapterDetail?.likeCount ?? 0}</AppText>
           </S.LikeButton>
         </S.LikeContainer>

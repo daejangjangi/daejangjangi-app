@@ -4,6 +4,7 @@ export interface CartoonChapterDetail {
   profile: string;
   toonImages: string[];
   likeCount: number;
+  isLiked: boolean;
 }
 
 export interface CartoonChapter {
@@ -13,6 +14,7 @@ export interface CartoonChapter {
   profile: string;
   hit: number;
   likeCount: number;
+  isLiked: boolean;
 }
 
 export interface Cartoon {
