@@ -1,0 +1,40 @@
+import httpInstance from './http';
+import {Board, PostList} from './types/post.type';
+
+// 관심 게시판 조회
+async function getPinnedBoards() {
+  const response = await httpInstance.get<{
+    pinnedBoards: Board[];
+  }>('/v1/boards/pinned-boards');
+
+  return response.data;
+}
+
+// 게시판별로 게시글 조회
+async function getPostsByBoard(board: Board, page: number, size: number) {
+  const response = await httpInstance.get<PostList>(`/v1/boards`, {
+    params: {
+      board,
+      page,
+      size,
+    },
+  });
+
+  return response.data;
+}
+
+// 관심 게시판 수정
+async function updatePinnedBoards(boards: Board[]) {
+  const response = await httpInstance.put<{pinnedBoards: Board[]}, null>(
+    '/v1/boards/pinned-boards',
+    {pinnedBoards: boards},
+  );
+
+  return response.data;
+}
+
+export const BoardApi = {
+  getPinnedBoards,
+  getPostsByBoard,
+  updatePinnedBoards,
+};
