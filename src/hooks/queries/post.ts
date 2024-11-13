@@ -60,8 +60,7 @@ export function useCreatePost() {
   return useMutation({
     mutationFn: (data: PostCreate) => PostApi.createPost(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: postKeys.lists()});
-      queryClient.invalidateQueries({queryKey: postKeys.myPosts()});
+      queryClient.invalidateQueries({queryKey: postKeys.all});
     },
   });
 }
@@ -72,8 +71,8 @@ export function useCreateComment() {
 
   return useMutation({
     mutationFn: (data: CommentCreate) => PostApi.createComment(data),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({queryKey: postKeys.detail(variables.postId)});
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: postKeys.all});
     },
   });
 }
@@ -84,10 +83,8 @@ export function useLikePost() {
 
   return useMutation({
     mutationFn: (postId: number) => PostApi.likePost(postId),
-    onSuccess: (_, postId) => {
-      queryClient.invalidateQueries({queryKey: postKeys.detail(postId)});
-      queryClient.invalidateQueries({queryKey: postKeys.lists()});
-      queryClient.invalidateQueries({queryKey: postKeys.hotPosts()});
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: postKeys.all});
     },
   });
 }
@@ -111,9 +108,8 @@ export function useUpdatePost() {
   return useMutation({
     mutationFn: ({postId, data}: {postId: number; data: PostCreate}) =>
       PostApi.updatePost(postId, data),
-    onSuccess: (_, {postId}) => {
-      queryClient.invalidateQueries({queryKey: postKeys.detail(postId)});
-      queryClient.invalidateQueries({queryKey: postKeys.lists()});
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: postKeys.all});
     },
   });
 }
@@ -138,8 +134,7 @@ export function useDeletePost() {
   return useMutation({
     mutationFn: (postId: number) => PostApi.deletePost(postId),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: postKeys.lists()});
-      queryClient.invalidateQueries({queryKey: postKeys.myPosts()});
+      queryClient.invalidateQueries({queryKey: postKeys.all});
     },
   });
 }
