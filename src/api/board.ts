@@ -12,13 +12,9 @@ async function getPinnedBoards() {
 
 // 게시판별로 게시글 조회
 async function getPostsByBoard(board: Board, page: number, size: number) {
-  const response = await httpInstance.get<PostList>(`/v1/boards`, {
-    params: {
-      board,
-      page,
-      size,
-    },
-  });
+  const response = await httpInstance.get<PostList>(
+    `/v1/boards?board=${board}&page=${page}&size=${size}`,
+  );
 
   return response.data;
 }
