@@ -40,10 +40,13 @@ export default function BoardPosts() {
     [];
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  console.log('pinnedBoards:', pinnedBoards);
-
   const handleAddBoard = (selectedBoards: Board[]) => {
     updatePinnedBoards(selectedBoards);
+    setIsModalVisible(false);
+  };
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
   };
 
   return (
@@ -53,7 +56,7 @@ export default function BoardPosts() {
         {pinnedBoards.map(board => (
           <BoardAccordion key={board} board={board} />
         ))}
-        <S.AddBoard onPress={() => setIsModalVisible(true)}>
+        <S.AddBoard onPress={handleOpenModal}>
           <IcAdd />
           <AppText textType='B2' colorType='textMedium'>
             게시판 추가하기
@@ -61,12 +64,14 @@ export default function BoardPosts() {
         </S.AddBoard>
       </S.BoardList>
 
-      <AddBoardModal
-        isVisible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onSubmit={handleAddBoard}
-        initialBoards={pinnedBoards}
-      />
+      {isModalVisible && (
+        <AddBoardModal
+          isVisible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          onSubmit={handleAddBoard}
+          initialBoards={pinnedBoards}
+        />
+      )}
     </S.Container>
   );
 }
