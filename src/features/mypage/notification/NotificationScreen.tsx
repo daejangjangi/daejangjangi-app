@@ -1,16 +1,20 @@
+import {AppText} from '@/src/common/AppComponents';
 import React from 'react';
-import {Text, View} from 'react-native';
+import styled from 'styled-components/native';
+
+const S = {
+  Container: styled.View`
+    background-color: #fff;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  `,
+};
 
 export default function NotificationScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Text>NotificationScreen</Text>
-    </View>
+    <S.Container>
+      <AppText textType='B1'>알림이 없습니다.</AppText>
+    </S.Container>
   );
 }
