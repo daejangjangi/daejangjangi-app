@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import styled from 'styled-components/native';
 import {useRouter} from 'expo-router';
-import {DISEASES} from '@/src/common/data/health-concerns';
 import {AppText} from '@/src/common/AppComponents';
+import {useHotPosts} from '@/src/hooks/queries/post';
+import {usePostsByBoard} from '@/src/hooks/queries/board';
+import {Board} from '@/src/api/types/post.type';
 import PostItem from '../components/PostItem';
-import {TEMP_POSTS} from '../data/tempPosts';
 
 const S = {
   Container: styled.ScrollView`
@@ -43,15 +44,25 @@ const S = {
   `,
 };
 
-const CONVERTED_DISEASES = DISEASES.map(disease => disease.replace('\n', ' '));
+const BOARD_CATEGORIES = [
+  '인기',
+  ...Object.values(Board).map(disease => disease.replace('\n', ' ')),
+];
 
-// @TODO: 실제 데이터 연동 필요
 export default function BoardScreen() {
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState(CONVERTED_DISEASES[0]);
+  const [selectedCategory, setSelectedCategory] = useState(BOARD_CATEGORIES[0]);
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 10;
 
-  const handleCategoryPress = (disease: string) => {
-    setSelectedCategory(disease);
+  console.log(selectedCategory);
+
+  const {data} = usePostsByBoard(selectedCategory as Board, page, PAGE_SIZE);
+  const posts = data?.content ?? [];
+
+  const handleCategoryPress = board => {
+    setSelectedCategory(board);
+    setPage(1);
   };
 
   const handlePostPress = (postId: number) => {
@@ -65,21 +76,21 @@ export default function BoardScreen() {
     <S.Container>
       <S.Categories>
         <S.CategoriesContent>
-          {CONVERTED_DISEASES.map(disease => (
+          {BOARD_CATEGORIES.map(board => (
             <S.Category
-              key={disease}
-              isSelected={disease === selectedCategory}
-              onPress={() => handleCategoryPress(disease)}
+              key={board}
+              isSelected={board === selectedCategory}
+              onPress={() => handleCategoryPress(board)}
             >
-              <S.CategoryText textType='C2' isSelected={disease === selectedCategory}>
-                {disease}
+              <S.CategoryText textType='C2' isSelected={board === selectedCategory}>
+                {board}
               </S.CategoryText>
             </S.Category>
           ))}
         </S.CategoriesContent>
       </S.Categories>
       <S.Posts>
-        {TEMP_POSTS.map(post => (
+        {posts.map(post => (
           <PostItem key={post.id} {...post} onPress={() => handlePostPress(post.id)} />
         ))}
       </S.Posts>

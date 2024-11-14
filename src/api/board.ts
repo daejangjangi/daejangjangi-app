@@ -1,4 +1,5 @@
 import httpInstance from './http';
+import {PostApi} from './post';
 import {Board, PostList} from './types/post.type';
 
 // 관심 게시판 조회
@@ -11,12 +12,20 @@ async function getPinnedBoards() {
 }
 
 // 게시판별로 게시글 조회
-async function getPostsByBoard(board: Board, page: number, size: number) {
-  const response = await httpInstance.get<PostList>(
-    `/v1/boards?board=${board}&page=${page}&size=${size}`,
-  );
+async function getPostsByBoard(board: Board | '인기', page: number, size: number) {
+  try {
+    if (board === '인기') {
+      return PostApi.getHotPosts(page, size);
+    }
 
-  return response.data;
+    const response = await httpInstance.get<PostList>(
+      `/v1/boards?board=${board}&page=${page}&size=${size}`,
+    );
+
+    return response.data;
+  } catch (err) {
+    console.error('getPostsByBoard error', err);
+  }
 }
 
 // 관심 게시판 수정
