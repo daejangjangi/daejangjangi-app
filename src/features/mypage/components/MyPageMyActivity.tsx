@@ -39,11 +39,11 @@ export default function MyPageMyActivity() {
           onPress={() => router.navigate('/(tabs)/community/commented-posts')}
           Icon={<IcChat />}
         />
-        <MyPageMenuItem
+        {/* <MyPageMenuItem
           title='관심상품'
           onPress={() => router.navigate('/(tabs)/market/favorite')}
           Icon={<IcHeart />}
-        />
+        /> */}
       </S.Menu>
     </S.Container>
   );
