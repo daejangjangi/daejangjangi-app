@@ -40,6 +40,7 @@ export default function TabBar({state, descriptors, navigation}: BottomTabBarPro
     <S.Container>
       {state.routes
         .filter(route => route.name !== 'index')
+        .filter(route => route.name !== 'market' && route.name !== 'care')
         .map((route, index) => {
           const {options} = descriptors[route.key];
           const label =
