@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {useLocalSearchParams} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
@@ -10,32 +10,12 @@ import {
   IcEye,
   IcSend,
 } from '@/assets/images/icons';
-import {TEMP_POSTS} from '../data/tempPosts';
-
-// 임시 댓글 데이터
-const TEMP_COMMENTS = [
-  {
-    id: 1,
-    nickname: '건강하자',
-    content: '저도 비슷한 증상이 있었는데, 병원에서 약 처방받고 좋아졌어요!',
-    createdAt: '2024-03-15T10:30:22',
-    likes: 5,
-  },
-  {
-    id: 2,
-    nickname: '배아파',
-    content: '운동하면서 식단 조절하니까 많이 좋아졌습니다. 힘내세요!',
-    createdAt: '2024-03-15T11:45:33',
-    likes: 3,
-  },
-  {
-    id: 3,
-    nickname: '장건강',
-    content: '저는 유산균이랑 운동이 도움 됐어요.',
-    createdAt: '2024-03-15T12:15:10',
-    likes: 2,
-  },
-];
+import {
+  useCreateComment,
+  useLikeComment,
+  useLikePost,
+  usePostDetail,
+} from '@/src/hooks/queries/post';
 
 const S = {
   Container: styled.ScrollView`
@@ -175,24 +155,20 @@ function Comment({
   content,
   createdAt,
   likes,
+  liked,
 }: {
   id: number;
   nickname: string;
   content: string;
   createdAt: string;
   likes: number;
+  liked: boolean;
 }) {
-  const [isLiked, setIsLiked] = React.useState(false);
-  const [likeCount, setLikeCount] = React.useState(likes);
+  const {mutate: likeComment} = useLikeComment();
   const timeAgo = getTimeAgo(createdAt);
 
   const handleLikePress = () => {
-    if (isLiked) {
-      setLikeCount(prev => prev - 1);
-    } else {
-      setLikeCount(prev => prev + 1);
-    }
-    setIsLiked(!isLiked);
+    likeComment(id);
   };
 
   return (
@@ -209,9 +185,9 @@ function Comment({
       <AppText textType='C2'>{content}</AppText>
       <S.CommentFooter>
         <S.CommentLikeButton onPress={handleLikePress}>
-          {isLiked ? <IcHeartColor /> : <IcHeartColorEmpty />}
-          <AppText textType='C1' colorType={isLiked ? 'main' : 'textMedium'}>
-            {likeCount}
+          {liked ? <IcHeartColor /> : <IcHeartColorEmpty />}
+          <AppText textType='C1' colorType={liked ? 'main' : 'textMedium'}>
+            {likes}
           </AppText>
         </S.CommentLikeButton>
       </S.CommentFooter>
@@ -221,28 +197,24 @@ function Comment({
 
 // @TODO: 실제 데이터 연동 필요
 export default function PostScreen() {
-  const {id} = useLocalSearchParams<{id: string}>();
-  const post = TEMP_POSTS.find(p => p.id === Number(id));
-  const [comment, setComment] = React.useState('');
-  const [isPostLiked, setIsPostLiked] = React.useState(false);
-  const [postLikeCount, setPostLikeCount] = React.useState(post?.likes || 0);
+  const {id: postId} = useLocalSearchParams<{id: string}>();
+  const {data: post} = usePostDetail(Number(postId));
+  const {mutate: createComment} = useCreateComment();
+  const {mutate: likePost} = useLikePost();
+
+  const [comment, setComment] = useState('');
 
   if (!post) return null;
 
   const timeAgo = getTimeAgo(post.createdAt);
 
   const handlePostLikePress = () => {
-    if (isPostLiked) {
-      setPostLikeCount(prev => prev - 1);
-    } else {
-      setPostLikeCount(prev => prev + 1);
-    }
-    setIsPostLiked(!isPostLiked);
+    likePost(Number(postId));
   };
 
   const handleSendComment = () => {
     if (comment.trim()) {
-      console.log('Send comment:', comment);
+      createComment({postId: Number(postId), content: comment, parentCommentId: null});
       setComment('');
     }
   };
@@ -273,9 +245,9 @@ export default function PostScreen() {
             </AppText>
           </S.StatItem>
           <S.StatItem onPress={handlePostLikePress}>
-            {isPostLiked ? <IcHeartColor /> : <IcHeartColorEmpty />}
-            <AppText textType='C1' colorType={isPostLiked ? 'main' : 'textMedium'}>
-              {postLikeCount}
+            {post.isLiked ? <IcHeartColor /> : <IcHeartColorEmpty />}
+            <AppText textType='C1' colorType={post.isLiked ? 'main' : 'textMedium'}>
+              {post.likes}
             </AppText>
           </S.StatItem>
           <S.StatItem>
@@ -289,8 +261,8 @@ export default function PostScreen() {
         <S.Divider />
 
         <S.CommentsContainer>
-          <S.CommentCount textType='B2'>댓글 {TEMP_COMMENTS.length}</S.CommentCount>
-          {TEMP_COMMENTS.map(c => (
+          <S.CommentCount textType='B2'>댓글 {post.commentInfo.length}</S.CommentCount>
+          {post.commentInfo.map(c => (
             <Comment
               key={c.id}
               id={c.id}
@@ -298,6 +270,7 @@ export default function PostScreen() {
               content={c.content}
               createdAt={c.createdAt}
               likes={c.likes}
+              liked={c.liked}
             />
           ))}
         </S.CommentsContainer>

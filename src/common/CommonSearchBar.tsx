@@ -13,22 +13,17 @@ type SearchBarProps = {
 
 const S = {
   StyledView: styled.View<{text: string}>`
-    padding: 20px;
+    padding: 16px;
     border: 1px solid
       ${props => (props.text.length > 0 ? props.theme.colors.main : props.theme.colors.textMedium)};
     width: 200px;
-    height: 100px;
     flex-direction: row;
     align-items: center;
     border-radius: 8px;
   `,
   StyledTextInput: styled(AppTextInput)`
-    flex: 1;
-    height: 100%;
     color: #31302d;
-    &::placeholder {
-      color: #a29d99;
-    }
+
     font-size: 17px;
     font-weight: 500;
   `,

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {useRouter} from 'expo-router';
+import {useMyPosts} from '@/src/hooks/queries/post';
 import SmallPostItem from './SmallPostItem';
 
 const S = {
@@ -22,37 +23,23 @@ const S = {
   Title: styled(AppText)`
     margin-bottom: 16px;
   `,
-};
 
-const TEMP_POSTS = [
-  {
-    id: 1,
-    title: 'title',
-    content:
-      '망포 20대 초반/여 과민성대장증후군 /평소에 배가 자주 아픈 사람입니다. 계속 앉아서 지내다 보니 가스가 자주 차고 배가 아파요. 이런 과민성대장증후군 증상은 어떻게 치료해야 하나요?',
-    likes: 10,
-    comments: 10,
-    views: 10,
-    createdAt: '2024-01-01',
-    isUnread: true,
-  },
-  {
-    id: 2,
-    title: 'title',
-    content: 'content',
-    likes: 10,
-    comments: 10,
-    views: 10,
-    createdAt: '2024-01-01',
-    isUnread: false,
-  },
-];
+  Button: styled.Pressable`
+    margin-top: 12px;
+    background-color: ${props => props.theme.colors.mainLight};
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 16px;
+  `,
+};
 
 export default function MyPosts() {
   const router = useRouter();
+  const {data} = useMyPosts(0, 3);
+  const posts = data?.content;
 
-  // @TODO: 인기게시글 데이터 조회
-  // @TODO: 게시글 상세 페이지 이동
   const handlePostPress = (postId: number) => {
     router.push({
       pathname: '/(tabs)/community/post',
@@ -61,27 +48,37 @@ export default function MyPosts() {
   };
 
   const handleMorePress = () => {
-    // @TODO: 인기게시글 페이지 이동
+    router.push({
+      pathname: '/(tabs)/community/my-posts',
+    });
   };
 
   return (
     <S.Container>
       <S.Title textType='T1'>내가 쓴 글</S.Title>
       <S.MyPosts>
-        {TEMP_POSTS.map(post => (
-          <S.PostContainer key={post.id}>
-            <SmallPostItem
-              title={post.title}
-              content={post.content}
-              likes={post.likes}
-              comments={post.comments}
-              views={post.views}
-              isUnread={post.isUnread}
-              onPress={() => handlePostPress(post.id)}
-            />
-          </S.PostContainer>
-        ))}
+        {posts && posts.length > 0 ? (
+          posts?.map(post => (
+            <S.PostContainer key={post.id}>
+              <SmallPostItem
+                title={post.title}
+                content={post.content}
+                likes={post.likes}
+                comments={post.comments}
+                views={post.views}
+                onPress={() => handlePostPress(post.id)}
+              />
+            </S.PostContainer>
+          ))
+        ) : (
+          <AppText textType='B1'>작성한 게시글이 없습니다.</AppText>
+        )}
       </S.MyPosts>
+      <S.Button onPress={handleMorePress}>
+        <AppText textType='B2Bold' colorType='main'>
+          더보기
+        </AppText>
+      </S.Button>
     </S.Container>
   );
 }

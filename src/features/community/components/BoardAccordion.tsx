@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {IcArrowRightS, IcPin} from '@/assets/images/icons';
+import {useRouter} from 'expo-router';
+import {Board} from '@/src/api/types/post.type';
+import {usePostsByBoard} from '@/src/hooks/queries/board';
 import PostBody from './PostBody';
 
 const S = {
@@ -49,48 +52,44 @@ const S = {
   `,
 };
 
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  likes: number;
-  comments: number;
-  views: number;
-}
-
 interface BoardAccordionProps {
-  title: string;
-  posts: Post[];
-  isUnread?: boolean;
-  onPostPress: (postId: number) => void;
-  onMorePress: () => void;
+  board: Board;
 }
 
-export default function BoardAccordion({
-  title,
-  posts,
-  isUnread = false,
-  onPostPress,
-  onMorePress,
-}: BoardAccordionProps) {
+export default function BoardAccordion({board}: BoardAccordionProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const displayPosts = posts.slice(0, 3);
+  const {data: postsData} = usePostsByBoard(board, 0, 3);
+  const posts = postsData?.content || [];
+
+  const handlePostPress = (postId: number) => {
+    router.push({
+      pathname: '/(tabs)/community/post',
+      params: {id: postId},
+    });
+  };
+
+  const handleMorePress = () => {
+    router.push({
+      pathname: '/(tabs)/community/board',
+      params: {board},
+    });
+  };
 
   return (
     <S.Container>
       <S.Header onPress={() => setIsOpen(prev => !prev)}>
         <S.Title>
           <IcPin />
-          <AppText textType='B2'>{title}</AppText>
-          {isUnread && <S.Dot />}
+          <AppText textType='B2'>{board}</AppText>
         </S.Title>
         <IcArrowRightS rotation={isOpen ? 270 : 90} />
       </S.Header>
 
       {isOpen && (
         <S.Content>
-          {displayPosts.map(post => (
-            <S.PostItem key={post.id} onPress={() => onPostPress(post.id)}>
+          {posts.map(post => (
+            <S.PostItem key={post.id} onPress={() => handlePostPress(post.id)}>
               <PostBody
                 title={post.title}
                 content={post.content}
@@ -100,7 +99,7 @@ export default function BoardAccordion({
               />
             </S.PostItem>
           ))}
-          <S.MoreButton onPress={onMorePress}>
+          <S.MoreButton onPress={handleMorePress}>
             <AppText textType='B2Bold' colorType='textMedium'>
               더보기
             </AppText>
