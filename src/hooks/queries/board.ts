@@ -18,7 +18,7 @@ export function usePinnedBoards() {
 }
 
 // 게시판별 게시글 조회
-export function usePostsByBoard(board: Board, size: number) {
+export function usePostsByBoardInfinite(board: Board, size: number) {
   return useInfiniteQuery({
     queryKey: boardKeys.posts(board),
     queryFn: ({pageParam = 0}) => BoardApi.getPostsByBoard(board, pageParam, size),
@@ -27,6 +27,13 @@ export function usePostsByBoard(board: Board, size: number) {
       return (lastPage?.pageable.pageNumber ?? -1) + 1;
     },
     initialPageParam: 0,
+  });
+}
+
+export function usePostsByBoard(board: Board, size: number) {
+  return useQuery({
+    queryKey: boardKeys.posts(board),
+    queryFn: () => BoardApi.getPostsByBoard(board, 0, size),
   });
 }
 

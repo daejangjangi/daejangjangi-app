@@ -59,8 +59,8 @@ interface BoardAccordionProps {
 export default function BoardAccordion({board}: BoardAccordionProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const {data: postsData} = usePostsByBoard(board, 0, 3);
-  const posts = postsData?.content || [];
+  const {data: postsData} = usePostsByBoard(board, 3);
+  const posts = postsData?.content ?? [];
 
   const handlePostPress = (postId: number) => {
     router.push({

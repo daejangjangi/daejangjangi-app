@@ -2,7 +2,7 @@ import React, {useState, useMemo, useEffect, useCallback} from 'react';
 import styled from 'styled-components/native';
 import {useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
-import {usePostsByBoard} from '@/src/hooks/queries/board';
+import {usePostsByBoardInfinite} from '@/src/hooks/queries/board';
 import {Board} from '@/src/api/types/post.type';
 import PostItem from '../components/PostItem';
 
@@ -56,7 +56,7 @@ export default function BoardScreen() {
   const [selectedCategory, setSelectedCategory] = useState(BOARD_CATEGORIES[0]);
   const PAGE_SIZE = 3;
 
-  const {data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage} = usePostsByBoard(
+  const {data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage} = usePostsByBoardInfinite(
     selectedCategory as Board,
     PAGE_SIZE,
   );
