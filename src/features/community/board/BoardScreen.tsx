@@ -1,17 +1,18 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect, useCallback} from 'react';
 import styled from 'styled-components/native';
 import {useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
-import {useHotPosts} from '@/src/hooks/queries/post';
 import {usePostsByBoard} from '@/src/hooks/queries/board';
 import {Board} from '@/src/api/types/post.type';
 import PostItem from '../components/PostItem';
 
 const S = {
-  Container: styled.ScrollView`
+  Container: styled.View`
     flex: 1;
     background-color: #fbfcfe;
   `,
+
+  CategoriesContainer: styled.View``,
 
   Categories: styled.ScrollView.attrs({
     horizontal: true,
@@ -38,9 +39,10 @@ const S = {
     color: ${({isSelected, theme}) => (isSelected ? '#fff' : theme.colors.text)};
   `,
 
-  Posts: styled.View`
-    padding: 20px 16px;
-    gap: 12px;
+  FlatList: styled.FlatList`
+    flex: 1;
+    margin-bottom: 40px;
+    background-color: #fbfcfe;
   `,
 };
 
@@ -52,48 +54,83 @@ const BOARD_CATEGORIES = [
 export default function BoardScreen() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState(BOARD_CATEGORIES[0]);
-  const [page, setPage] = useState(0);
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 3;
 
-  console.log(selectedCategory);
+  const {data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage} = usePostsByBoard(
+    selectedCategory as Board,
+    PAGE_SIZE,
+  );
 
-  const {data} = usePostsByBoard(selectedCategory as Board, page, PAGE_SIZE);
-  const posts = data?.content ?? [];
+  const posts = useMemo(
+    () => data?.pages.flatMap(page => page?.content ?? []) ?? [],
+    [data?.pages],
+  );
 
-  const handleCategoryPress = board => {
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const renderFooter = useCallback(() => {
+    if (isFetchingNextPage) {
+      return (
+        <AppText textType='C2' style={{textAlign: 'center', padding: 10}}>
+          로딩중...
+        </AppText>
+      );
+    }
+    return null;
+  }, [isFetchingNextPage]);
+
+  const handleCategoryPress = useCallback(board => {
     setSelectedCategory(board);
-    setPage(1);
-  };
+  }, []);
 
-  const handlePostPress = (postId: number) => {
-    router.push({
-      pathname: '/(tabs)/community/post',
-      params: {id: postId},
-    });
-  };
+  const handlePostPress = useCallback(
+    (postId: number) => {
+      router.push({
+        pathname: '/(tabs)/community/post',
+        params: {id: postId},
+      });
+    },
+    [router],
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [selectedCategory, refetch]);
 
   return (
     <S.Container>
-      <S.Categories>
-        <S.CategoriesContent>
-          {BOARD_CATEGORIES.map(board => (
-            <S.Category
-              key={board}
-              isSelected={board === selectedCategory}
-              onPress={() => handleCategoryPress(board)}
-            >
-              <S.CategoryText textType='C2' isSelected={board === selectedCategory}>
-                {board}
-              </S.CategoryText>
-            </S.Category>
-          ))}
-        </S.CategoriesContent>
-      </S.Categories>
-      <S.Posts>
-        {posts.map(post => (
-          <PostItem key={post.id} {...post} onPress={() => handlePostPress(post.id)} />
-        ))}
-      </S.Posts>
+      <S.CategoriesContainer>
+        <S.Categories>
+          <S.CategoriesContent>
+            {BOARD_CATEGORIES.map(board => (
+              <S.Category
+                key={board}
+                isSelected={board === selectedCategory}
+                onPress={() => handleCategoryPress(board)}
+              >
+                <S.CategoryText textType='C2' isSelected={board === selectedCategory}>
+                  {board}
+                </S.CategoryText>
+              </S.Category>
+            ))}
+          </S.CategoriesContent>
+        </S.Categories>
+      </S.CategoriesContainer>
+
+      <S.FlatList
+        data={posts}
+        renderItem={({item}) => <PostItem {...item} onPress={() => handlePostPress(item.id)} />}
+        keyExtractor={item => String(item.id)}
+        contentContainerStyle={{padding: 20, gap: 12}}
+        ListEmptyComponent={() => <AppText textType='C2'>게시글이 없습니다.</AppText>}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
+      />
     </S.Container>
   );
 }

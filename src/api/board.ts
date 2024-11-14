@@ -15,7 +15,8 @@ async function getPinnedBoards() {
 async function getPostsByBoard(board: Board | '인기', page: number, size: number) {
   try {
     if (board === '인기') {
-      return PostApi.getHotPosts(page, size);
+      const response = await PostApi.getHotPosts(page, size);
+      return response;
     }
 
     const response = await httpInstance.get<PostList>(
