@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {NewsLetterApi} from '@/src/api/news-letter';
+import {NewsLetterApi} from '@/src/api/news-letter.api';
 
 export const newsLetterKeys = {
   all: ['newsletter'] as const,

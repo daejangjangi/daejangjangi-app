@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {FaqApi} from '@/src/api/faq';
+import {FaqApi} from '@/src/api/faq.api';
 
 export const faqKeys = {
   all: ['faq'] as const,

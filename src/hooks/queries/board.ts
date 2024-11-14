@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient, useInfiniteQuery} from '@tanstack/react-query';
-import {BoardApi} from '@/src/api/board';
+import {BoardApi} from '@/src/api/board.api';
 import type {Board} from '@/src/api/types/post.type';
 
 export const boardKeys = {

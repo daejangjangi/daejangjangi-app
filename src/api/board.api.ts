@@ -1,5 +1,5 @@
 import httpInstance from './http';
-import {PostApi} from './post';
+import {PostApi} from './post.api';
 import {Board, PostList} from './types/post.type';
 
 // 관심 게시판 조회

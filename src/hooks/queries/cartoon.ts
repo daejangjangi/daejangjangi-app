@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {CartoonApi} from '@/src/api/cartoon';
+import {CartoonApi} from '@/src/api/cartoon.api';
 
 export const cartoonKeys = {
   all: ['cartoon'] as const,

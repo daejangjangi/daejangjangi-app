@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {ReelsApi} from '@/src/api/reels';
+import {ReelsApi} from '@/src/api/reels.api';
 
 export const reelsKeys = {
   all: ['reels'] as const,

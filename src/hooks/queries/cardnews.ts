@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {CardNewsApi} from '@/src/api/cardnews';
+import {CardNewsApi} from '@/src/api/cardnews.api';
 
 export const cardNewsKeys = {
   all: ['cardnews'] as const,

@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {QnaApi} from '@/src/api/qna';
+import {QnaApi} from '@/src/api/qna.api';
 import type {Question} from '@/src/api/types/qna.type';
 
 export const qnaKeys = {

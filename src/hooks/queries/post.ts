@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {PostApi} from '@/src/api/post';
+import {PostApi} from '@/src/api/post.api';
 import type {CommentCreate, PostCreate} from '@/src/api/types/post.type';
 
 export const postKeys = {

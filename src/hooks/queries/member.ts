@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {MemberApi} from '@/src/api/member';
+import {MemberApi} from '@/src/api/member.api';
 import type {AuthCredentials, JoinForm, UpdateForm} from '@/src/api/types/member.types';
 
 export const memberKeys = {
