@@ -5,9 +5,10 @@ import {IcKakao} from '@/assets/images/icons';
 import {Alert} from 'react-native';
 import {useRouter} from 'expo-router';
 import {useAuthStore} from '@/src/stores/auth';
-import {useKakaoLogin} from '@/src/hooks/queries/member';
-import {useKakaoAuth} from '../../../hooks/useKakaoAuth';
+import {memberKeys, useKakaoLogin} from '@/src/hooks/queries/member';
 import {useSignUpStore} from '@/src/stores';
+import {useKakaoAuth} from '../../../hooks/useKakaoAuth';
+import {useQueryClient} from '@tanstack/react-query';
 
 const S = {
   Button: styled.Pressable`
@@ -35,16 +36,16 @@ export default function KakaoLoginbutton() {
   const {mutateAsync: login, isPending} = useKakaoLogin();
   const {setTokens} = useAuthStore();
   const {updateEmail} = useSignUpStore();
+  const queryClient = useQueryClient();
 
   const loginWithKakao = async (email: string, id: number) => {
     try {
-      console.log('email:', email);
-      console.log('id:', id);
       const response = await login({email, snsId: id.toString()});
       setTokens({
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
       });
+      await queryClient.invalidateQueries({queryKey: memberKeys.info()});
       router.replace('/(tabs)/home');
     } catch (error) {
       if (error.response.data.code === 'NOT_FOUND_MEMBER') {
