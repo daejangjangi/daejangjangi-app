@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
         const {tokens} = useAuthStore.getState();
 
         // refreshToken으로 새로운 토큰 발급 요청
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/auth/refresh`, {
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/tokens/reissue`, {
           refreshToken: tokens?.refreshToken,
         });
 
