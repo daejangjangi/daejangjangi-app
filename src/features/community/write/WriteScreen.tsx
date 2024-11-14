@@ -57,7 +57,7 @@ export default function WriteScreen() {
     try {
       await createPost({title, content, boards});
 
-      router.push('/(tabs)/community/my-posts');
+      router.replace('/(tabs)/community/my-posts');
     } catch (error) {
       console.error(error);
     }
