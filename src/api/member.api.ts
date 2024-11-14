@@ -56,6 +56,12 @@ async function updateMemberInfo(updateForm: UpdateForm) {
   return response;
 }
 
+async function deleteMember() {
+  const response = await httpInstance.delete<null>('/v1/members');
+
+  return response;
+}
+
 export const MemberApi = {
   checkNicknameDuplicated,
   getMemberInfo,
@@ -64,4 +70,5 @@ export const MemberApi = {
   loginWithKakao,
   join,
   updateMemberInfo,
+  deleteMember,
 };

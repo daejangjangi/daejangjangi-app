@@ -5,6 +5,7 @@ import MyPageQuestionModal from '@/src/features/mypage/account/modal/MyPageQuest
 import {useAuthStore} from '@/src/stores/auth';
 import {Alert} from 'react-native';
 import {useRouter} from 'expo-router';
+import {MemberApi} from '@/src/api/member.api';
 
 const S = {
   Container: styled.View`
@@ -34,21 +35,20 @@ export default function AccountScreen() {
   };
 
   const handleExit = async () => {
-    Alert.alert('구현 중입니다!');
+    try {
+      await MemberApi.deleteMember();
 
-    // try {
-    //   clearTokens();
-    //   setExitModalOpen(false);
-    //   setExitCompleteModalOpen(true);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+      setExitModalOpen(false);
+      setExitCompleteModalOpen(true);
+
+      clearTokens();
+      router.replace('/auth/signin');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleExitComplete = () => {
-    /**
-     * @Todo: 회원탈퇴 완료 후 로그인 페이지로 이동 구현
-     */
     setExitCompleteModalOpen(false);
   };
 
