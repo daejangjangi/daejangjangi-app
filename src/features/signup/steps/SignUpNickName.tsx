@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
-import {MemberApi} from '@/src/api/member';
+import {MemberApi} from '@/src/api/member.api';
 import {useSignUpStore} from '@/src/stores';
 
 type ValidationStatus = 'none' | 'success' | 'error';
@@ -49,7 +49,7 @@ const S = {
     border-radius: 8px;
   `,
 
-  Input: styled.TextInput<{$status?: InputSuccess}>`
+  Input: styled.TextInput<{$status?: ValidationStatus}>`
     flex: 1;
     font-family: Pretendard-Medium;
     font-size: 19px;

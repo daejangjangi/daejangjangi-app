@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import {AppText} from '@/src/common/AppComponents';
-import {MemberApi} from '@/src/api/member';
+import {MemberApi} from '@/src/api/member.api';
 import {Alert} from 'react-native';
 import {useUpdateMemberInfo, useMemberInfo} from '@/src/hooks/queries/member';
 
@@ -155,7 +155,7 @@ export default function EditNicknameModal({
           onClose();
           Alert.alert('알림', '닉네임이 변경되었습니다.');
         },
-        onError: (error: any) => {
+        onError: error => {
           console.error('닉네임 변경 실패', error);
           Alert.alert('오류', '닉네임 변경에 실패했습니다.');
         },

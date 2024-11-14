@@ -5,7 +5,7 @@ import FormButton from '@/src/common/form/FormButton';
 import {SubmitHandler, useForm, useWatch} from 'react-hook-form';
 import FormInput from '@/src/common/form/FormInput';
 import {useRouter} from 'expo-router';
-import {MemberApi} from '@/src/api/member';
+import {MemberApi} from '@/src/api/member.api';
 import {useSignUpStore} from '@/src/stores/useSignUpStore';
 
 const S = {
