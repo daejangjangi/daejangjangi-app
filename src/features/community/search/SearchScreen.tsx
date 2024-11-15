@@ -97,8 +97,8 @@ export default function SearchScreen() {
       </S.RecentSearches>
 
       <S.Content>
-        {searchResults?.content?.length ? (
-          searchResults.content.map(post => (
+        {searchResults?.posts?.length ? (
+          searchResults.posts.map(post => (
             <PostItem
               key={post.id}
               title={post.title}

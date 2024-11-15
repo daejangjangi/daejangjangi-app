@@ -61,10 +61,7 @@ export default function BoardScreen() {
     PAGE_SIZE,
   );
 
-  const posts = useMemo(
-    () => data?.pages.flatMap(page => page?.content ?? []) ?? [],
-    [data?.pages],
-  );
+  const posts = useMemo(() => data?.pages.flatMap(page => page?.posts ?? []) ?? [], [data?.pages]);
 
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {

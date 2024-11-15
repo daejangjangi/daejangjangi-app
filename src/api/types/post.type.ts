@@ -61,7 +61,7 @@ interface PostListItem {
 }
 
 export type PostList = {
-  content: PostListItem[];
+  posts: PostListItem[];
 } & Pagination;
 
 export interface PostCreate {

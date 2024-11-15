@@ -20,7 +20,7 @@ const S = {
 export default function CommentedPostsScreen() {
   const router = useRouter();
   const {data} = useCommentedPosts(0, 10);
-  const commentedPosts = data?.content || [];
+  const commentedPosts = data?.posts || [];
 
   const handlePostPress = (postId: number) => {
     router.push({

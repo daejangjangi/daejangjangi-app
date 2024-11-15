@@ -21,12 +21,12 @@ export function usePinnedBoards() {
 export function usePostsByBoardInfinite(board: Board, size: number) {
   return useInfiniteQuery({
     queryKey: boardKeys.posts(board),
-    queryFn: ({pageParam = 0}) => BoardApi.getPostsByBoard(board, pageParam, size),
+    queryFn: ({pageParam = 1}) => BoardApi.getPostsByBoard(board, pageParam, size),
     getNextPageParam: lastPage => {
-      if (lastPage?.last) return undefined;
-      return (lastPage?.pageable.pageNumber ?? -1) + 1;
+      if (lastPage?.totalPages === lastPage?.pageNumber) return undefined;
+      return (lastPage?.pageNumber ?? -1) + 1;
     },
-    initialPageParam: 0,
+    initialPageParam: 1,
   });
 }
 

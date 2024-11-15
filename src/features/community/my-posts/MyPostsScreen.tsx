@@ -20,7 +20,7 @@ const S = {
 export default function MyPostsScreen() {
   const router = useRouter();
   const {data} = useMyPosts(0, 10);
-  const myPosts = data?.content || [];
+  const myPosts = data?.posts || [];
 
   const handlePostPress = (postId: number) => {
     router.push({
