@@ -6,6 +6,7 @@ import Carousel from 'react-native-reanimated-carousel/src/Carousel';
 import {Dimensions} from 'react-native';
 import {runOnJS} from 'react-native-reanimated';
 import HomeBannerNavigation from '@/src/features/home/main/components/HomeBannerNavigation';
+import {useRecommendProducts} from '@/src/hooks/queries/product';
 
 const S = {
   Container: styled.View`
@@ -30,30 +31,9 @@ const S = {
   `,
 };
 
-const TEMP_DATA = [
-  {
-    id: 1,
-    title: '저지방 유산균',
-    description: '다이어트로 인한 변비에\n저지방 유산균이 필요한 이유',
-    imageUrl: 'https://placehold.co/200',
-  },
-  {
-    id: 2,
-    title: '저지방 유산균',
-    description: '다이어트로 인한 변비에\n저지방 유산균이 필요한 이유',
-    imageUrl: 'https://placehold.co/200',
-  },
-  {
-    id: 3,
-    title: '저지방 유산균',
-    description: '다이어트로 인한 변비에\n저지방 유산균이 필요한 이유',
-    imageUrl: 'https://placehold.co/200',
-  },
-];
-
 export default function HomeBanner() {
-  // @Todo: 실제 추천 아이템 불러오기 구현
-  const [items, setItems] = useState(TEMP_DATA);
+  const {data} = useRecommendProducts();
+  const products = data?.recommendedProducts || [];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const {width} = Dimensions.get('window');
@@ -61,7 +41,7 @@ export default function HomeBanner() {
   const handleProgressChange = (progressValue: number) => {
     let index = Math.round(progressValue);
 
-    if (index > items.length - 1) {
+    if (index > products.length - 1) {
       index = 0;
     }
 
@@ -76,7 +56,7 @@ export default function HomeBanner() {
         <S.BannerItems
           width={width}
           height={152}
-          data={items}
+          data={products}
           mode='parallax'
           modeConfig={{
             parallaxScrollingScale: 0.9,
@@ -87,15 +67,16 @@ export default function HomeBanner() {
           }}
           renderItem={({index}) => (
             <HomeBannerItem
-              name={items[index].title}
-              description={items[index].description}
-              imageUrl={items[index].imageUrl}
+              name={products[index].name}
+              description={products[index].comment}
+              imageUrl={products[index].profile}
+              saleLink={products[index].saleLink}
             />
           )}
         />
       </S.BannerItemsContainer>
 
-      <HomeBannerNavigation currPage={currentIndex} maxPage={items.length - 1} />
+      <HomeBannerNavigation currPage={currentIndex} maxPage={products.length - 1} />
     </S.Container>
   );
 }
