@@ -26,6 +26,13 @@ async function getPostsByBoard(board: Board | '인기', page: number, size: numb
     return response.data;
   } catch (err) {
     console.error('getPostsByBoard error', err);
+    return {
+      posts: [],
+      pageNumber: page,
+      pageSize: size,
+      totalElements: 0,
+      totalPages: 0,
+    };
   }
 }
 

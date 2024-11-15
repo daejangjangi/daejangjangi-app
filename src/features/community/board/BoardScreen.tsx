@@ -1,10 +1,9 @@
-import React, {useState, useMemo, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import styled from 'styled-components/native';
-import {useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
-import {usePostsByBoardInfinite} from '@/src/hooks/queries/board';
 import {Board} from '@/src/api/types/post.type';
-import PostItem from '../components/PostItem';
+import {useLocalSearchParams} from 'expo-router';
+import BoardPostList from './components/BoardPostList';
 
 const S = {
   Container: styled.View`
@@ -52,51 +51,12 @@ const BOARD_CATEGORIES = [
 ];
 
 export default function BoardScreen() {
-  const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState(BOARD_CATEGORIES[0]);
-  const PAGE_SIZE = 3;
-
-  const {data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage} = usePostsByBoardInfinite(
-    selectedCategory as Board,
-    PAGE_SIZE,
-  );
-
-  const posts = useMemo(() => data?.pages.flatMap(page => page?.posts ?? []) ?? [], [data?.pages]);
-
-  const handleLoadMore = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const renderFooter = useCallback(() => {
-    if (isFetchingNextPage) {
-      return (
-        <AppText textType='C2' style={{textAlign: 'center', padding: 10}}>
-          로딩중...
-        </AppText>
-      );
-    }
-    return null;
-  }, [isFetchingNextPage]);
+  const {board: selectedBoard} = useLocalSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState(selectedBoard);
 
   const handleCategoryPress = useCallback(board => {
     setSelectedCategory(board);
   }, []);
-
-  const handlePostPress = useCallback(
-    (postId: number) => {
-      router.push({
-        pathname: '/(tabs)/community/post',
-        params: {id: postId},
-      });
-    },
-    [router],
-  );
-
-  useEffect(() => {
-    refetch();
-  }, [selectedCategory, refetch]);
 
   return (
     <S.Container>
@@ -118,16 +78,7 @@ export default function BoardScreen() {
         </S.Categories>
       </S.CategoriesContainer>
 
-      <S.FlatList
-        data={posts}
-        renderItem={({item}) => <PostItem {...item} onPress={() => handlePostPress(item.id)} />}
-        keyExtractor={item => String(item.id)}
-        contentContainerStyle={{padding: 20, gap: 12}}
-        ListEmptyComponent={() => <AppText textType='C2'>게시글이 없습니다.</AppText>}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={renderFooter}
-      />
+      <BoardPostList board={selectedCategory as Board} />
     </S.Container>
   );
 }

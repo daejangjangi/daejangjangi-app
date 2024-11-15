@@ -7,6 +7,7 @@ export const boardKeys = {
   lists: () => [...boardKeys.all, 'list'] as const,
   pinned: () => [...boardKeys.all, 'pinned'] as const,
   posts: (board: Board) => [...boardKeys.all, 'posts', board] as const,
+  postsInfinite: (board: Board) => [...boardKeys.all, 'postsInfinite', board] as const,
 };
 
 // 관심 게시판 조회
@@ -20,11 +21,15 @@ export function usePinnedBoards() {
 // 게시판별 게시글 조회
 export function usePostsByBoardInfinite(board: Board, size: number) {
   return useInfiniteQuery({
-    queryKey: boardKeys.posts(board),
+    queryKey: boardKeys.postsInfinite(board),
     queryFn: ({pageParam = 1}) => BoardApi.getPostsByBoard(board, pageParam, size),
     getNextPageParam: lastPage => {
-      if (lastPage?.totalPages === lastPage?.pageNumber) return undefined;
-      return (lastPage?.pageNumber ?? -1) + 1;
+      if (!lastPage) return undefined;
+
+      if (lastPage.pageNumber < lastPage.totalPages) {
+        return lastPage.pageNumber + 1;
+      }
+      return undefined;
     },
     initialPageParam: 1,
   });
@@ -33,7 +38,7 @@ export function usePostsByBoardInfinite(board: Board, size: number) {
 export function usePostsByBoard(board: Board, size: number) {
   return useQuery({
     queryKey: boardKeys.posts(board),
-    queryFn: () => BoardApi.getPostsByBoard(board, 0, size),
+    queryFn: () => BoardApi.getPostsByBoard(board, 1, size),
   });
 }
 
