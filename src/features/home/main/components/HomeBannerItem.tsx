@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {Image} from 'expo-image';
-import {Alert} from 'react-native';
+import {Alert, Linking} from 'react-native';
 
 const S = {
   BannerItemContainer: styled.Pressable`
@@ -18,6 +18,7 @@ const S = {
 
   BannerItemLeft: styled.View`
     gap: 16px;
+    max-width: 65%;
   `,
 
   BannerItemTitle: styled(AppText)`
@@ -27,7 +28,7 @@ const S = {
 
   BannerItemImage: styled(Image)`
     border-radius: 8px;
-    width: 125px;
+    width: 120px;
     height: 120px;
   `,
 };
@@ -36,12 +37,27 @@ interface HomeBannerItemProps {
   name: string;
   description: string;
   imageUrl: string;
+  saleLink: string;
 }
 
-export default function HomeBannerItem({name, description, imageUrl}: HomeBannerItemProps) {
-  // @Todo: 상품 페이지 이동 구현
-  const handleClickBannerItem = () => {
-    Alert.alert('상품 페이지 이동 구현해야합니다!');
+export default function HomeBannerItem({
+  name,
+  description,
+  imageUrl,
+  saleLink,
+}: HomeBannerItemProps) {
+  const handleClickBannerItem = async () => {
+    try {
+      const supported = await Linking.canOpenURL(saleLink);
+
+      if (supported) {
+        await Linking.openURL(saleLink);
+      } else {
+        Alert.alert('오류', '이 링크를 열 수 없습니다.');
+      }
+    } catch (error) {
+      Alert.alert('오류', '링크를 여는 중 문제가 발생했습니다.');
+    }
   };
 
   return (
