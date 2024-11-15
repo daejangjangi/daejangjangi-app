@@ -37,7 +37,7 @@ const S = {
 
 export default function MyPosts() {
   const router = useRouter();
-  const {data} = useMyPosts(0, 3);
+  const {data} = useMyPosts(1, 3);
   const posts = data?.posts;
 
   const handlePostPress = (postId: number) => {

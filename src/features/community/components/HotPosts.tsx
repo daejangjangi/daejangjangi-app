@@ -31,7 +31,7 @@ const S = {
 
 export default function HotPosts() {
   const router = useRouter();
-  const {data} = useHotPosts(0, 3);
+  const {data} = useHotPosts(1, 3);
   const hotPosts = data?.posts;
 
   const handlePostPress = (postId: number) => {

@@ -19,7 +19,7 @@ const S = {
 
 export default function MyPostsScreen() {
   const router = useRouter();
-  const {data} = useMyPosts(0, 10);
+  const {data} = useMyPosts(1, 100);
   const myPosts = data?.posts || [];
 
   const handlePostPress = (postId: number) => {

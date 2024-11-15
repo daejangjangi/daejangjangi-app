@@ -135,7 +135,12 @@ export default function SignUpNickName() {
       <S.Body>
         <S.Description textType='T3'>우선 닉네임을 정해주세요.</S.Description>
         <S.InputContainer $status={validationStatus}>
-          <S.Input placeholder='텍스트입력' value={input} onChangeText={handleInputChange} />
+          <S.Input
+            placeholder='텍스트입력'
+            value={input}
+            onChangeText={handleInputChange}
+            maxLength={5}
+          />
           <S.DuplicateCheckButton onPress={handleDuplicateCheck}>
             <S.DuplicateCheckText>중복확인</S.DuplicateCheckText>
           </S.DuplicateCheckButton>
