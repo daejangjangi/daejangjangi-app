@@ -13,7 +13,7 @@ import {useRouter} from 'expo-router';
 import {Alert} from 'react-native';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: 'https://daejangjangi.site/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -37,7 +37,6 @@ axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
-    Alert.alert('error', JSON.stringify(error.response?.data));
 
     // 토큰 만료로 인한 401 에러이고, 재시도하지 않은 요청인 경우
     if (error.response?.status === 401 && !originalRequest._retry) {
