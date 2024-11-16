@@ -7,6 +7,19 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "cli": {
+    "appVersionSource": "remote"
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "releaseStatus": "draft",
+        "track": "internal"
+      }
+    }
   }
 }

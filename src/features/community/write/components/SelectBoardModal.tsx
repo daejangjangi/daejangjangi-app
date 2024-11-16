@@ -72,6 +72,7 @@ export default function SelectBoardModal({isVisible, onClose, onSubmit}: SelectB
               values={boardValues}
               initialCheckedState={checkedStates}
               onChange={handleChange}
+              singleSelect
             />
           </S.Body>
         </S.ScrollViewContainer>
