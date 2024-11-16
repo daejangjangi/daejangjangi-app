@@ -10,6 +10,7 @@ import axios, {
   RawAxiosResponseHeaders,
 } from 'axios';
 import {useRouter} from 'expo-router';
+import {Alert} from 'react-native';
 
 const axiosInstance = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -36,6 +37,7 @@ axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
+    Alert.alert('error', JSON.stringify(error.response?.data));
 
     // 토큰 만료로 인한 401 에러이고, 재시도하지 않은 요청인 경우
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -45,7 +47,7 @@ axiosInstance.interceptors.response.use(
         const {tokens} = useAuthStore.getState();
 
         // refreshToken으로 새로운 토큰 발급 요청
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/tokens/reissue`, {
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/v1/tokens/reissue`, {
           refreshToken: tokens?.refreshToken,
         });
 
