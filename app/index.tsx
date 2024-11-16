@@ -3,12 +3,15 @@ import {Redirect} from 'expo-router';
 import {useAuthStore} from '@/src/stores/auth';
 import {useMemberInfo, useLogin} from '@/src/hooks/queries/member';
 import {useQueryClient} from '@tanstack/react-query';
+import {Alert} from 'react-native';
 
 export default function Index() {
   const {isLoggedIn, setTokens} = useAuthStore();
   const {refetch} = useMemberInfo();
   const {mutateAsync: login} = useLogin();
   const queryClient = useQueryClient();
+
+  Alert.alert('Test!');
 
   useEffect(() => {
     const autoLogin = async () => {
