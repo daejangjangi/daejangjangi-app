@@ -34,3 +34,6 @@ export {default as IcPencilFill} from './IcPencilFill.svg';
 export {default as IcHeartColorFill} from './IcHeartColorFill.svg';
 export {default as IcClose} from './IcClose.svg';
 export {default as IcPoop} from './IcPoop.svg';
+export {default as IcPlusWhite} from './IcPlusWhite.svg';
+export {default as IcWandMain} from './IcWandMain.svg';
+export {default as IcWandGray} from './IcWandGray.svg';
