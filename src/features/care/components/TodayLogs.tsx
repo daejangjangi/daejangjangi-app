@@ -61,6 +61,18 @@ const TEMP_DATA: CareLog[] = [
     form: StoolForm.LOOSE,
     color: StoolColor.BRIGHT_RED,
   },
+  {
+    id: 3,
+    date: '2024-11-18T14:30:00+09:00',
+    form: StoolForm.LOOSE,
+    color: StoolColor.BRIGHT_RED,
+  },
+  {
+    id: 4,
+    date: '2024-11-18T14:30:00+09:00',
+    form: StoolForm.LOOSE,
+    color: StoolColor.BRIGHT_RED,
+  },
 ];
 
 function LogItem({log}: {log: CareLog}) {

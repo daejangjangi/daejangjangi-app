@@ -6,21 +6,24 @@ import CareCalendars from './components/CareCalendars';
 import TodayLogs from './components/TodayLogs';
 
 const S = {
-  Container: styled.View`
+  Container: styled.ScrollView`
     flex: 1;
+    background-color: #f6f5f4;
+  `,
+  Content: styled.View`
     padding: 20px;
     gap: 8px;
-
-    background-color: #f6f5f4;
   `,
 };
 
 export default function CareScreen() {
   return (
     <S.Container>
-      <CareProfile />
-      <CareCalendars />
-      <TodayLogs />
+      <S.Content>
+        <CareProfile />
+        <CareCalendars />
+        <TodayLogs />
+      </S.Content>
     </S.Container>
   );
 }
