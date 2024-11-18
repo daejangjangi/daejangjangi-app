@@ -44,8 +44,8 @@ interface StoolFormSliderProps {
 }
 
 export default function StoolFormSlider({value, onChange}: StoolFormSliderProps) {
-  const getFormLabel = (value: number) => {
-    switch (value) {
+  const getFormLabel = (formValue: number) => {
+    switch (formValue) {
       case 1:
         return StoolForm.VERY_HARD;
       case 2:
@@ -68,12 +68,12 @@ export default function StoolFormSlider({value, onChange}: StoolFormSliderProps)
   return (
     <S.SliderContainer>
       <S.SliderMarks>
-        {[...Array(7)].map((_, index) => (
+        {[1, 2, 3, 4, 5, 6, 7].map(v => (
           <S.SliderMark
-            key={index}
+            key={`stool-mark-${v}`}
             style={{
-              marginLeft: index === 0 ? 0 : -1,
-              marginRight: index === 6 ? 0 : -1,
+              marginLeft: v === 1 ? 0 : -1,
+              marginRight: v === 7 ? 0 : -1,
             }}
           />
         ))}

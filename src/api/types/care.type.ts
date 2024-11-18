@@ -9,7 +9,7 @@ export enum StoolForm {
 }
 
 export enum StoolColor {
-  IVROY = 'IVROY',
+  IVORY = 'IVORY',
   PALE = 'PALE',
   BEIGE = 'BEIGE',
   GOLDISH = 'GOLDISH',

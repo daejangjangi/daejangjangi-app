@@ -3,8 +3,9 @@ import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import {AppText} from '@/src/common/AppComponents';
 import {IcNext} from '@/assets/images/icons';
-import {View} from 'react-native';
+import {StoolColor} from '@/src/api/types/care.type';
 import StoolFormSlider from './StoolFormSlider';
+import StoolColorPicker from './StoolColorPicker';
 
 const S = {
   Container: styled.View`
@@ -42,17 +43,17 @@ const S = {
     gap: 8px;
   `,
 
-  ColorContainer: styled.View`
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-  `,
-
-  SubmitButton: styled.TouchableOpacity`
-    background-color: #f0f0f0;
+  SubmitButton: styled.TouchableOpacity<{$disabled: boolean}>`
+    background-color: ${props =>
+      props.$disabled ? props.theme.colors.textLight : props.theme.colors.main};
     padding: 16px;
     border-radius: 8px;
     align-items: center;
+    opacity: ${props => (props.$disabled ? 0.5 : 1)};
+  `,
+
+  ButtonText: styled(AppText)`
+    color: #ffffff;
   `,
 };
 
@@ -63,7 +64,8 @@ interface CareLogModalProps {
 
 export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
   const [date, setDate] = useState(new Date());
-  const [formValue, setFormValue] = useState(3); // 1~5 사이의 값
+  const [formValue, setFormValue] = useState(4);
+  const [selectedColor, setSelectedColor] = useState<StoolColor>(StoolColor.IVORY);
 
   const handlePrevDate = () => {
     const newDate = new Date(date);
@@ -86,6 +88,14 @@ export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
       })
       .replace(/\. /g, '.')
       .slice(0, -1);
+
+  const isDisabled = !formValue || !selectedColor;
+
+  const handleSubmit = () => {
+    setFormValue(4);
+    setSelectedColor(StoolColor.IVORY);
+    onClose();
+  };
 
   return (
     <Modal
@@ -116,13 +126,10 @@ export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
           </S.FormContainer>
         </S.Section>
 
-        <S.Section>
-          <AppText textType='B1'>오늘의 대변 색상을 선택해주세요</AppText>
-          <S.ColorContainer>{/* @TODO: 대변 색상 선택 UI 구현 */}</S.ColorContainer>
-        </S.Section>
+        <StoolColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
 
-        <S.SubmitButton onPress={onClose}>
-          <AppText textType='B2'>기록하기</AppText>
+        <S.SubmitButton onPress={handleSubmit} disabled={isDisabled} $disabled={isDisabled}>
+          <S.ButtonText textType='B2Bold'>기록하기</S.ButtonText>
         </S.SubmitButton>
       </S.Container>
     </Modal>

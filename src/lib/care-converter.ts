@@ -21,19 +21,19 @@ export const convertStoolForm = (form: StoolForm): string => {
 
 export const convertStoolColor = (color: StoolColor): string => {
   const colorMap: Record<StoolColor, string> = {
-    [StoolColor.IVROY]: '#000',
-    [StoolColor.PALE]: '#000',
-    [StoolColor.BEIGE]: '#000',
-    [StoolColor.GOLDISH]: '#000',
-    [StoolColor.LIGHT_GREEN]: '#000',
-    [StoolColor.ORANGE]: '#000',
-    [StoolColor.RED]: '#000',
-    [StoolColor.BRIGHT_RED]: '#000',
-    [StoolColor.LIGHT_BROWN]: '#000',
-    [StoolColor.GREEN]: '#000',
-    [StoolColor.BROWN]: '#000',
-    [StoolColor.DARK_BROWN]: '#000',
-    [StoolColor.BLACK]: '#000',
+    [StoolColor.IVORY]: '#E8D694',
+    [StoolColor.PALE]: '#D1C5A4',
+    [StoolColor.BEIGE]: '#CBB17D',
+    [StoolColor.GOLDISH]: '#E6B73D',
+    [StoolColor.LIGHT_GREEN]: '#9CA238',
+    [StoolColor.ORANGE]: '#E47737',
+    [StoolColor.RED]: '#E15C40',
+    [StoolColor.BRIGHT_RED]: '#8A1A11',
+    [StoolColor.LIGHT_BROWN]: '#7F591C',
+    [StoolColor.GREEN]: '#5B6233',
+    [StoolColor.BROWN]: '#5F2E0D',
+    [StoolColor.DARK_BROWN]: '#4C2209',
+    [StoolColor.BLACK]: '#240D02',
   };
   return colorMap[color];
 };
