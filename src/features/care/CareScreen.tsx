@@ -1,18 +1,21 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {Link} from 'expo-router';
+
+import styled from 'styled-components/native';
+import CareProfile from './components/CareProfile';
+
+const S = {
+  Container: styled.View`
+    flex: 1;
+    padding: 20px;
+
+    background-color: #f6f5f4;
+  `,
+};
 
 export default function CareScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Link href='/(care)/diagnosis'>배변 분석</Link>
-      <Link href='/(care)/diagnosis-result'>결과</Link>
-    </View>
+    <S.Container>
+      <CareProfile />
+    </S.Container>
   );
 }
