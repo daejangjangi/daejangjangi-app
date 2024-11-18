@@ -52,7 +52,6 @@ export default ({config}: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
-    'expo-build-properties',
     [
       '@react-native-seoul/kakao-login',
       {

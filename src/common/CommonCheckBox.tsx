@@ -7,6 +7,7 @@ type CheckBoxProps = {
   values: string[];
   initialCheckedState?: boolean[];
   onChange: (value: boolean[]) => void;
+  singleSelect?: boolean;
 };
 
 const S = {
@@ -28,7 +29,12 @@ const S = {
   `,
 };
 
-export default function CommonCheckBox({values, initialCheckedState, onChange}: CheckBoxProps) {
+export default function CommonCheckBox({
+  values,
+  initialCheckedState,
+  onChange,
+  singleSelect = false,
+}: CheckBoxProps) {
   const [selectedItems, setSelectedItems] = useState<boolean[]>(
     initialCheckedState || values.map(() => false),
   );
@@ -49,7 +55,16 @@ export default function CommonCheckBox({values, initialCheckedState, onChange}: 
 
   const onPressHandler = (index: number) => {
     const newSelectedItems = [...selectedItems];
-    newSelectedItems[index] = !newSelectedItems[index];
+
+    if (singleSelect) {
+      // 단일 선택 모드: 다른 항목들은 모두 false로 설정
+      newSelectedItems.fill(false);
+      newSelectedItems[index] = !selectedItems[index];
+    } else {
+      // 다중 선택 모드: 기존 동작 유지
+      newSelectedItems[index] = !newSelectedItems[index];
+    }
+
     setSelectedItems(newSelectedItems);
     if (onChange) {
       onChange(newSelectedItems);

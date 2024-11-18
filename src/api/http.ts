@@ -10,9 +10,10 @@ import axios, {
   RawAxiosResponseHeaders,
 } from 'axios';
 import {useRouter} from 'expo-router';
+import {Alert} from 'react-native';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: 'https://daejangjangi.site/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -45,7 +46,7 @@ axiosInstance.interceptors.response.use(
         const {tokens} = useAuthStore.getState();
 
         // refreshToken으로 새로운 토큰 발급 요청
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/tokens/reissue`, {
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/v1/tokens/reissue`, {
           refreshToken: tokens?.refreshToken,
         });
 

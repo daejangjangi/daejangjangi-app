@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'daejangjangi-app'
+rootProject.name = '대장장이'
 
 dependencyResolutionManagement {
   versionCatalogs {

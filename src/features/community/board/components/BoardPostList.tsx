@@ -20,7 +20,7 @@ interface BoardPostsProps {
 
 export default function BoardPosts({board}: BoardPostsProps) {
   const router = useRouter();
-  const PAGE_SIZE = 3;
+  const PAGE_SIZE = 10;
 
   const {refetch, data, fetchNextPage, hasNextPage, isFetchingNextPage} = usePostsByBoardInfinite(
     board as Board,
