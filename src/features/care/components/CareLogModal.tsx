@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import {AppText} from '@/src/common/AppComponents';
@@ -60,12 +60,28 @@ const S = {
 interface CareLogModalProps {
   isVisible: boolean;
   onClose: () => void;
+  isEditing?: boolean;
+  initialForm?: number;
+  initialColor?: StoolColor;
 }
 
-export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
+export default function CareLogModal({
+  isVisible,
+  onClose,
+  isEditing = false,
+  initialForm,
+  initialColor,
+}: CareLogModalProps) {
   const [date, setDate] = useState(new Date());
-  const [formValue, setFormValue] = useState(4);
-  const [selectedColor, setSelectedColor] = useState<StoolColor>(StoolColor.IVORY);
+  const [formValue, setFormValue] = useState(initialForm ?? 4);
+  const [selectedColor, setSelectedColor] = useState<StoolColor>(initialColor ?? StoolColor.IVORY);
+
+  useEffect(() => {
+    if (isVisible) {
+      setFormValue(initialForm ?? 4);
+      setSelectedColor(initialColor ?? StoolColor.IVORY);
+    }
+  }, [isVisible, initialForm, initialColor]);
 
   const handlePrevDate = () => {
     const newDate = new Date(date);
@@ -129,7 +145,7 @@ export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
         <StoolColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
 
         <S.SubmitButton onPress={handleSubmit} disabled={isDisabled} $disabled={isDisabled}>
-          <S.ButtonText textType='B2Bold'>기록하기</S.ButtonText>
+          <S.ButtonText textType='B2Bold'>{isEditing ? '수정하기' : '기록하기'}</S.ButtonText>
         </S.SubmitButton>
       </S.Container>
     </Modal>

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {CareLog, StoolColor, StoolForm} from '@/src/api/types/care.type';
 import {IcPencil, IcPoop} from '@/assets/images/icons';
 import {convertStoolColor, convertStoolForm} from '@/src/lib/care-converter';
+import CareLogModal from './CareLogModal';
 
 const S = {
   Container: styled.View`
@@ -23,7 +24,7 @@ const S = {
     gap: 12px;
   `,
 
-  LogContainer: styled.View`
+  LogContainer: styled.TouchableOpacity`
     flex-direction: row;
     justify-content: space-between;
   `,
@@ -75,7 +76,7 @@ const TEMP_DATA: CareLog[] = [
   },
 ];
 
-function LogItem({log}: {log: CareLog}) {
+function LogItem({log, onPress}: {log: CareLog; onPress: () => void}) {
   const {date, form, color} = log;
 
   const formattedDate = new Date(date);
@@ -86,7 +87,7 @@ function LogItem({log}: {log: CareLog}) {
   const displayTime = `${ampm} ${displayHours}시 ${minutes}분`;
 
   return (
-    <S.LogContainer>
+    <S.LogContainer onPress={onPress}>
       <S.LogTime>
         <IcPoop />
         <AppText textType='C1' colorType='textMedium'>
@@ -104,17 +105,61 @@ function LogItem({log}: {log: CareLog}) {
 }
 
 export default function TodayLogs() {
-  return (
-    <S.Container>
-      <S.Header>
-        <AppText textType='B2Bold'>오늘의 배변일지</AppText>
-      </S.Header>
+  const [selectedLog, setSelectedLog] = useState<CareLog | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-      <S.Logs>
-        {TEMP_DATA.map(log => (
-          <LogItem key={log.id} log={log} />
-        ))}
-      </S.Logs>
-    </S.Container>
+  const handleLogPress = (log: CareLog) => {
+    setSelectedLog(log);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    setSelectedLog(null);
+  };
+
+  function convertFormToNumber(form: StoolForm): number | undefined {
+    switch (form) {
+      case StoolForm.VERY_HARD:
+        return 1;
+      case StoolForm.HARD:
+        return 2;
+      case StoolForm.A_LITTLE_HARD:
+        return 3;
+      case StoolForm.FORMED:
+        return 4;
+      case StoolForm.A_LITTLE_LOOSE:
+        return 5;
+      case StoolForm.LOOSE:
+        return 6;
+      case StoolForm.VERY_LOOSE:
+        return 7;
+      default:
+        return undefined;
+    }
+  }
+
+  return (
+    <>
+      <S.Container>
+        <S.Header>
+          <AppText textType='B2Bold'>오늘의 배변일지</AppText>
+        </S.Header>
+
+        <S.Logs>
+          {TEMP_DATA.map(log => (
+            <LogItem key={log.id} log={log} onPress={() => handleLogPress(log)} />
+          ))}
+        </S.Logs>
+      </S.Container>
+
+      <CareLogModal
+        isVisible={isModalVisible}
+        onClose={handleCloseModal}
+        isEditing
+        initialForm={selectedLog?.form ? convertFormToNumber(selectedLog.form) : undefined}
+        initialColor={selectedLog?.color}
+      />
+    </>
   );
 }
