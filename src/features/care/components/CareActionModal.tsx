@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import {AppText} from '@/src/common/AppComponents';
 import {useRouter} from 'expo-router';
 import {IcWandGray, IcWandMain} from '@/assets/images/icons';
+import CareLogModal from './CareLogModal';
 
 const S = {
   Container: styled.View`
@@ -30,6 +31,7 @@ interface CareActionModalProps {
 
 export default function CareActionModal({isVisible, onClose}: CareActionModalProps) {
   const router = useRouter();
+  const [isLogModalVisible, setIsLogModalVisible] = useState(false);
 
   const handlePressDiagnosis = () => {
     router.push('/care/diagnosis');
@@ -37,27 +39,31 @@ export default function CareActionModal({isVisible, onClose}: CareActionModalPro
   };
 
   const handlePressLog = () => {
-    // @TODO: 배변기록 작성 페이지로 이동
+    setIsLogModalVisible(true);
     onClose();
   };
 
   return (
-    <Modal
-      isVisible={isVisible}
-      onBackdropPress={onClose}
-      backdropOpacity={0.5}
-      style={{margin: 0}}
-    >
-      <S.Container>
-        <S.Button onPress={handlePressLog}>
-          <IcWandGray />
-          <AppText textType='B1'>배변기록 추가</AppText>
-        </S.Button>
-        <S.Button onPress={handlePressDiagnosis}>
-          <IcWandMain />
-          <AppText textType='B1'>배변 AI 분석</AppText>
-        </S.Button>
-      </S.Container>
-    </Modal>
+    <>
+      <Modal
+        isVisible={isVisible}
+        onBackdropPress={onClose}
+        backdropOpacity={0.5}
+        style={{margin: 0}}
+      >
+        <S.Container>
+          <S.Button onPress={handlePressLog}>
+            <IcWandGray />
+            <AppText textType='B1'>배변기록 추가</AppText>
+          </S.Button>
+          <S.Button onPress={handlePressDiagnosis}>
+            <IcWandMain />
+            <AppText textType='B1'>배변 AI 분석</AppText>
+          </S.Button>
+        </S.Container>
+      </Modal>
+
+      <CareLogModal isVisible={isLogModalVisible} onClose={() => setIsLogModalVisible(false)} />
+    </>
   );
 }
