@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import {AppText} from '@/src/common/AppComponents';
 import {IcNext} from '@/assets/images/icons';
 import {View} from 'react-native';
-import Slider from '@react-native-community/slider';
+import StoolFormSlider from './StoolFormSlider';
 
 const S = {
   Container: styled.View`
@@ -54,18 +54,6 @@ const S = {
     border-radius: 8px;
     align-items: center;
   `,
-
-  FormLabel: styled.Text`
-    font-size: 14px;
-    color: #666;
-    margin-top: 8px;
-    text-align: center;
-  `,
-
-  SliderContainer: styled.View`
-    width: 100%;
-    padding: 0 10px;
-  `,
 };
 
 interface CareLogModalProps {
@@ -89,8 +77,8 @@ export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
     setDate(newDate);
   };
 
-  const formatDate = (date: Date) =>
-    date
+  const formatDate = (selectedDate: Date) =>
+    selectedDate
       .toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: '2-digit',
@@ -98,23 +86,6 @@ export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
       })
       .replace(/\. /g, '.')
       .slice(0, -1);
-
-  const getFormLabel = (value: number) => {
-    switch (value) {
-      case 1:
-        return '매우 딱딱함';
-      case 2:
-        return '딱딱함';
-      case 3:
-        return '보통';
-      case 4:
-        return '무른편';
-      case 5:
-        return '매우 무름';
-      default:
-        return '보통';
-    }
-  };
 
   return (
     <Modal
@@ -141,24 +112,7 @@ export default function CareLogModal({isVisible, onClose}: CareLogModalProps) {
         <S.Section>
           <AppText textType='B1'>오늘의 대변 형태를 선택해주세요</AppText>
           <S.FormContainer>
-            <S.SliderContainer>
-              <Slider
-                style={{width: '100%', height: 40}}
-                minimumValue={1}
-                maximumValue={5}
-                step={1}
-                value={formValue}
-                onValueChange={setFormValue}
-                minimumTrackTintColor='#FF6B6B'
-                maximumTrackTintColor='#E5E5E5'
-                thumbTintColor='#FF6B6B'
-              />
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <S.FormLabel>매우 딱딱함</S.FormLabel>
-                <S.FormLabel>매우 무름</S.FormLabel>
-              </View>
-              <S.FormLabel style={{marginTop: 16}}>{getFormLabel(formValue)}</S.FormLabel>
-            </S.SliderContainer>
+            <StoolFormSlider value={formValue} onChange={setFormValue} />
           </S.FormContainer>
         </S.Section>
 
