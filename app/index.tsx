@@ -29,9 +29,7 @@ export default function Index() {
       }
     };
 
-    if (!isLoggedIn) {
-      autoLogin();
-    }
+    autoLogin();
   }, [isLoggedIn, login, queryClient, setTokens]);
 
   useEffect(() => {
