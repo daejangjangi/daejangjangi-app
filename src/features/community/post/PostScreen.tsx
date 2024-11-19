@@ -17,6 +17,7 @@ import {
   useLikeComment,
   useLikePost,
   usePostDetail,
+  useDeleteComment,
 } from '@/src/hooks/queries/post';
 import {Alert} from 'react-native';
 
@@ -132,6 +133,12 @@ const S = {
     gap: 8px;
   `,
 
+  CommentExtraInfo: styled.View`
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  `,
+
   CommentAvatar: styled.View`
     width: 24px;
     height: 24px;
@@ -194,6 +201,7 @@ function Comment({
   createdAt,
   likes,
   liked,
+  isAuthor,
 }: {
   id: number;
   nickname: string;
@@ -201,12 +209,36 @@ function Comment({
   createdAt: string;
   likes: number;
   liked: boolean;
+  isAuthor: boolean;
 }) {
   const {mutate: likeComment} = useLikeComment();
+  const {mutate: deleteComment} = useDeleteComment();
   const timeAgo = getTimeAgo(createdAt);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleLikePress = () => {
     likeComment(id);
+  };
+
+  const handleKebabPress = () => {
+    setShowMenu(prev => !prev);
+  };
+
+  const handleDeleteComment = () => {
+    Alert.alert('댓글 삭제', '정말로 이 댓글을 삭제하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+      },
+      {
+        text: '삭제',
+        style: 'destructive',
+        onPress: () => {
+          deleteComment(id);
+          setShowMenu(false);
+        },
+      },
+    ]);
   };
 
   return (
@@ -216,9 +248,26 @@ function Comment({
           <S.CommentAvatar />
           <AppText textType='B1'>{nickname}</AppText>
         </S.CommentUserInfo>
-        <AppText textType='C1' colorType='textMedium'>
-          {timeAgo}
-        </AppText>
+
+        <S.CommentExtraInfo>
+          <AppText textType='C1' colorType='textMedium'>
+            {timeAgo}
+          </AppText>
+          {isAuthor && (
+            <>
+              <S.KebabButton onPress={handleKebabPress}>
+                <IcKebab />
+              </S.KebabButton>
+              {showMenu && (
+                <S.MenuModal>
+                  <S.MenuItem onPress={handleDeleteComment}>
+                    <AppText textType='B1'>댓글 삭제</AppText>
+                  </S.MenuItem>
+                </S.MenuModal>
+              )}
+            </>
+          )}
+        </S.CommentExtraInfo>
       </S.CommentHeader>
       <AppText textType='C2'>{content}</AppText>
       <S.CommentFooter>
@@ -369,6 +418,7 @@ export default function PostScreen() {
               createdAt={c.createdAt}
               likes={c.likes}
               liked={c.liked}
+              isAuthor={c.author}
             />
           ))}
         </S.CommentsContainer>
