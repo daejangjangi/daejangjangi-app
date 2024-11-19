@@ -266,7 +266,15 @@ export default function PostScreen() {
   };
 
   const handleEditPost = () => {
-    // TODO: 게시글 수정 로직 구현
+    router.push({
+      pathname: '/(tabs)/community/write',
+      params: {
+        id: postId,
+        title: post.title,
+        content: post.content,
+        boards: JSON.stringify(post.boards),
+      },
+    });
     setShowMenu(false);
   };
 
