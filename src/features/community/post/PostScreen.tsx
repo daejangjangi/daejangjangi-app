@@ -225,7 +225,7 @@ export default function PostScreen() {
         <S.Header>
           <S.Avatar />
           <S.UserInfo>
-            <S.Nickname textType='B1'>닉네임</S.Nickname>
+            <S.Nickname textType='B1'>{post.nickname}</S.Nickname>
             <S.Time textType='C1' colorType='textMedium'>
               {timeAgo}
             </S.Time>
