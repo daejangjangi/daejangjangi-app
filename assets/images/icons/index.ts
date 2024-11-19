@@ -33,3 +33,4 @@ export {default as IcSearch} from './IcSearch.svg';
 export {default as IcPencilFill} from './IcPencilFill.svg';
 export {default as IcHeartColorFill} from './IcHeartColorFill.svg';
 export {default as IcClose} from './IcClose.svg';
+export {default as IcKebab} from './IcKebab.svg';

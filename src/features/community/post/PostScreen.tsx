@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {useLocalSearchParams} from 'expo-router';
+import {useLocalSearchParams, useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
 import {getTimeAgo} from '@/src/utils/date';
 import {
@@ -9,13 +9,16 @@ import {
   IcSpeechBubble,
   IcEye,
   IcSend,
+  IcKebab,
 } from '@/assets/images/icons';
 import {
   useCreateComment,
+  useDeletePost,
   useLikeComment,
   useLikePost,
   usePostDetail,
 } from '@/src/hooks/queries/post';
+import {Alert} from 'react-native';
 
 const S = {
   Container: styled.ScrollView`
@@ -25,8 +28,14 @@ const S = {
 
   Header: styled.View`
     flex-direction: row;
-    gap: 12px;
     padding: 12px 20px;
+    align-items: flex-start;
+    justify-content: space-between;
+  `,
+
+  HeaderLeft: styled.View`
+    flex-direction: row;
+    gap: 12px;
   `,
 
   UserInfo: styled.View`
@@ -146,6 +155,35 @@ const S = {
     align-items: center;
     gap: 4px;
   `,
+
+  KebabButton: styled.Pressable`
+    padding: 4px;
+  `,
+
+  MenuModal: styled.View`
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    background-color: white;
+    border-radius: 8px;
+    elevation: 5;
+    shadow-color: #000;
+    shadow-offset: 0px 2px;
+    shadow-opacity: 0.25;
+    shadow-radius: 3.84px;
+  `,
+
+  MenuItem: styled.TouchableOpacity`
+    justify-content: center;
+    align-items: center;
+
+    padding: 12px 16px;
+  `,
+
+  MenuDivider: styled.View`
+    height: 1px;
+    background-color: ${props => props.theme.colors.borderLight};
+  `,
 };
 
 // Comment 컴포넌트
@@ -197,12 +235,16 @@ function Comment({
 
 // @TODO: 실제 데이터 연동 필요
 export default function PostScreen() {
+  const router = useRouter();
+
   const {id: postId} = useLocalSearchParams<{id: string}>();
   const {data: post} = usePostDetail(Number(postId));
   const {mutate: createComment} = useCreateComment();
   const {mutate: likePost} = useLikePost();
+  const {mutate: deletePost} = useDeletePost();
 
   const [comment, setComment] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
 
   if (!post) return null;
 
@@ -219,17 +261,65 @@ export default function PostScreen() {
     }
   };
 
+  const handleKebabPress = () => {
+    setShowMenu(prev => !prev);
+  };
+
+  const handleEditPost = () => {
+    // TODO: 게시글 수정 로직 구현
+    setShowMenu(false);
+  };
+
+  const handleDeletePost = () => {
+    Alert.alert('게시글 삭제', '정말로 이 게시글을 삭제하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+      },
+      {
+        text: '삭제',
+        style: 'destructive',
+        onPress: () => {
+          deletePost(Number(postId));
+          router.back();
+        },
+      },
+    ]);
+    setShowMenu(false);
+  };
+
   return (
     <>
       <S.Container>
         <S.Header>
-          <S.Avatar />
-          <S.UserInfo>
-            <S.Nickname textType='B1'>{post.nickname}</S.Nickname>
-            <S.Time textType='C1' colorType='textMedium'>
-              {timeAgo}
-            </S.Time>
-          </S.UserInfo>
+          <S.HeaderLeft>
+            <S.Avatar />
+            <S.UserInfo>
+              <S.Nickname textType='B1'>{post.nickname}</S.Nickname>
+              <S.Time textType='C1' colorType='textMedium'>
+                {timeAgo}
+              </S.Time>
+            </S.UserInfo>
+          </S.HeaderLeft>
+
+          {post.isAuthor && (
+            <>
+              <S.KebabButton onPress={handleKebabPress}>
+                <IcKebab />
+              </S.KebabButton>
+              {showMenu && (
+                <S.MenuModal>
+                  <S.MenuItem onPress={handleEditPost}>
+                    <AppText textType='B1'>게시글 수정</AppText>
+                  </S.MenuItem>
+                  <S.MenuDivider />
+                  <S.MenuItem onPress={handleDeletePost}>
+                    <AppText textType='B1'>게시글 삭제</AppText>
+                  </S.MenuItem>
+                </S.MenuModal>
+              )}
+            </>
+          )}
         </S.Header>
 
         <S.Content>
