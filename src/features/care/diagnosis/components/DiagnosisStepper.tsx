@@ -26,8 +26,8 @@ interface DiagnosisStepperProps {
 export default function DiagnosisStepper({step, maxStep}: DiagnosisStepperProps) {
   return (
     <S.Container>
-      {Array.from({length: maxStep}).map((_, index) => (
-        <S.Step key={_} $filled={step > index} />
+      {Array.from({length: maxStep}, (_, index) => (
+        <S.Step key={`diagnosis-step-${index + 1}`} $filled={step > index} />
       ))}
     </S.Container>
   );
