@@ -142,7 +142,10 @@ export default function CareLogModal({
           </S.FormContainer>
         </S.Section>
 
-        <StoolColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
+        <S.Section>
+          <AppText textType='B1'>오늘의 대변 색상을 선택해주세요</AppText>
+          <StoolColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
+        </S.Section>
 
         <S.SubmitButton onPress={handleSubmit} disabled={isDisabled} $disabled={isDisabled}>
           <S.ButtonText textType='B2Bold'>{isEditing ? '수정하기' : '기록하기'}</S.ButtonText>

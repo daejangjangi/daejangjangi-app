@@ -38,3 +38,4 @@ export {default as IcPlusWhite} from './IcPlusWhite.svg';
 export {default as IcWandMain} from './IcWandMain.svg';
 export {default as IcWandGray} from './IcWandGray.svg';
 export {default as IcXmark} from './IcXmark.svg';
+export {default as IcCheck} from './IcCheck.svg';
