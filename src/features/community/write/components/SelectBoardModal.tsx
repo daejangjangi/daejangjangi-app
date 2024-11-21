@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import {AppText} from '@/src/common/AppComponents';
@@ -42,11 +42,18 @@ const S = {
 interface SelectBoardModalProps {
   isVisible: boolean;
   onClose: () => void;
-  onSubmit: (selectedBoards: Board[]) => void;
+  onSubmit: (boards: Board[]) => void;
+  initialBoards?: Board[];
 }
 
-export default function SelectBoardModal({isVisible, onClose, onSubmit}: SelectBoardModalProps) {
+export default function SelectBoardModal({
+  isVisible,
+  onClose,
+  onSubmit,
+  initialBoards = [],
+}: SelectBoardModalProps) {
   const boardValues = Object.values(Board);
+  const selectedIndex = boardValues.findIndex(board => initialBoards.includes(board));
   const [checkedStates, setCheckedStates] = useState<boolean[]>(
     new Array(boardValues.length).fill(false),
   );
@@ -60,6 +67,12 @@ export default function SelectBoardModal({isVisible, onClose, onSubmit}: SelectB
     onSubmit(selectedBoards);
     onClose();
   };
+
+  useEffect(() => {
+    const newCheckedStates = new Array(boardValues.length).fill(false);
+    newCheckedStates[selectedIndex] = true;
+    setCheckedStates(newCheckedStates);
+  }, [boardValues.length, initialBoards, selectedIndex]);
 
   return (
     <Modal isVisible={isVisible}>

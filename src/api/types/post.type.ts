@@ -72,6 +72,6 @@ export interface PostCreate {
 
 export interface CommentCreate {
   postId: number;
-  parentCommentId: number;
+  parentCommentId: number | null;
   content: string;
 }
