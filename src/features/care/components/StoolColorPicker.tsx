@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {StoolColor} from '@/src/api/types/care.type';
 import {convertStoolColor} from '@/src/lib/care-converter';
-import {AppText} from '@/src/common/AppComponents';
 
 const S = {
   Section: styled.View`
@@ -35,7 +34,6 @@ interface StoolColorPickerProps {
 export default function StoolColorPicker({selectedColor, onColorSelect}: StoolColorPickerProps) {
   return (
     <S.Section>
-      <AppText textType='B1'>오늘의 대변 색상을 선택해주세요</AppText>
       <S.ColorContainer>
         {Object.values(StoolColor).map(color => (
           <S.ColorButton

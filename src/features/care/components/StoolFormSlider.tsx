@@ -93,12 +93,11 @@ export default function StoolFormSlider({value, onChange}: StoolFormSliderProps)
 
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <S.FormLabel textType='C2'>매우 딱딱함</S.FormLabel>
+        <S.Result textType='B1' colorType='main'>
+          {convertStoolForm(getFormLabel(value))}
+        </S.Result>
         <S.FormLabel textType='C2'>매우 묽음</S.FormLabel>
       </View>
-
-      <S.Result textType='B1' colorType='main'>
-        {convertStoolForm(getFormLabel(value))}
-      </S.Result>
     </S.SliderContainer>
   );
 }
