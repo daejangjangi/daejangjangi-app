@@ -5,7 +5,7 @@ import {useRouter} from 'expo-router';
 import {IcNext, IcSearch} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
 import {AppTextInput} from '@/src/common/AppComponents';
-import {useSearchStore} from '@/src/stores/search';
+import {usePostSearchStore} from '@/src/stores/post-search';
 import {useSearchPosts} from '@/src/hooks/queries/post';
 
 const S = {
@@ -52,7 +52,7 @@ const S = {
 
 export default function SearchHeader() {
   const router = useRouter();
-  const {setKeyword, setIsFocused, keyword} = useSearchStore();
+  const {setKeyword, setIsFocused, keyword} = usePostSearchStore();
   const [text, setText] = useState(keyword);
   const {refetch} = useSearchPosts(0, 10, text);
 
@@ -79,7 +79,7 @@ export default function SearchHeader() {
           <IcNext width='48px' height='48px' color={theme.colors.text} />
         </S.BackButton>
         <S.SearchContainer>
-          <S.SearchInputWrapper isFocused={useSearchStore().isFocused}>
+          <S.SearchInputWrapper isFocused={usePostSearchStore().isFocused}>
             <S.SearchInput
               value={text}
               onChangeText={handleTextChange}

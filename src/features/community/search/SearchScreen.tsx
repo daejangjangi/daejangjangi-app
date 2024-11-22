@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {useSearchPosts} from '@/src/hooks/queries/post';
 import {useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
-import {useSearchStore} from '@/src/stores/search';
+import {usePostSearchStore} from '@/src/stores/post-search';
 import {IcClose} from '@/assets/images/icons';
 import PostItem from '../components/PostItem';
 
@@ -52,7 +52,7 @@ const S = {
 export default function SearchScreen() {
   const router = useRouter();
   const {keyword, recentKeywords, setKeyword, removeRecentKeyword, initializeRecentKeywords} =
-    useSearchStore();
+    usePostSearchStore();
 
   const {data: searchResults, refetch} = useSearchPosts(0, 10, keyword);
 

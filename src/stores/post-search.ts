@@ -4,7 +4,7 @@ import {create} from 'zustand';
 const RECENT_KEYWORDS_KEY = 'recent_keywords';
 const MAX_RECENT_KEYWORDS = 5;
 
-interface SearchStore {
+interface PostSearchStore {
   keyword: string;
   recentKeywords: string[];
   isFocused: boolean;
@@ -15,7 +15,7 @@ interface SearchStore {
   initializeRecentKeywords: () => Promise<void>;
 }
 
-export const useSearchStore = create<SearchStore>((set, get) => ({
+export const usePostSearchStore = create<PostSearchStore>((set, get) => ({
   keyword: '',
   recentKeywords: [],
   isFocused: false,
