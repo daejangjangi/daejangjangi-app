@@ -5,6 +5,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {IcHeartColorEmpty, IcEye, IcHeartColorFill} from '@/assets/images/icons';
 import {CartoonChapter} from '@/src/api/types/cartoon.type';
+import {theme} from '@/src/styles/theme';
 
 const truncateText = (text: string, maxLength: number = 15) => {
   if (text.length <= maxLength) return text;
@@ -96,7 +97,11 @@ export function CartoonEpisodeList({episodes}: CartoonEpisodeListProps) {
                     <S.StatText textType='C1'>{episode.hit}</S.StatText>
                   </S.StatItem>
                   <S.StatItem>
-                    {episode.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
+                    {episode.isLiked ? (
+                      <IcHeartColorFill color={theme.colors.main} />
+                    ) : (
+                      <IcHeartColorEmpty color={theme.colors.main} />
+                    )}
                     <S.StatText textType='C1'>{episode.likeCount}</S.StatText>
                   </S.StatItem>
                 </S.EpisodeStats>

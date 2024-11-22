@@ -20,6 +20,7 @@ import {
   useDeleteComment,
 } from '@/src/hooks/queries/post';
 import {Alert} from 'react-native';
+import {theme} from '@/src/styles/theme';
 
 const S = {
   Container: styled.ScrollView`
@@ -272,7 +273,7 @@ function Comment({
       <AppText textType='C2'>{content}</AppText>
       <S.CommentFooter>
         <S.CommentLikeButton onPress={handleLikePress}>
-          {liked ? <IcHeartColor /> : <IcHeartColorEmpty />}
+          {liked ? <IcHeartColor /> : <IcHeartColorEmpty color={theme.colors.main} />}
           <AppText textType='C1' colorType={liked ? 'main' : 'textMedium'}>
             {likes}
           </AppText>
@@ -392,7 +393,7 @@ export default function PostScreen() {
             </AppText>
           </S.StatItem>
           <S.StatItem onPress={handlePostLikePress}>
-            {post.isLiked ? <IcHeartColor /> : <IcHeartColorEmpty />}
+            {post.isLiked ? <IcHeartColor /> : <IcHeartColorEmpty color={theme.colors.main} />}
             <AppText textType='C1' colorType={post.isLiked ? 'main' : 'textMedium'}>
               {post.likes}
             </AppText>
