@@ -42,3 +42,8 @@ export {default as IcXmark} from './IcXmark.svg';
 export {default as IcCheck} from './IcCheck.svg';
 export {default as IcDiagnosis} from './IcDiagnosis.svg';
 export {default as IcDiagnosisResultHeart} from './IcDiagnosisResultHeart.svg';
+export {default as IcCookie} from './IcCookie.svg';
+export {default as IcGrain} from './IcGrain.svg';
+export {default as IcGreenHeart} from './IcGreenHeart.svg';
+export {default as IcProbiotics} from './IcProbiotics.svg';
+export {default as IcYellowSmile} from './IcYellowSmile.svg';
