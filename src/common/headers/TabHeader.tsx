@@ -8,6 +8,8 @@ import styled from 'styled-components/native';
 const S = {
   SafeAreaContainer: styled(SafeAreaView)`
     background-color: #fff;
+    border-bottom-width: 1px;
+    border-bottom-color: ${props => props.theme.colors.textLight};
   `,
 
   HeaderContainer: styled.View`
