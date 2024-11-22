@@ -1,6 +1,7 @@
 import React from 'react';
 import {Stack} from 'expo-router';
 import CommonHeader from '@/src/common/headers';
+import MarketSearchHeader from '@/src/features/market/search/components/MarketSearchHeader';
 
 const marketRouteMap = {
   favorite: '관심 상품',
@@ -11,9 +12,12 @@ export default function MarketLayout() {
   return (
     <Stack
       screenOptions={{
-        header: ({route}) => (
-          <CommonHeader routeMap={marketRouteMap} routeName={route.name} title='대장간' />
-        ),
+        header: ({route}) => {
+          if (route.name === 'search') {
+            return <MarketSearchHeader />;
+          }
+          return <CommonHeader routeMap={marketRouteMap} routeName={route.name} title='대장간' />;
+        },
       }}
     >
       <Stack.Screen name='index' />

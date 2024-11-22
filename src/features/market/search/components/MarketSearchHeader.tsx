@@ -6,7 +6,6 @@ import {IcNext, IcSearch} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
 import {AppTextInput} from '@/src/common/AppComponents';
 import {useSearchStore} from '@/src/stores/search';
-import {useSearchPosts} from '@/src/hooks/queries/post';
 
 const S = {
   SafeAreaContainer: styled(SafeAreaView)`
@@ -50,16 +49,15 @@ const S = {
   `,
 };
 
-export default function SearchHeader() {
+export default function MarketSearchHeader() {
   const router = useRouter();
   const {setKeyword, setIsFocused, keyword} = useSearchStore();
   const [text, setText] = useState(keyword);
-  const {refetch} = useSearchPosts(0, 10, text);
+  // TODO: 검색 기능 API 연동
 
   const handleSearch = () => {
     if (text.trim()) {
       setKeyword(text.trim());
-      refetch();
     }
     setIsFocused(false);
   };
