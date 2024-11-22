@@ -1,18 +1,29 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {Link} from 'expo-router';
+import styled from 'styled-components/native';
+import CategoryHeader from './components/CategoryHeader';
+import WeeklyHotProducts from './components/WeeklyHotProducts';
+import MarketBanner from './components/MarketBanner';
+import PersonalProducts from './components/PersonalProducts';
+
+const S = {
+  Container: styled.ScrollView`
+    flex: 1;
+  `,
+
+  Splitter: styled.View`
+    height: 5px;
+    background-color: ${props => props.theme.colors.textLight};
+  `,
+};
 
 export default function MarketScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Link href='/(market)/search'>상품 검색</Link>
-      <Link href='/(market)/favorite'>관심 상품</Link>
-    </View>
+    <S.Container>
+      <CategoryHeader />
+      <S.Splitter />
+      <WeeklyHotProducts />
+      <MarketBanner />
+      <PersonalProducts />
+    </S.Container>
   );
 }
