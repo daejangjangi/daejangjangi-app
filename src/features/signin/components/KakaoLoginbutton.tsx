@@ -7,8 +7,8 @@ import {useRouter} from 'expo-router';
 import {useAuthStore} from '@/src/stores/auth';
 import {memberKeys, useKakaoLogin} from '@/src/hooks/queries/member';
 import {useSignUpStore} from '@/src/stores';
-import {useKakaoAuth} from '../../../hooks/useKakaoAuth';
 import {useQueryClient} from '@tanstack/react-query';
+import {useKakaoAuth} from '../../../hooks/useKakaoAuth';
 
 const S = {
   Button: styled.Pressable`
@@ -45,7 +45,7 @@ export default function KakaoLoginbutton() {
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
       });
-      await queryClient.invalidateQueries({queryKey: memberKeys.info()});
+      await queryClient.invalidateQueries();
       router.replace('/(tabs)/home');
     } catch (error) {
       if (error.response.data.code === 'NOT_FOUND_MEMBER') {

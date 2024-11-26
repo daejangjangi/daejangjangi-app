@@ -170,8 +170,8 @@ const S = {
 
   MenuModal: styled.View`
     position: absolute;
-    right: 20px;
-    top: 50px;
+    right: 8px;
+    top: 40px;
     background-color: white;
     border-radius: 8px;
     elevation: 5;

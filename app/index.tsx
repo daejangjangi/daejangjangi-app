@@ -30,13 +30,11 @@ export default function Index() {
     };
 
     autoLogin();
-  }, [isLoggedIn, login, queryClient, setTokens]);
+  }, [login, queryClient, setTokens]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      refetch();
-    }
-  }, [isLoggedIn, refetch]);
+    refetch();
+  }, [refetch]);
 
   if (isLoggedIn) {
     return <Redirect href='/(tabs)/home' />;

@@ -6,7 +6,7 @@ import FormInput from '@/src/common/form/FormInput';
 import FormButton from '@/src/common/form/FormButton';
 import {Link, useRouter} from 'expo-router';
 import {AppText} from '@/src/common/AppComponents';
-import {memberKeys, useLogin} from '@/src/hooks/queries/member';
+import {useLogin} from '@/src/hooks/queries/member';
 import {useAuthStore} from '@/src/stores/auth';
 import {Alert} from 'react-native';
 import {useQueryClient} from '@tanstack/react-query';
@@ -83,7 +83,7 @@ export default function SignInForm() {
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
       });
-      await queryClient.invalidateQueries({queryKey: memberKeys.info()});
+      await queryClient.invalidateQueries();
       router.replace('/(tabs)/home');
     } catch (error) {
       Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
