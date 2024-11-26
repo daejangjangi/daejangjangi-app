@@ -23,6 +23,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       backgroundColor: '#ffffff',
     },
     package: 'com.daejangjangi',
+    googleServicesFile: './daejangjangi-google-services.json',
   },
   web: {
     bundler: 'metro',
