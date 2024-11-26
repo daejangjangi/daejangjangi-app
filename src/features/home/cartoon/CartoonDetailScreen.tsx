@@ -131,7 +131,11 @@ export default function CartoonDetailScreen() {
 
         <S.LikeContainer>
           <S.LikeButton onPress={handleLike}>
-            {cartoonChapterDetail?.isLiked ? <IcHeartColorFill /> : <IcHeartColorEmpty />}
+            {cartoonChapterDetail?.isLiked ? (
+              <IcHeartColorFill color={theme.colors.main} />
+            ) : (
+              <IcHeartColorEmpty color={theme.colors.main} />
+            )}
             <AppText textType='B2'>{cartoonChapterDetail?.likeCount ?? 0}</AppText>
           </S.LikeButton>
         </S.LikeContainer>

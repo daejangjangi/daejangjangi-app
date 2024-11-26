@@ -1,13 +1,15 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useRouter} from 'expo-router';
-import {IcBell, IcDaejangjangi, IcUser} from '@/assets/images/icons';
+import {IcBell, IcDaejangjangi, IcSearch, IcUser} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
 import styled from 'styled-components/native';
 
 const S = {
   SafeAreaContainer: styled(SafeAreaView)`
     background-color: #fff;
+    border-bottom-width: 1px;
+    border-bottom-color: ${props => props.theme.colors.textLight};
   `,
 
   HeaderContainer: styled.View`
@@ -49,6 +51,7 @@ interface CustomHeaderProps {
 export default function TabHeader({title}: CustomHeaderProps) {
   const router = useRouter();
   const isHome = title === '홈';
+  const isMarket = title === '대장간';
 
   return (
     <S.SafeAreaContainer>
@@ -59,9 +62,15 @@ export default function TabHeader({title}: CustomHeaderProps) {
         </S.HeaderMain>
 
         <S.Buttons>
-          <S.Button onPress={() => router.push('/others/mypage')}>
-            <IcUser color={theme.colors.textMedium} />
-          </S.Button>
+          {isMarket ? (
+            <S.Button onPress={() => router.push('/market/search')}>
+              <IcSearch />
+            </S.Button>
+          ) : (
+            <S.Button onPress={() => router.push('/others/mypage')}>
+              <IcUser color={theme.colors.textMedium} />
+            </S.Button>
+          )}
           <S.Button onPress={() => router.push('/others/notification')}>
             <IcBell color={theme.colors.textMedium} />
           </S.Button>

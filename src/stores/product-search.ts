@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {create} from 'zustand';
 
-const RECENT_KEYWORDS_KEY = 'recent_keywords';
+const RECENT_KEYWORDS_KEY = 'product_recent_keywords';
 const MAX_RECENT_KEYWORDS = 5;
 
-interface SearchStore {
+interface ProductSearchStore {
   keyword: string;
   recentKeywords: string[];
   isFocused: boolean;
@@ -15,7 +15,7 @@ interface SearchStore {
   initializeRecentKeywords: () => Promise<void>;
 }
 
-export const useSearchStore = create<SearchStore>((set, get) => ({
+export const useProductSearchStore = create<ProductSearchStore>((set, get) => ({
   keyword: '',
   recentKeywords: [],
   isFocused: false,

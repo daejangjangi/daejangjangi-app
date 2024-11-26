@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
 import {IcSpeechBubble, IcHeartColorEmpty, IcEye} from '@/assets/images/icons';
+import {theme} from '@/src/styles/theme';
 
 const S = {
   Title: styled(AppText)`
@@ -51,7 +52,7 @@ export default function PostBody({title, content, likes, comments, views}: PostB
         </S.IconContainer>
 
         <S.IconContainer>
-          <IcHeartColorEmpty width={16} height={16} />
+          <IcHeartColorEmpty width={16} height={16} color={theme.colors.main} />
           <AppText textType='C1' colorType='main'>
             {likes}
           </AppText>

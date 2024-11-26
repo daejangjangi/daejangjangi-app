@@ -5,8 +5,7 @@ import {useRouter} from 'expo-router';
 import {IcNext, IcSearch} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
 import {AppTextInput} from '@/src/common/AppComponents';
-import {usePostSearchStore} from '@/src/stores/post-search';
-import {useSearchPosts} from '@/src/hooks/queries/post';
+import {useProductSearchStore} from '@/src/stores/product-search';
 
 const S = {
   SafeAreaContainer: styled(SafeAreaView)`
@@ -50,16 +49,15 @@ const S = {
   `,
 };
 
-export default function SearchHeader() {
+export default function MarketSearchHeader() {
   const router = useRouter();
-  const {setKeyword, setIsFocused, keyword} = usePostSearchStore();
+  const {setKeyword, setIsFocused, keyword} = useProductSearchStore();
   const [text, setText] = useState(keyword);
-  const {refetch} = useSearchPosts(0, 10, text);
+  // TODO: 검색 기능 API 연동
 
   const handleSearch = () => {
     if (text.trim()) {
       setKeyword(text.trim());
-      refetch();
     }
     setIsFocused(false);
   };
@@ -79,12 +77,12 @@ export default function SearchHeader() {
           <IcNext width='48px' height='48px' color={theme.colors.text} />
         </S.BackButton>
         <S.SearchContainer>
-          <S.SearchInputWrapper isFocused={usePostSearchStore().isFocused}>
+          <S.SearchInputWrapper isFocused={useProductSearchStore().isFocused}>
             <S.SearchInput
               value={text}
               onChangeText={handleTextChange}
               maxLength={20}
-              placeholder='검색어를 입력하세요'
+              placeholder='상품명을 검색하세요'
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onSubmitEditing={handleSearch}
