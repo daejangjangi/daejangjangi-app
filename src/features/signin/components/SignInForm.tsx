@@ -10,6 +10,8 @@ import {useLogin} from '@/src/hooks/queries/member';
 import {useAuthStore} from '@/src/stores/auth';
 import {Alert} from 'react-native';
 import {useQueryClient} from '@tanstack/react-query';
+import messaging from '@react-native-firebase/messaging';
+import {FcmApi} from '@/src/api/fcm.api';
 
 const S = {
   Container: styled.View`
@@ -83,6 +85,13 @@ export default function SignInForm() {
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
       });
+
+      // FCM 토큰 등록
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        await FcmApi.postFcmToken(fcmToken);
+      }
+
       await queryClient.invalidateQueries();
       router.replace('/(tabs)/home');
     } catch (error) {

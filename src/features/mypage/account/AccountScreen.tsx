@@ -3,10 +3,10 @@ import styled from 'styled-components/native';
 import MyPageMenuItem from '@/src/features/mypage/components/MyPageMenuItem';
 import MyPageQuestionModal from '@/src/features/mypage/account/modal/MyPageQuestionModal';
 import {useAuthStore} from '@/src/stores/auth';
-import {Alert} from 'react-native';
 import {useRouter} from 'expo-router';
 import {MemberApi} from '@/src/api/member.api';
-
+import messaging from '@react-native-firebase/messaging';
+import {FcmApi} from '@/src/api/fcm.api';
 const S = {
   Container: styled.View`
     flex: 1;
@@ -28,7 +28,11 @@ export default function AccountScreen() {
   const router = useRouter();
   const {clearTokens} = useAuthStore();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      await FcmApi.deleteFcmToken(fcmToken);
+    }
     clearTokens();
     router.replace('/auth/signin');
     setLogoutModalOpen(false);
@@ -37,6 +41,11 @@ export default function AccountScreen() {
   const handleExit = async () => {
     try {
       await MemberApi.deleteMember();
+
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        await FcmApi.deleteFcmToken(fcmToken);
+      }
 
       setExitModalOpen(false);
       setExitCompleteModalOpen(true);

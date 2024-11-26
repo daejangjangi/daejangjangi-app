@@ -9,6 +9,8 @@ import {memberKeys, useKakaoLogin} from '@/src/hooks/queries/member';
 import {useSignUpStore} from '@/src/stores';
 import {useQueryClient} from '@tanstack/react-query';
 import {useKakaoAuth} from '../../../hooks/useKakaoAuth';
+import messaging from '@react-native-firebase/messaging';
+import {FcmApi} from '@/src/api/fcm.api';
 
 const S = {
   Button: styled.Pressable`
@@ -45,6 +47,13 @@ export default function KakaoLoginbutton() {
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
       });
+
+      // FCM 토큰 등록
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        await FcmApi.postFcmToken(fcmToken);
+      }
+
       await queryClient.invalidateQueries();
       router.replace('/(tabs)/home');
     } catch (error) {

@@ -10,7 +10,6 @@ import axios, {
   RawAxiosResponseHeaders,
 } from 'axios';
 import {useRouter} from 'expo-router';
-import {Alert} from 'react-native';
 
 const axiosInstance = axios.create({
   baseURL: 'https://daejangjangi.site/api',
