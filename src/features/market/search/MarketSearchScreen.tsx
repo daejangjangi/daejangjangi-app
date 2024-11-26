@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react';
-import {AppText} from '@/src/common/AppComponents';
+import React, {useEffect, useMemo, useCallback, useState} from 'react';
 import {useProductSearchStore} from '@/src/stores/product-search';
 import styled from 'styled-components/native';
+import {useSearchProductsInfinityScroll} from '@/src/hooks/queries/product';
+import {ProductSortKey} from '@/src/api/types/product.type';
+import {AppText} from '@/src/common/AppComponents';
 import MarketRecentSearches from './components/MarketRecentSearches';
 import ProductSortOptions from './components/ProductSortOptions';
 import ProductItem from '../components/ProductItem';
@@ -16,12 +18,9 @@ const S = {
     padding: 12px 20px;
   `,
 
-  ProductItemList: styled.View`
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 16px;
-    padding: 20px;
+  FlatList: styled.FlatList`
+    flex: 1;
+    background-color: #fff;
   `,
 };
 
@@ -34,16 +33,39 @@ export default function MarketSearchScreen() {
     initializeRecentKeywords,
     isFocused,
   } = useProductSearchStore();
+  const [sortKey, setSortKey] = useState<ProductSortKey>(ProductSortKey.POPULAR);
+  const {data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch} =
+    useSearchProductsInfinityScroll(keyword, sortKey, 10);
+
+  const products = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap(page => page?.myProductLikeList ?? []);
+  }, [data?.pages]);
 
   useEffect(() => {
     initializeRecentKeywords();
   }, [initializeRecentKeywords]);
 
   useEffect(() => {
-    if (keyword) {
-      // TODO: 검색 기능 API 연동
+    refetch();
+  }, [keyword, refetch]);
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  }, [keyword]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const renderFooter = useCallback(() => {
+    if (isFetchingNextPage) {
+      return (
+        <AppText textType='C2' style={{textAlign: 'center', padding: 10}}>
+          로딩중...
+        </AppText>
+      );
+    }
+    return null;
+  }, [isFetchingNextPage]);
 
   return (
     <S.Container>
@@ -56,16 +78,25 @@ export default function MarketSearchScreen() {
       )}
 
       <S.ProductionSortOptionsContainer>
-        <ProductSortOptions />
+        <ProductSortOptions sortKey={sortKey} onSelectSortKey={setSortKey} />
       </S.ProductionSortOptionsContainer>
 
-      <S.ProductItemList>
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-      </S.ProductItemList>
+      <S.FlatList
+        data={products}
+        renderItem={({item}) => <ProductItem product={item} />}
+        keyExtractor={item => String(item.id)}
+        numColumns={2}
+        columnWrapperStyle={{justifyContent: 'space-between'}}
+        contentContainerStyle={{padding: 20}}
+        ListEmptyComponent={() => (
+          <AppText textType='C2' style={{textAlign: 'center'}}>
+            검색 결과가 없습니다.
+          </AppText>
+        )}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
+      />
     </S.Container>
   );
 }

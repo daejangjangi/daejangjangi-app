@@ -53,12 +53,9 @@ export default function MarketSearchHeader() {
   const router = useRouter();
   const {setKeyword, setIsFocused, keyword} = useProductSearchStore();
   const [text, setText] = useState(keyword);
-  // TODO: 검색 기능 API 연동
 
   const handleSearch = () => {
-    if (text.trim()) {
-      setKeyword(text.trim());
-    }
+    setKeyword(text.trim());
     setIsFocused(false);
   };
 

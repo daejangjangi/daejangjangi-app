@@ -15,7 +15,7 @@ export interface Product {
   id: number;
   name: string;
   regularPrice: number;
-  discountRage: number;
+  discountRate: number;
   saleLink: string;
   profile: string;
   isLiked: boolean;

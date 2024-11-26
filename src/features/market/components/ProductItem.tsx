@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {Image} from 'expo-image';
 import {AppText} from '@/src/common/AppComponents';
 import {IcHeartColorEmpty, IcHeartColorFill} from '@/assets/images/icons';
 import {theme} from '@/src/styles/theme';
+import {Product} from '@/src/api/types/product.type';
+import {useLikeProduct} from '@/src/hooks/queries/product';
+import {Alert, Linking} from 'react-native';
 
 const S = {
-  Container: styled.View`
+  Container: styled.Pressable`
     margin-bottom: 16px;
     width: 160px;
   `,
@@ -45,23 +48,45 @@ const S = {
   `,
 };
 
-const TEMP_DATA = {
-  id: 1,
-  name: '조이케어 공기방울 무선 버블 좌욕기 + 약쑥 60p',
-  regularPrice: 15000,
-  discountRate: 3,
-  saleLink: 'https://placeholder.com/160',
-  profile: 'https://placeholder.com/160',
-  isLiked: false,
-};
+interface ProductItemProps {
+  product: Product;
+}
 
-export default function ProductItem() {
+export default function ProductItem({product}: ProductItemProps) {
+  const {mutate: likeProduct} = useLikeProduct();
+  const [isLiked, setIsLiked] = useState(product.isLiked);
+
+  const discountedPrice =
+    product.discountRate > 0
+      ? Math.floor((product.regularPrice * ((100 - product.discountRate) / 100)) / 10) * 10
+      : product.regularPrice;
+
+  const handleClickProduct = async () => {
+    try {
+      const supported = await Linking.canOpenURL(product.saleLink);
+
+      if (supported) {
+        await Linking.openURL(product.saleLink);
+      } else {
+        Alert.alert('오류', '이 링크를 열 수 없습니다.');
+      }
+    } catch (err) {
+      Alert.alert('오류', '링크를 여는 중 문제가 발생했습니다.');
+      console.error(err);
+    }
+  };
+
   return (
-    <S.Container>
+    <S.Container onPress={handleClickProduct}>
       <S.ImageContainer>
-        <S.Image source={TEMP_DATA.profile} />
-        <S.LikeButton>
-          {TEMP_DATA.isLiked ? (
+        <S.Image source={product.profile} />
+        <S.LikeButton
+          onPress={() => {
+            likeProduct(product.id);
+            setIsLiked(!isLiked);
+          }}
+        >
+          {isLiked ? (
             <IcHeartColorFill width={24} height={24} color={theme.colors.textLight} />
           ) : (
             <IcHeartColorEmpty width={24} height={24} color={theme.colors.textLight} />
@@ -69,15 +94,15 @@ export default function ProductItem() {
         </S.LikeButton>
       </S.ImageContainer>
 
-      <AppText textType='B1'>{TEMP_DATA.name}</AppText>
+      <AppText textType='B1'>{product.name}</AppText>
 
       <S.PriceContainer>
-        {TEMP_DATA.discountRate && (
+        {product.discountRate > 0 && (
           <AppText textType='C2' colorType='main'>
-            {TEMP_DATA.discountRate}%
+            {product.discountRate}%
           </AppText>
         )}
-        <AppText textType='B1'>{TEMP_DATA.regularPrice.toLocaleString()}원</AppText>
+        <AppText textType='B1'>{discountedPrice.toLocaleString()}원</AppText>
       </S.PriceContainer>
     </S.Container>
   );
