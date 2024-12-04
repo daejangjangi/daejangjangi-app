@@ -46,10 +46,38 @@ const S = {
     bottom: 6px;
     right: 6px;
   `,
+
+  Badges: styled.View`
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 4px;
+  `,
+
+  Badge: styled.View`
+    padding: 5px 8px;
+    background-color: ${props => props.theme.colors.mainLight};
+    border-radius: 4px;
+  `,
 };
 
 interface ProductItemProps {
   product: Product;
+}
+
+function Badge({text}: {text: string}) {
+  const convertMap = {
+    과민성장증후군_설사형: '과민성(설사)',
+    과민성장증후군_변비형: '과민성(변비)',
+  };
+
+  return (
+    <S.Badge>
+      <AppText textType='C1' colorType='main'>
+        {convertMap[text] ?? text}
+      </AppText>
+    </S.Badge>
+  );
 }
 
 export default function ProductItem({product}: ProductItemProps) {
@@ -93,6 +121,17 @@ export default function ProductItem({product}: ProductItemProps) {
           )}
         </S.LikeButton>
       </S.ImageContainer>
+
+      <S.Badges>
+        {product.tagList.slice(0, 2).map(tag => (
+          <Badge key={tag} text={tag} />
+        ))}
+        {product.tagList.length > 2 && (
+          <AppText textType='C1' colorType='text'>
+            외 {product.tagList.length - 2}개
+          </AppText>
+        )}
+      </S.Badges>
 
       <AppText textType='B1'>{product.name}</AppText>
 
