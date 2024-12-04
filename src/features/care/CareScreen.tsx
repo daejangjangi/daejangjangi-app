@@ -33,9 +33,14 @@ const S = {
 
 export default function CareScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const handlePressButton = () => {
     setIsModalVisible(true);
+  };
+
+  const handleChangeDate = (date: Date) => {
+    setSelectedDate(date);
   };
 
   return (
@@ -43,8 +48,8 @@ export default function CareScreen() {
       <S.Container>
         <S.Content>
           <CareProfile />
-          <CareCalendars />
-          <TodayLogs />
+          <CareCalendars selectedDate={selectedDate} onChangeDate={handleChangeDate} />
+          <TodayLogs selectedDate={selectedDate} />
         </S.Content>
       </S.Container>
 

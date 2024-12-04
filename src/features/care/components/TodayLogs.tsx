@@ -4,6 +4,8 @@ import {AppText} from '@/src/common/AppComponents';
 import {CareLog, StoolColor, StoolForm} from '@/src/api/types/care.type';
 import {IcPencil, IcPoop} from '@/assets/images/icons';
 import {convertStoolColor, convertStoolForm} from '@/src/lib/care-converter';
+import {useStoolLogs} from '@/src/hooks/queries/care';
+import {format} from 'date-fns';
 import CareLogModal from './CareLogModal';
 
 const S = {
@@ -49,35 +51,29 @@ const S = {
   `,
 };
 
-const TEMP_DATA: CareLog[] = [
-  {
-    id: 1,
-    date: '2024-11-18T07:30:00+09:00',
-    form: StoolForm.VERY_LOOSE,
-    color: StoolColor.BRIGHT_RED,
-  },
-  {
-    id: 2,
-    date: '2024-11-18T14:30:00+09:00',
-    form: StoolForm.LOOSE,
-    color: StoolColor.BRIGHT_RED,
-  },
-  {
-    id: 3,
-    date: '2024-11-18T14:30:00+09:00',
-    form: StoolForm.LOOSE,
-    color: StoolColor.BRIGHT_RED,
-  },
-  {
-    id: 4,
-    date: '2024-11-18T14:30:00+09:00',
-    form: StoolForm.LOOSE,
-    color: StoolColor.BRIGHT_RED,
-  },
-];
+const convertFormToNumber = (form: StoolForm): number | undefined => {
+  switch (form) {
+    case StoolForm.VERY_HARD:
+      return 1;
+    case StoolForm.HARD:
+      return 2;
+    case StoolForm.A_LITTLE_HARD:
+      return 3;
+    case StoolForm.FORMED:
+      return 4;
+    case StoolForm.A_LITTLE_LOOSE:
+      return 5;
+    case StoolForm.LOOSE:
+      return 6;
+    case StoolForm.VERY_LOOSE:
+      return 7;
+    default:
+      return undefined;
+  }
+};
 
 function LogItem({log, onPress}: {log: CareLog; onPress: () => void}) {
-  const {date, form, color} = log;
+  const {loggedAt: date, form, color} = log;
 
   const formattedDate = new Date(date);
   const hours = formattedDate.getHours();
@@ -104,7 +100,16 @@ function LogItem({log, onPress}: {log: CareLog; onPress: () => void}) {
   );
 }
 
-export default function TodayLogs() {
+interface TodayLogsProps {
+  selectedDate: Date;
+}
+
+export default function TodayLogs({selectedDate}: TodayLogsProps) {
+  const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+  const {data} = useStoolLogs(formattedDate);
+
+  const stoolLogs = data?.stoollogInfoList ?? [];
+
   const [selectedLog, setSelectedLog] = useState<CareLog | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -118,27 +123,6 @@ export default function TodayLogs() {
     setSelectedLog(null);
   };
 
-  function convertFormToNumber(form: StoolForm): number | undefined {
-    switch (form) {
-      case StoolForm.VERY_HARD:
-        return 1;
-      case StoolForm.HARD:
-        return 2;
-      case StoolForm.A_LITTLE_HARD:
-        return 3;
-      case StoolForm.FORMED:
-        return 4;
-      case StoolForm.A_LITTLE_LOOSE:
-        return 5;
-      case StoolForm.LOOSE:
-        return 6;
-      case StoolForm.VERY_LOOSE:
-        return 7;
-      default:
-        return undefined;
-    }
-  }
-
   return (
     <>
       <S.Container>
@@ -147,7 +131,7 @@ export default function TodayLogs() {
         </S.Header>
 
         <S.Logs>
-          {TEMP_DATA.map(log => (
+          {stoolLogs.map(log => (
             <LogItem key={log.id} log={log} onPress={() => handleLogPress(log)} />
           ))}
         </S.Logs>
@@ -159,6 +143,7 @@ export default function TodayLogs() {
         isEditing
         initialForm={selectedLog?.form ? convertFormToNumber(selectedLog.form) : undefined}
         initialColor={selectedLog?.color}
+        logId={selectedLog?.id}
       />
     </>
   );

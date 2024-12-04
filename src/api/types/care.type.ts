@@ -47,7 +47,13 @@ export enum DietType {
 // 배변일지
 export interface CareLog {
   id: number;
-  date: string;
+  loggedAt: string;
   form: StoolForm;
   color: StoolColor;
 }
+
+export type CreateStoolLogDTO = Omit<CareLog, 'id'>;
+export type UpdateStoolLogDTO = CareLog;
+export type GetStoolLogsDTO = {
+  stoollogInfoList: CareLog[];
+};
