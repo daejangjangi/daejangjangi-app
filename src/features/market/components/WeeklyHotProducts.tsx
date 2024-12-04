@@ -29,11 +29,11 @@ export default function WeeklyHotProducts() {
       <AppText textType='T1'>🔥이번주 인기상품🔥</AppText>
 
       <S.ProductItemList>
+        {/* <ProductItem />
         <ProductItem />
         <ProductItem />
         <ProductItem />
-        <ProductItem />
-        <ProductItem />
+        <ProductItem /> */}
       </S.ProductItemList>
 
       <S.MoreButton>
