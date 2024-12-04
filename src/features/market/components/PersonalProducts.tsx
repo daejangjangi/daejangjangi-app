@@ -1,8 +1,9 @@
 import React from 'react';
 import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
-import ProductItem from './ProductItem';
 import {useMemberInfo} from '@/src/hooks/queries/member';
+import ProductItem from './ProductItem';
+import {useRecommendProductsDaejanggan} from '@/src/hooks/queries/product';
 
 const S = {
   Container: styled.View`
@@ -28,16 +29,15 @@ export default function PersonalProducts() {
   const {data} = useMemberInfo();
   const nickname = data?.nickname;
 
+  const {data: recommendProducts, refetch} = useRecommendProductsDaejanggan();
+  const recommendProductsData = recommendProducts?.myProductInfoList;
+
   return (
     <S.Container>
       <AppText textType='T1'>{nickname}님을 위한 장건강 상품</AppText>
 
       <S.ProductItemList>
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
+        {recommendProductsData?.map(product => <ProductItem key={product.id} product={product} />)}
       </S.ProductItemList>
     </S.Container>
   );

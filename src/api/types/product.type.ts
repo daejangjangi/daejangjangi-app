@@ -19,4 +19,5 @@ export interface Product {
   saleLink: string;
   profile: string;
   isLiked: boolean;
+  tagList: string[];
 }

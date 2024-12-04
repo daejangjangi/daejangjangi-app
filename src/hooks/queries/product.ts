@@ -5,6 +5,7 @@ import {ProductSortKey} from '@/src/api/types/product.type';
 export const productKeys = {
   all: ['product'] as const,
   recommend: () => [...productKeys.all, 'recommend'] as const,
+  recommendDaejanggan: () => [...productKeys.all, 'recommendDaejanggan'] as const,
   search: (keyword: string, sortKey: ProductSortKey) =>
     [...productKeys.all, 'search', keyword, sortKey] as const,
   favorite: () => [...productKeys.all, 'favorite'] as const,
@@ -15,6 +16,15 @@ export function useRecommendProducts(count?: number) {
   return useQuery({
     queryKey: productKeys.recommend(),
     queryFn: () => ProductApi.getRecommendProductsMain(count),
+  });
+}
+
+// 추천 상품 조회(대장간)
+export function useRecommendProductsDaejanggan(count?: number) {
+  return useQuery({
+    queryKey: productKeys.recommendDaejanggan(),
+    queryFn: () => ProductApi.getRecommendProductsDaejanggan(count),
+    staleTime: 0,
   });
 }
 
@@ -65,7 +75,8 @@ export function useLikeProduct() {
     mutationFn: (productId: number) => ProductApi.likeProduct(productId),
     onSuccess: () => {
       // 관련된 모든 상품 쿼리 무효화
-      queryClient.invalidateQueries({queryKey: productKeys.all});
+      // queryClient.invalidateQueries({queryKey: productKeys.all});
+      queryClient.invalidateQueries({queryKey: productKeys.favorite()});
     },
   });
 }

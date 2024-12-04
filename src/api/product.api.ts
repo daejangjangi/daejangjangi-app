@@ -2,11 +2,21 @@ import httpInstance from './http';
 import {Pagination} from './types/pagination.type';
 import {Product, ProductSortKey, RecommendProduct} from './types/product.type';
 
-// 추천 상품 조회
+// 추천 상품 조회(메인)
 async function getRecommendProductsMain(count: number = 6) {
   const response = await httpInstance.get<{
     recommendedProducts: RecommendProduct[];
   }>(`/v1/products/recommend/main?count=${count}`);
+
+  return response.data;
+}
+
+// 추천 상품 조회(대장간)
+async function getRecommendProductsDaejanggan(count: number = 6) {
+  const response = await httpInstance.get<{
+    pageFields: Pagination;
+    myProductInfoList: Product[];
+  }>(`/v1/products/recommend/daejanggan?count=${count}`);
 
   return response.data;
 }
@@ -45,6 +55,7 @@ async function likeProduct(productId: number) {
 
 export const ProductApi = {
   getRecommendProductsMain,
+  getRecommendProductsDaejanggan,
   searchProducts,
   getMyFavoriteProducts,
   likeProduct,
