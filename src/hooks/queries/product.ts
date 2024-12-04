@@ -14,7 +14,7 @@ export const productKeys = {
 export function useRecommendProducts(count?: number) {
   return useQuery({
     queryKey: productKeys.recommend(),
-    queryFn: () => ProductApi.getRecommendProducts(count),
+    queryFn: () => ProductApi.getRecommendProductsMain(count),
   });
 }
 
