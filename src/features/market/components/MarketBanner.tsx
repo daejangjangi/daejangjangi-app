@@ -5,14 +5,6 @@ import {Image} from 'expo-image';
 import {useBanners} from '@/src/hooks/queries/banner';
 
 const S = {
-  Container: styled.View`
-    width: 100%;
-    height: 150px;
-    background-color: ${props => props.theme.colors.main};
-    justify-content: center;
-    align-items: center;
-  `,
-
   BannerImageContainer: styled.Pressable`
     width: 100%;
   `,
@@ -31,10 +23,10 @@ export default function MarketBanner() {
   const randomBanner = banners[randomIndex];
 
   return (
-    <S.Container>
+    randomBanner && (
       <S.BannerImageContainer onPress={() => Linking.openURL(randomBanner.saleLink)}>
-        <S.BannerImage source={{uri: randomBanner.bannerImage}} />
+        <S.BannerImage source={randomBanner.bannerImage} />
       </S.BannerImageContainer>
-    </S.Container>
+    )
   );
 }
