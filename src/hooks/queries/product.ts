@@ -32,11 +32,13 @@ export function useRecommendProductsDaejanggan(count?: number) {
 export function useSearchProductsInfinityScroll(
   keyword: string,
   sortKey: ProductSortKey,
+  productGroup: string,
   size: number,
 ) {
   return useInfiniteQuery({
     queryKey: productKeys.search(keyword, sortKey),
-    queryFn: ({pageParam = 1}) => ProductApi.searchProducts(keyword, sortKey, pageParam, size),
+    queryFn: ({pageParam = 1}) =>
+      ProductApi.searchProducts(keyword, sortKey, productGroup, pageParam, size),
     enabled: keyword.length > 0,
     getNextPageParam: lastPage => {
       if (!lastPage) return undefined;

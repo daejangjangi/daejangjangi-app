@@ -34,12 +34,12 @@ export default function MarketSearchScreen() {
     isFocused,
   } = useProductSearchStore();
   const [sortKey, setSortKey] = useState<ProductSortKey>(ProductSortKey.POPULAR);
-  const {data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch} =
-    useSearchProductsInfinityScroll(keyword, sortKey, 10);
+  const {data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch, status} =
+    useSearchProductsInfinityScroll(keyword, sortKey, '', 10);
 
   const products = useMemo(() => {
     if (!data?.pages) return [];
-    return data.pages.flatMap(page => page?.myProductLikeList ?? []);
+    return data.pages.flatMap(page => page?.myProductInfoList ?? []);
   }, [data?.pages]);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function MarketSearchScreen() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const renderFooter = useCallback(() => {
-    if (isFetchingNextPage) {
+    if (status === 'pending') {
       return (
         <AppText textType='C2' style={{textAlign: 'center', padding: 10}}>
           로딩중...
@@ -65,7 +65,7 @@ export default function MarketSearchScreen() {
       );
     }
     return null;
-  }, [isFetchingNextPage]);
+  }, [status]);
 
   return (
     <S.Container>
@@ -88,11 +88,13 @@ export default function MarketSearchScreen() {
         numColumns={2}
         columnWrapperStyle={{justifyContent: 'space-between'}}
         contentContainerStyle={{padding: 20}}
-        ListEmptyComponent={() => (
-          <AppText textType='C2' style={{textAlign: 'center'}}>
-            검색 결과가 없습니다.
-          </AppText>
-        )}
+        ListEmptyComponent={() =>
+          status !== 'pending' && (
+            <AppText textType='C2' style={{textAlign: 'center'}}>
+              검색 결과가 없습니다.
+            </AppText>
+          )
+        }
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}

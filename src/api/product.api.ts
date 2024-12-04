@@ -25,13 +25,22 @@ async function getRecommendProductsDaejanggan(count: number = 6) {
 async function searchProducts(
   keyword: string,
   sortKey: ProductSortKey,
+  productGroup: string,
   page: number,
   size: number,
 ) {
+  const searchParams = new URLSearchParams();
+
+  if (keyword) searchParams.append('keyword', keyword);
+  if (productGroup) searchParams.append('productGroup', productGroup);
+  if (sortKey) searchParams.append('sortKey', sortKey);
+  if (page) searchParams.append('page', page.toString());
+  if (size) searchParams.append('size', size.toString());
+
   const response = await httpInstance.get<{
-    myProductLikeList: Product[];
+    myProductInfoList: Product[];
     pageFields: Pagination;
-  }>(`/v1/products/search?keyword=${keyword}&sortKey=${sortKey}&page=${page}&size=${size}`);
+  }>(`/v1/products/search?${searchParams.toString()}`);
 
   return response.data;
 }
