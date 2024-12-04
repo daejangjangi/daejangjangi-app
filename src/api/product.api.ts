@@ -48,7 +48,7 @@ async function searchProducts(
 // 관심 상품 목록 조회
 async function getMyFavoriteProducts(page: number, size: number) {
   const response = await httpInstance.get<{
-    myProductLikeList: Product[];
+    myProductInfoList: Product[];
     pageFields: Pagination;
   }>(`/v1/products/likes?page=${page}&size=${size}`);
 
