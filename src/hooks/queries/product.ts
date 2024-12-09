@@ -6,6 +6,7 @@ export const productKeys = {
   all: ['product'] as const,
   recommend: () => [...productKeys.all, 'recommend'] as const,
   recommendDaejanggan: () => [...productKeys.all, 'recommendDaejanggan'] as const,
+  popular: () => [...productKeys.all, 'popular'] as const,
   search: (keyword: string, sortKey: ProductSortKey) =>
     [...productKeys.all, 'search', keyword, sortKey] as const,
   favorite: () => [...productKeys.all, 'favorite'] as const,
@@ -25,6 +26,14 @@ export function useRecommendProductsDaejanggan(count?: number) {
     queryKey: productKeys.recommendDaejanggan(),
     queryFn: () => ProductApi.getRecommendProductsDaejanggan(count),
     staleTime: 0,
+  });
+}
+
+// 최근 인기상품 조회
+export function useRecentPopularProducts() {
+  return useQuery({
+    queryKey: productKeys.popular(),
+    queryFn: () => ProductApi.getRecentPopularProducts(),
   });
 }
 

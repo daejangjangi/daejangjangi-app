@@ -21,6 +21,15 @@ async function getRecommendProductsDaejanggan(count: number = 6) {
   return response.data;
 }
 
+// 최근 인기상품 조회
+async function getRecentPopularProducts() {
+  const response = await httpInstance.get<{
+    myProductInfoList: Product[];
+  }>('/v1/products/popular');
+
+  return response.data;
+}
+
 // 검색 및 정렬된 상품 목록 조회
 async function searchProducts(
   keyword: string,
@@ -65,6 +74,7 @@ async function likeProduct(productId: number) {
 export const ProductApi = {
   getRecommendProductsMain,
   getRecommendProductsDaejanggan,
+  getRecentPopularProducts,
   searchProducts,
   getMyFavoriteProducts,
   likeProduct,
