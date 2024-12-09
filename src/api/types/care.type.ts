@@ -57,3 +57,33 @@ export type UpdateStoolLogDTO = CareLog;
 export type GetStoolLogsDTO = {
   stoollogInfoList: CareLog[];
 };
+export type AnalyzeStoolImageResponse = {
+  color: StoolColor;
+  form: StoolForm;
+  isBloody: boolean;
+  mucus: StoolMucus;
+  proteinLumps: StoolProteinLumps;
+};
+export type DiagnosisStoolImageRequest = {
+  stools: {
+    stoolAt: Date;
+    color: StoolColor;
+    form: StoolForm;
+    isBloody: boolean;
+    bloodyStoolDescription: string;
+    proteinLumps: StoolProteinLumps;
+    mucus: StoolMucus;
+  }[];
+  additionalDescription: string;
+  dietType: DietType;
+  dietDescription: string;
+};
+export type DiagnosisStoolImageResponse = {
+  user_language: string;
+};
+export type RegisterStoolDiagnosisRequest = {
+  stoolDiagnose: DiagnosisStoolImageRequest;
+  diagnosisDescription: string;
+  stoolImageUrl: string;
+};
+export type RegisterStoolDiagnosisResponse = AnalyzeStoolImageResponse;
