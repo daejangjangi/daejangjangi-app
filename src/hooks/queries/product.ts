@@ -1,6 +1,6 @@
 import {useInfiniteQuery, useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {ProductApi} from '@/src/api/product.api';
-import {ProductSortKey} from '@/src/api/types/product.type';
+import {ProductCategories, ProductSortKey} from '@/src/api/types/product.type';
 
 export const productKeys = {
   all: ['product'] as const,
@@ -9,6 +9,8 @@ export const productKeys = {
   popular: () => [...productKeys.all, 'popular'] as const,
   search: (keyword: string, sortKey: ProductSortKey) =>
     [...productKeys.all, 'search', keyword, sortKey] as const,
+  category: (category: ProductCategories, sortKey: ProductSortKey) =>
+    [...productKeys.all, 'category', category, sortKey] as const,
   favorite: () => [...productKeys.all, 'favorite'] as const,
 };
 
@@ -49,6 +51,28 @@ export function useSearchProductsInfinityScroll(
     queryFn: ({pageParam = 1}) =>
       ProductApi.searchProducts(keyword, sortKey, productGroup, pageParam, size),
     enabled: keyword.length > 0,
+    getNextPageParam: lastPage => {
+      if (!lastPage) return undefined;
+
+      if (lastPage.pageFields.pageNumber < lastPage.pageFields.totalPages) {
+        return lastPage.pageFields.pageNumber + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+  });
+}
+
+// 카테고리별 상품 조회
+export function useProductsByCategoryInfinityScroll(
+  category: ProductCategories,
+  sortKey: ProductSortKey,
+  size: number,
+) {
+  return useInfiniteQuery({
+    queryKey: productKeys.category(category, sortKey),
+    queryFn: ({pageParam = 1}) => ProductApi.searchProducts('', sortKey, category, pageParam, size),
+    enabled: !!category,
     getNextPageParam: lastPage => {
       if (!lastPage) return undefined;
 
