@@ -9,6 +9,8 @@ import {
 } from '@/assets/images/icons';
 import {AppText} from '@/src/common/AppComponents';
 import styled from 'styled-components/native';
+import {ProductCategories} from '@/src/api/types/product.type';
+import {useRouter} from 'expo-router';
 
 const S = {
   Container: styled.View`
@@ -46,37 +48,46 @@ function CategoryItem({icon, label, onPress}: CategoryItemProps) {
 }
 
 export default function CategoryHeader() {
+  const router = useRouter();
+
+  const goToCategory = (category: ProductCategories) => {
+    router.push({
+      pathname: '/(tabs)/market/categories',
+      params: {category},
+    });
+  };
+
   return (
     <S.Container>
       <CategoryItem
         icon={<IcDaejangjangi width={32} height={32} />}
         label='인기상품'
-        onPress={() => console.log('인기상품 클릭')}
+        onPress={() => goToCategory(ProductCategories.POPULAR)}
       />
       <CategoryItem
         icon={<IcProbiotics width={32} height={32} />}
         label='유산균'
-        onPress={() => console.log('인기상품 클릭')}
+        onPress={() => goToCategory(ProductCategories.PROBIOTICS)}
       />
       <CategoryItem
         icon={<IcYellowSmile width={32} height={32} />}
         label='저포드맵'
-        onPress={() => console.log('인기상품 클릭')}
+        onPress={() => goToCategory(ProductCategories.LOW_FODMAP)}
       />
       <CategoryItem
         icon={<IcGreenHeart width={32} height={32} />}
         label='생활/리빙'
-        onPress={() => console.log('인기상품 클릭')}
+        onPress={() => goToCategory(ProductCategories.LIVING)}
       />
       <CategoryItem
         icon={<IcGrain width={32} height={32} />}
         label='식이섬유'
-        onPress={() => console.log('인기상품 클릭')}
+        onPress={() => goToCategory(ProductCategories.DIETARY_FIBER)}
       />
       <CategoryItem
         icon={<IcCookie width={32} height={32} />}
         label='간식'
-        onPress={() => console.log('인기상품 클릭')}
+        onPress={() => goToCategory(ProductCategories.SNACKS)}
       />
     </S.Container>
   );
