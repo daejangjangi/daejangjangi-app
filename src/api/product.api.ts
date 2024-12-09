@@ -40,16 +40,6 @@ async function searchProducts(
 ) {
   const searchParams = new URLSearchParams();
 
-  const consoleData = {
-    keyword,
-    sortKey,
-    productGroup,
-    page,
-    size,
-  };
-
-  console.log('consoleData:', consoleData);
-
   if (keyword) searchParams.append('keyword', keyword);
   if (productGroup) searchParams.append('productGroup', productGroup);
   if (sortKey) searchParams.append('sortKey', sortKey);
