@@ -1,6 +1,6 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
+import {ProductSortKey} from '@/src/api/types/product.type';
 
 const S = {
   Container: styled.View`
@@ -8,7 +8,7 @@ const S = {
     gap: 8px;
   `,
 
-  SortOption: styled.Pressable<{isSelected: boolean}>`
+  SortOption: styled.TouchableOpacity<{isSelected: boolean}>`
     padding: 8px 16px;
     border: 1px solid ${props => props.theme.colors.textLight};
     border-radius: 20px;
@@ -23,34 +23,32 @@ const S = {
   `,
 };
 
-enum SortOption {
-  POPULARITY = '인기순',
-  LOW_PRICE = '낮은 가격순',
+interface ProductSortOptionsProps {
+  sortKey: ProductSortKey;
+  onSelectSortKey: (sortKey: ProductSortKey) => void;
 }
 
-export default function ProductSortOptions() {
-  const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(SortOption.POPULARITY);
-
-  const handleSelectSortOption = (option: SortOption) => {
-    setSelectedSortOption(option);
+export default function ProductSortOptions({sortKey, onSelectSortKey}: ProductSortOptionsProps) {
+  const handleSelectSortOption = (option: ProductSortKey) => {
+    onSelectSortKey(option);
   };
 
   return (
     <S.Container>
       <S.SortOption
-        isSelected={selectedSortOption === SortOption.POPULARITY}
-        onPress={() => handleSelectSortOption(SortOption.POPULARITY)}
+        isSelected={sortKey === ProductSortKey.POPULAR}
+        onPress={() => handleSelectSortOption(ProductSortKey.POPULAR)}
       >
-        <S.SortOptionText isSelected={selectedSortOption === SortOption.POPULARITY}>
-          {SortOption.POPULARITY}
+        <S.SortOptionText isSelected={sortKey === ProductSortKey.POPULAR}>
+          {ProductSortKey.POPULAR}
         </S.SortOptionText>
       </S.SortOption>
       <S.SortOption
-        isSelected={selectedSortOption === SortOption.LOW_PRICE}
-        onPress={() => handleSelectSortOption(SortOption.LOW_PRICE)}
+        isSelected={sortKey === ProductSortKey.LOW_PRICE}
+        onPress={() => handleSelectSortOption(ProductSortKey.LOW_PRICE)}
       >
-        <S.SortOptionText isSelected={selectedSortOption === SortOption.LOW_PRICE}>
-          {SortOption.LOW_PRICE}
+        <S.SortOptionText isSelected={sortKey === ProductSortKey.LOW_PRICE}>
+          {ProductSortKey.LOW_PRICE}
         </S.SortOptionText>
       </S.SortOption>
     </S.Container>
