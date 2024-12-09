@@ -4,7 +4,7 @@ export enum ProductSortKey {
 }
 
 export enum ProductCategories {
-  POPULAR = '인기순',
+  POPULAR = '',
   PROBIOTICS = '유산균',
   LOW_FODMAP = '저포드맵',
   LIVING = '생활용품.리빙',

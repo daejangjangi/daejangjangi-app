@@ -19,8 +19,8 @@ const S = {
 export default function MarketScreen() {
   return (
     <S.Container>
-      {/* <CategoryHeader /> */}
-      {/* <S.Splitter /> */}
+      <CategoryHeader />
+      <S.Splitter />
       <WeeklyHotProducts />
       <MarketBanner />
       <PersonalProducts />

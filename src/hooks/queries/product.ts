@@ -72,7 +72,6 @@ export function useProductsByCategoryInfinityScroll(
   return useInfiniteQuery({
     queryKey: productKeys.category(category, sortKey),
     queryFn: ({pageParam = 1}) => ProductApi.searchProducts('', sortKey, category, pageParam, size),
-    enabled: !!category,
     getNextPageParam: lastPage => {
       if (!lastPage) return undefined;
 
