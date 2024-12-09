@@ -34,7 +34,7 @@ export default function MarketSearchScreen() {
     isFocused,
   } = useProductSearchStore();
   const [sortKey, setSortKey] = useState<ProductSortKey>(ProductSortKey.POPULAR);
-  const {data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch, status} =
+  const {data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch, status, error} =
     useSearchProductsInfinityScroll(keyword, sortKey, '', 10);
 
   const products = useMemo(() => {
@@ -48,7 +48,7 @@ export default function MarketSearchScreen() {
 
   useEffect(() => {
     refetch();
-  }, [keyword, refetch]);
+  }, [keyword, sortKey, refetch]);
 
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
