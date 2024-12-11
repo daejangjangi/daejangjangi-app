@@ -58,11 +58,14 @@ export type GetStoolLogsDTO = {
   stoollogInfoList: CareLog[];
 };
 export type AnalyzeStoolImageResponse = {
-  color: StoolColor;
-  form: StoolForm;
-  isBloody: boolean;
-  mucus: StoolMucus;
-  proteinLumps: StoolProteinLumps;
+  stoolImageAiAnalysis: {
+    color: StoolColor;
+    form: StoolForm;
+    isBloody: boolean;
+    mucus: StoolMucus;
+    proteinLumps: StoolProteinLumps;
+  };
+  stoolImageUrl: string;
 };
 export type DiagnosisStoolImageRequest = {
   stools: {
@@ -79,7 +82,10 @@ export type DiagnosisStoolImageRequest = {
   dietDescription: string;
 };
 export type DiagnosisStoolImageResponse = {
-  user_language: string;
+  result: string;
+  date: Date;
+  form: StoolForm;
+  color: StoolColor;
 };
 export type RegisterStoolDiagnosisRequest = {
   stoolDiagnose: DiagnosisStoolImageRequest;

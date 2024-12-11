@@ -88,6 +88,8 @@ export default function DiagnosisResultScreen() {
 
   const {mutate: registerDiagnosis} = useRegisterStoolDiagnosis();
 
+  console.log({diagnosisDescription, stoolDiagnose, stoolImageUrl});
+
   const handleSave = () => {
     registerDiagnosis(
       {

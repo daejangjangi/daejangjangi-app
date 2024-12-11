@@ -68,12 +68,14 @@ export default function DiagnosisScreen() {
     dietType,
     dietDescription,
     stoolAt,
+    stoolImageUrl,
     setForm,
     setColor,
     setMucus,
     setProteinLumps,
     setIsBloody,
     setIsAnalyzed,
+    setStoolImageUrl,
     reset,
   } = useStoolDiagnosisStore();
   const {mutateAsync: analyzeStoolImage} = useStoolImageAnalysis();
@@ -107,11 +109,13 @@ export default function DiagnosisScreen() {
       try {
         setIsAnalyzing(true);
         const response = await analyzeStoolImage(image);
-        setForm(response.form);
-        setColor(response.color);
-        setMucus(response.mucus);
-        setProteinLumps(response.proteinLumps);
-        setIsBloody(response.isBloody);
+        const {stoolImageAiAnalysis, stoolImageUrl: receivedStoolImageUrl} = response;
+        setForm(stoolImageAiAnalysis.form);
+        setColor(stoolImageAiAnalysis.color);
+        setMucus(stoolImageAiAnalysis.mucus);
+        setProteinLumps(stoolImageAiAnalysis.proteinLumps);
+        setIsBloody(stoolImageAiAnalysis.isBloody);
+        setStoolImageUrl(receivedStoolImageUrl);
         setIsAnalyzed(true);
       } catch (error) {
         console.error(error);
@@ -146,15 +150,15 @@ export default function DiagnosisScreen() {
 
       setIsAnalyzing(true);
       const response = await diagnosisStool(diagnosisRequest);
-      const diagnosisDescription = response.user_language;
+      const {result, date, form: stoolForm, color: stoolColor} = response;
 
       router.replace({
         pathname: '/care/diagnosis-result',
         params: {
-          diagnosisDescription,
-          stoolDiagnose: JSON.stringify(diagnosisRequest),
-          // TODO: 이미지 url 반환로직 백엔드에서 구현 시 반영이 필요합니다.
-          stoolImageUrl: null,
+          result,
+          date,
+          stoolForm,
+          stoolColor,
         },
       });
     } catch (error) {
