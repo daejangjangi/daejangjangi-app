@@ -81,8 +81,7 @@ type DiagnosisResultParams = {
 export default function DiagnosisResultScreen() {
   const router = useRouter();
 
-  const {diagnosisDescription, stoolDiagnose, stoolImageUrl} =
-    useLocalSearchParams<DiagnosisResultParams>();
+  const {result, date, stoolForm, stoolColor} = useLocalSearchParams<DiagnosisResultParams>();
   const parsedStoolDiagnose = JSON.parse(stoolDiagnose);
   const {stoolAt, form, color} = parsedStoolDiagnose.stools[0];
 
