@@ -56,10 +56,10 @@ export default function CareActionModal({isVisible, onClose}: CareActionModalPro
             <IcWandGray />
             <AppText textType='B1'>배변기록 추가</AppText>
           </S.Button>
-          <S.Button onPress={handlePressDiagnosis}>
+          {/* <S.Button onPress={handlePressDiagnosis}>
             <IcWandMain />
             <AppText textType='B1'>배변 AI 분석</AppText>
-          </S.Button>
+          </S.Button> */}
         </S.Container>
       </Modal>
 
