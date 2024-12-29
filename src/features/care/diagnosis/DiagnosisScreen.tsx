@@ -156,7 +156,6 @@ export default function DiagnosisScreen() {
         },
         stoolImageUrl,
       };
-      console.log('request:', diagnosisRequest);
 
       setIsAnalyzing(true);
       const response = await diagnosisStool(diagnosisRequest);
@@ -166,10 +165,9 @@ export default function DiagnosisScreen() {
         pathname: '/care/diagnosis-result',
         params: {
           result,
-          date,
+          date: new Date(date).toISOString(),
           stoolForm,
           stoolColor,
-          stoolImageUrl,
         },
       });
     } catch (error) {

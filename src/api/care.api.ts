@@ -57,9 +57,17 @@ async function analyzeStoolImage(formData: FormData) {
 
 // 배변 진단
 async function diagnosisStoolImage(dto: DiagnosisStoolImageRequest) {
+  const form = new FormData();
+  form.append('request', JSON.stringify(dto));
+
   const response = await httpInstance.post<DiagnosisStoolImageRequest, DiagnosisStoolImageResponse>(
     '/v1/stoolanalyses/diagnosis',
-    dto,
+    form,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   );
 
   return response.data;

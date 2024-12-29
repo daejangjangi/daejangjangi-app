@@ -1,6 +1,6 @@
 import React from 'react';
 import {IcDiagnosisResultHeart} from '@/assets/images/icons';
-import {StoolColor} from '@/src/api/types/care.type';
+import {StoolColor, StoolForm} from '@/src/api/types/care.type';
 import {AppText} from '@/src/common/AppComponents';
 import {convertStoolColor, convertStoolForm} from '@/src/lib/care-converter';
 import {format} from 'date-fns';
@@ -75,49 +75,22 @@ const S = {
 type DiagnosisResultParams = {
   result: string;
   date: string;
-  stoolForm: string;
-  stoolColor: string;
-  stoolImageUrl: string;
+  stoolForm: StoolForm;
+  stoolColor: StoolColor;
 };
 
 export default function DiagnosisResultScreen() {
   const router = useRouter();
 
-  const {result, date, stoolForm, stoolColor, stoolImageUrl} =
-    useLocalSearchParams<DiagnosisResultParams>();
-  const stool = {
-    stoolAt: new Date(date),
-    color: stoolColor,
-    form: stoolForm,
-    isBloody,
-  };
-  const parsedStoolDiagnose = JSON.parse(stoolDiagnose);
-  const {stoolAt, form, color} = parsedStoolDiagnose.stools[0];
+  const {result, date, stoolForm, stoolColor} = useLocalSearchParams<DiagnosisResultParams>();
 
   const {mutate: registerDiagnosis} = useRegisterStoolDiagnosis();
 
-  console.log({diagnosisDescription, stoolDiagnose, stoolImageUrl});
-
   const handleSave = () => {
-    registerDiagnosis(
-      {
-        stoolDiagnose: parsedStoolDiagnose,
-        diagnosisDescription,
-        stoolImageUrl,
-      },
-      {
-        onSuccess: () => {
-          router.replace('/(tabs)/care');
-        },
-        onError: error => {
-          Alert.alert('오류', '결과 저장 중 문제가 발생했습니다.');
-          console.error(error);
-        },
-      },
-    );
+    router.replace('/(tabs)/care');
   };
 
-  if (!diagnosisDescription || !stoolDiagnose) {
+  if (!result) {
     return <AppText textType='B1'>결과가 없습니다.</AppText>;
   }
 
@@ -125,26 +98,26 @@ export default function DiagnosisResultScreen() {
     <S.Container>
       <S.Header>
         <IcDiagnosisResultHeart />
-        <AppText textType='B2Bold'>{format(new Date(stoolAt), 'yy.MM.dd')} 배변분석 결과</AppText>
+        <AppText textType='B2Bold'>{format(new Date(date), 'yy.MM.dd')} 배변분석 결과</AppText>
       </S.Header>
 
       <S.ResultContainer>
-        <S.ResultText textType='B1'>{diagnosisDescription}</S.ResultText>
+        <S.ResultText textType='B1'>{result}</S.ResultText>
       </S.ResultContainer>
 
       <S.Content>
         <AppText textType='B2'>작성 내용</AppText>
         <S.StoolInfoContainer>
-          <S.StoolColorFill color={convertStoolColor(color)} />
-          <AppText textType='B1'>{convertStoolForm(form)}</AppText>
+          <S.StoolColorFill color={convertStoolColor(stoolColor)} />
+          <AppText textType='B1'>{convertStoolForm(stoolForm)}</AppText>
           <AppText textType='C2' colorType='textMedium'>
-            {format(stoolAt, 'HH:mm')}
+            {format(new Date(date), 'HH:mm')}
           </AppText>
         </S.StoolInfoContainer>
       </S.Content>
 
       <S.Button onPress={handleSave}>
-        <S.ButtonText textType='B1'>결과 내역 및 일지 저장하기</S.ButtonText>
+        <S.ButtonText textType='B1'>돌아가기</S.ButtonText>
       </S.Button>
     </S.Container>
   );
