@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "217747947732",
+    "project_id": "daejangjangi-d6bff",
+    "storage_bucket": "daejangjangi-d6bff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217747947732:android:e14aa3020cac61872bbb41",
+        "android_client_info": {
+          "package_name": "com.daejangjangi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBT2mvCxFEYZHPUaIm-IXo6ggwR-cWuWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -68,21 +68,24 @@ export type AnalyzeStoolImageResponse = {
   stoolImageUrl: string;
 };
 export type DiagnosisStoolImageRequest = {
-  stools: {
-    stoolAt: Date;
-    color: StoolColor;
-    form: StoolForm;
-    isBloody: boolean;
-    bloodyStoolDescription: string;
-    proteinLumps: StoolProteinLumps;
-    mucus: StoolMucus;
-  }[];
-  additionalDescription: string;
-  dietType: DietType;
-  dietDescription: string;
+  stoolDiagnose: {
+    stools: {
+      stoolAt: Date;
+      color: StoolColor;
+      form: StoolForm;
+      isBloody: boolean;
+      bloodyStoolDescription: string;
+      proteinLumps: StoolProteinLumps;
+      mucus: StoolMucus;
+    }[];
+    additionalDescription: string;
+    dietType: DietType;
+    dietDescription: string;
+  };
+  stoolImageUrl: string;
 };
 export type DiagnosisStoolImageResponse = {
-  result: string;
+  diagnosticResult: string;
   date: Date;
   form: StoolForm;
   color: StoolColor;

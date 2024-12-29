@@ -105,11 +105,17 @@ export default function DiagnosisScreen() {
   };
 
   const handleNextStep = async () => {
-    if (step === 1 && image) {
+    if (step === 1) {
+      if (!image) {
+        Alert.alert('오류', '배변 이미지를 선택해주세요.');
+        return;
+      }
+
       try {
         setIsAnalyzing(true);
         const response = await analyzeStoolImage(image);
         const {stoolImageAiAnalysis, stoolImageUrl: receivedStoolImageUrl} = response;
+
         setForm(stoolImageAiAnalysis.form);
         setColor(stoolImageAiAnalysis.color);
         setMucus(stoolImageAiAnalysis.mucus);
@@ -132,25 +138,29 @@ export default function DiagnosisScreen() {
   const handleSubmit = async () => {
     try {
       const diagnosisRequest: DiagnosisStoolImageRequest = {
-        stools: [
-          {
-            stoolAt,
-            color,
-            form,
-            isBloody: isBloody ?? false,
-            bloodyStoolDescription,
-            proteinLumps,
-            mucus,
-          },
-        ],
-        additionalDescription,
-        dietType,
-        dietDescription,
+        stoolDiagnose: {
+          stools: [
+            {
+              stoolAt,
+              color,
+              form,
+              isBloody: isBloody ?? false,
+              bloodyStoolDescription,
+              proteinLumps,
+              mucus,
+            },
+          ],
+          additionalDescription,
+          dietType,
+          dietDescription,
+        },
+        stoolImageUrl,
       };
+      console.log('request:', diagnosisRequest);
 
       setIsAnalyzing(true);
       const response = await diagnosisStool(diagnosisRequest);
-      const {result, date, form: stoolForm, color: stoolColor} = response;
+      const {diagnosticResult: result, date, form: stoolForm, color: stoolColor} = response;
 
       router.replace({
         pathname: '/care/diagnosis-result',
@@ -159,6 +169,7 @@ export default function DiagnosisScreen() {
           date,
           stoolForm,
           stoolColor,
+          stoolImageUrl,
         },
       });
     } catch (error) {

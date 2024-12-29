@@ -38,6 +38,8 @@ async function deleteStoolLog(stoolLogId: number) {
   return response.data;
 }
 
+// ---------------- 배변 분석
+
 // 배변 이미지 분석
 async function analyzeStoolImage(formData: FormData) {
   const response = await httpInstance.post<FormData, AnalyzeStoolImageResponse>(

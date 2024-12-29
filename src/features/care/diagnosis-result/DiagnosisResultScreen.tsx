@@ -73,15 +73,24 @@ const S = {
 };
 
 type DiagnosisResultParams = {
-  diagnosisDescription: string;
-  stoolDiagnose: string;
+  result: string;
+  date: string;
+  stoolForm: string;
+  stoolColor: string;
   stoolImageUrl: string;
 };
 
 export default function DiagnosisResultScreen() {
   const router = useRouter();
 
-  const {result, date, stoolForm, stoolColor} = useLocalSearchParams<DiagnosisResultParams>();
+  const {result, date, stoolForm, stoolColor, stoolImageUrl} =
+    useLocalSearchParams<DiagnosisResultParams>();
+  const stool = {
+    stoolAt: new Date(date),
+    color: stoolColor,
+    form: stoolForm,
+    isBloody,
+  };
   const parsedStoolDiagnose = JSON.parse(stoolDiagnose);
   const {stoolAt, form, color} = parsedStoolDiagnose.stools[0];
 
