@@ -1,10 +1,13 @@
 import React from 'react';
 import {IcDiagnosisResultHeart} from '@/assets/images/icons';
-import {StoolColor, StoolForm} from '@/src/api/types/care.type';
+import {StoolColor} from '@/src/api/types/care.type';
 import {AppText} from '@/src/common/AppComponents';
 import {convertStoolColor, convertStoolForm} from '@/src/lib/care-converter';
 import {format} from 'date-fns';
 import styled from 'styled-components/native';
+import {useLocalSearchParams, useRouter} from 'expo-router';
+import {useRegisterStoolDiagnosis} from '@/src/hooks/queries/care';
+import {Alert} from 'react-native';
 
 const S = {
   Container: styled.View`
@@ -20,11 +23,12 @@ const S = {
     align-items: center;
   `,
 
-  ResultContainer: styled.View`
+  ResultContainer: styled.ScrollView`
     margin-top: 16px;
-    padding: 24px 16px;
+    padding: 16px 16px;
     background-color: #fff;
     border-radius: 8px;
+    max-height: 400px;
   `,
 
   ResultText: styled(AppText)`
@@ -68,45 +72,78 @@ const S = {
   `,
 };
 
-const TEMP_DATA = {
-  date: '2024-03-21T12:00:00Z',
-  result: `안녕하세요.
-대장장이 AI 입니다.
-
-
-국제적 기준에 따르면 현재 아기는 영아 변비를 앓고 있는 것으로 확인됩니다. 
-식이섬유와 수분 섭취를 늘리며 상태를 지켜보고 잘 해결되지 않을 경우 병원에 방문해 자세한 상담을 받을 필요가 있습니다. 때론 아기가 고형식을 시작했을 때 변비 증세를 보이기도 합니다.
-국제적 기준에 따르면 현재 아기는 영아 변비를 앓고 있는 것으로 확인됩니다. 식이섬유와 수분 섭취를 늘리며 상태를 지켜보고 잘 해결되지 않을 경우 병원에 방문해 자세한 상담을 받을 필요가 있습니다. 때론 아기가 고형식을 시작했을 때 변비 증세를 보이기도 합니다.`,
-  form: StoolForm.A_LITTLE_LOOSE,
-  color: StoolColor.BROWN,
+type DiagnosisResultParams = {
+  result: string;
+  date: string;
+  stoolForm: string;
+  stoolColor: string;
+  stoolImageUrl: string;
 };
 
 export default function DiagnosisResultScreen() {
+  const router = useRouter();
+
+  const {result, date, stoolForm, stoolColor, stoolImageUrl} =
+    useLocalSearchParams<DiagnosisResultParams>();
+  const stool = {
+    stoolAt: new Date(date),
+    color: stoolColor,
+    form: stoolForm,
+    isBloody,
+  };
+  const parsedStoolDiagnose = JSON.parse(stoolDiagnose);
+  const {stoolAt, form, color} = parsedStoolDiagnose.stools[0];
+
+  const {mutate: registerDiagnosis} = useRegisterStoolDiagnosis();
+
+  console.log({diagnosisDescription, stoolDiagnose, stoolImageUrl});
+
+  const handleSave = () => {
+    registerDiagnosis(
+      {
+        stoolDiagnose: parsedStoolDiagnose,
+        diagnosisDescription,
+        stoolImageUrl,
+      },
+      {
+        onSuccess: () => {
+          router.replace('/(tabs)/care');
+        },
+        onError: error => {
+          Alert.alert('오류', '결과 저장 중 문제가 발생했습니다.');
+          console.error(error);
+        },
+      },
+    );
+  };
+
+  if (!diagnosisDescription || !stoolDiagnose) {
+    return <AppText textType='B1'>결과가 없습니다.</AppText>;
+  }
+
   return (
     <S.Container>
       <S.Header>
         <IcDiagnosisResultHeart />
-        <AppText textType='B2Bold'>
-          {format(new Date(TEMP_DATA.date), 'yy.MM.dd')} 배변분석 결과
-        </AppText>
+        <AppText textType='B2Bold'>{format(new Date(stoolAt), 'yy.MM.dd')} 배변분석 결과</AppText>
       </S.Header>
 
       <S.ResultContainer>
-        <S.ResultText textType='B1'>{TEMP_DATA.result}</S.ResultText>
+        <S.ResultText textType='B1'>{diagnosisDescription}</S.ResultText>
       </S.ResultContainer>
 
       <S.Content>
         <AppText textType='B2'>작성 내용</AppText>
         <S.StoolInfoContainer>
-          <S.StoolColorFill color={convertStoolColor(TEMP_DATA.color)} />
-          <AppText textType='B1'>{convertStoolForm(TEMP_DATA.form)}</AppText>
+          <S.StoolColorFill color={convertStoolColor(color)} />
+          <AppText textType='B1'>{convertStoolForm(form)}</AppText>
           <AppText textType='C2' colorType='textMedium'>
-            {format(new Date(TEMP_DATA.date), 'HH:mm')}
+            {format(stoolAt, 'HH:mm')}
           </AppText>
         </S.StoolInfoContainer>
       </S.Content>
 
-      <S.Button>
+      <S.Button onPress={handleSave}>
         <S.ButtonText textType='B1'>결과 내역 및 일지 저장하기</S.ButtonText>
       </S.Button>
     </S.Container>

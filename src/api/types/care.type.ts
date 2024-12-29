@@ -47,7 +47,52 @@ export enum DietType {
 // 배변일지
 export interface CareLog {
   id: number;
-  date: string;
+  loggedAt: string;
   form: StoolForm;
   color: StoolColor;
 }
+
+export type CreateStoolLogDTO = Omit<CareLog, 'id'>;
+export type UpdateStoolLogDTO = CareLog;
+export type GetStoolLogsDTO = {
+  stoollogInfoList: CareLog[];
+};
+export type AnalyzeStoolImageResponse = {
+  stoolImageAiAnalysis: {
+    color: StoolColor;
+    form: StoolForm;
+    isBloody: boolean;
+    mucus: StoolMucus;
+    proteinLumps: StoolProteinLumps;
+  };
+  stoolImageUrl: string;
+};
+export type DiagnosisStoolImageRequest = {
+  stoolDiagnose: {
+    stools: {
+      stoolAt: Date;
+      color: StoolColor;
+      form: StoolForm;
+      isBloody: boolean;
+      bloodyStoolDescription: string;
+      proteinLumps: StoolProteinLumps;
+      mucus: StoolMucus;
+    }[];
+    additionalDescription: string;
+    dietType: DietType;
+    dietDescription: string;
+  };
+  stoolImageUrl: string;
+};
+export type DiagnosisStoolImageResponse = {
+  diagnosticResult: string;
+  date: Date;
+  form: StoolForm;
+  color: StoolColor;
+};
+export type RegisterStoolDiagnosisRequest = {
+  stoolDiagnose: DiagnosisStoolImageRequest;
+  diagnosisDescription: string;
+  stoolImageUrl: string;
+};
+export type RegisterStoolDiagnosisResponse = AnalyzeStoolImageResponse;

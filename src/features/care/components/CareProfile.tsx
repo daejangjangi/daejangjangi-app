@@ -15,10 +15,11 @@ const S = {
     border-radius: 12px;
   `,
 
-  ProfileImage: styled(Image)`
+  ProfileImage: styled.View`
     width: 70px;
     height: 70px;
     border-radius: 100px;
+    background-color: ${props => props.theme.colors.textLight};
   `,
 
   InfoContainer: styled.View`

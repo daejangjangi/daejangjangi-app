@@ -1,10 +1,7 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Calendar} from 'react-native-calendars';
 import styled from 'styled-components/native';
 import {format} from 'date-fns';
-import {AppText} from '@/src/common/AppComponents';
-import {IcNext} from '@/assets/images/icons';
 import '@/src/lib/calendar';
 import {theme} from '@/src/styles/theme';
 
@@ -25,20 +22,25 @@ const S = {
   `,
 };
 
-export default function CareCalendars() {
+interface CareCalendarsProps {
+  selectedDate: Date;
+  onChangeDate: (date: Date) => void;
+}
+
+export default function CareCalendars({selectedDate, onChangeDate}: CareCalendarsProps) {
+  const date = format(selectedDate, 'yyyy-MM-dd');
   const today = format(new Date(), 'yyyy-MM-dd');
-  const [selectedDate, setSelectedDate] = useState<string>(today);
 
   const handleDayPress = day => {
-    setSelectedDate(day.dateString);
+    onChangeDate(new Date(day.dateString));
   };
 
   return (
     <S.Calendar
       onDayPress={handleDayPress}
-      current={selectedDate}
+      current={date}
       markedDates={{
-        [selectedDate]: {selected: true, disableTouchEvent: true},
+        [date]: {selected: true, disableTouchEvent: true},
       }}
       theme={{
         selectedDayBackgroundColor: theme.colors.mainLight,

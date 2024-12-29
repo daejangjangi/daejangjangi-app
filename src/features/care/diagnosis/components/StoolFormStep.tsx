@@ -1,19 +1,57 @@
-import React, {useState} from 'react';
-import {StoolColor, StoolMucus, StoolProteinLumps} from '@/src/api/types/care.type';
+import React from 'react';
+import {StoolForm, StoolMucus, StoolProteinLumps} from '@/src/api/types/care.type';
 import {AppText} from '@/src/common/AppComponents';
 import {IcCheck} from '@/assets/images/icons';
+import {useStoolDiagnosisStore} from '@/src/stores/stool-diagnosis.store';
 import StoolFormSlider from '../../components/StoolFormSlider';
 import StoolColorPicker from '../../components/StoolColorPicker';
 import QuestionSection from './QuestionSection';
 import {S} from './StoolFormStepStyles';
 
 export default function StoolFormStep() {
-  const [formValue, setFormValue] = useState(4);
-  const [selectedColor, setSelectedColor] = useState<StoolColor>(StoolColor.IVORY);
-  const [mucus, setMucus] = useState<StoolMucus>(StoolMucus.AMBIGUOUS);
-  const [proteinLumps, setProteinLumps] = useState<StoolProteinLumps>(StoolProteinLumps.AMBIGUOUS);
-  const [hasBlood, setHasBlood] = useState<boolean | null>(null);
-  const [description, setDescription] = useState('');
+  const {
+    isAnalyzed,
+    form,
+    color,
+    mucus,
+    proteinLumps,
+    isBloody,
+    bloodyStoolDescription,
+    setForm,
+    setColor,
+    setMucus,
+    setProteinLumps,
+    setIsBloody,
+    setBloodyStoolDescription,
+  } = useStoolDiagnosisStore();
+
+  // StoolForm을 숫자로 변환하는 함수
+  const convertFormToNumber = (stoolForm: StoolForm) => {
+    const formMap = {
+      VERY_HARD: 1,
+      HARD: 2,
+      A_LITTLE_HARD: 3,
+      FORMED: 4,
+      A_LITTLE_LOOSE: 5,
+      LOOSE: 6,
+      VERY_LOOSE: 7,
+    };
+    return formMap[stoolForm] || 4;
+  };
+
+  // 숫자를 StoolForm으로 변환하는 함수
+  const getFormLabel = (value: number): StoolForm => {
+    const reverseFormMap: Record<number, StoolForm> = {
+      1: StoolForm.VERY_HARD,
+      2: StoolForm.HARD,
+      3: StoolForm.A_LITTLE_HARD,
+      4: StoolForm.FORMED,
+      5: StoolForm.A_LITTLE_LOOSE,
+      6: StoolForm.LOOSE,
+      7: StoolForm.VERY_LOOSE,
+    };
+    return reverseFormMap[value] || StoolForm.FORMED;
+  };
 
   const mucusOptions = [
     {value: StoolMucus.NOTHING, label: '없음'},
@@ -38,24 +76,31 @@ export default function StoolFormStep() {
   return (
     <S.ScrollContainer>
       <S.Container>
-        <S.TitleContainer>
-          <S.BlueCheckContainer>
-            <IcCheck color='#fff' />
-          </S.BlueCheckContainer>
-          <S.Title textType='B2Bold'>기저귀 AI가 배변상태를 분석했어요</S.Title>
-        </S.TitleContainer>
-        <S.SubTitle textType='B1' colorType='textMedium'>
-          분석 결과를 확인하고 수정해주세요
-        </S.SubTitle>
+        {isAnalyzed && (
+          <>
+            <S.TitleContainer>
+              <S.BlueCheckContainer>
+                <IcCheck color='#fff' />
+              </S.BlueCheckContainer>
+              <S.Title textType='B2Bold'>기저귀 AI가 배변상태를 분석했어요</S.Title>
+            </S.TitleContainer>
+            <S.SubTitle textType='B1' colorType='textMedium'>
+              분석 결과를 확인하고 수정해주세요
+            </S.SubTitle>
+          </>
+        )}
 
         <S.FormSection>
           <AppText textType='B1'>변의 묽기를 선택해주세요</AppText>
-          <StoolFormSlider value={formValue} onChange={setFormValue} />
+          <StoolFormSlider
+            value={convertFormToNumber(form)}
+            onChange={value => setForm(getFormLabel(value))}
+          />
         </S.FormSection>
 
         <S.FormSection>
           <AppText textType='B1'>변의 색상을 선택해주세요</AppText>
-          <StoolColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
+          <StoolColorPicker selectedColor={color} onColorSelect={setColor} />
         </S.FormSection>
 
         <QuestionSection
@@ -75,8 +120,8 @@ export default function StoolFormStep() {
         <QuestionSection
           title='아이가 혈변을 보았나요?'
           options={bloodOptions}
-          value={hasBlood}
-          onChange={setHasBlood}
+          value={isBloody}
+          onChange={setIsBloody}
           isSingleRow
         />
 
@@ -85,8 +130,8 @@ export default function StoolFormStep() {
           <S.TextInput
             multiline
             placeholder='아이의 혈변 상태를 구체적으로 적어주세요.'
-            value={description}
-            onChangeText={setDescription}
+            value={bloodyStoolDescription}
+            onChangeText={setBloodyStoolDescription}
             maxLength={500}
           />
         </S.Description>

@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import {AppText} from '@/src/common/AppComponents';
+import {useStoolDiagnosisStore} from '@/src/stores/stool-diagnosis.store';
+import {DietType} from '@/src/api/types/care.type';
 
 const S = {
   Container: styled.View`
@@ -42,11 +44,32 @@ const S = {
   `,
 };
 
-const MEAL_TYPES = ['이유식', '모유', '분유', '기타'];
+const MEAL_TYPE_MAPPING = {
+  이유식: DietType.SOLID_FOOD,
+  모유: DietType.BREAST_MILK,
+  분유: DietType.POWDERED_MILK,
+} as const;
+
+const MEAL_TYPES = Object.keys(MEAL_TYPE_MAPPING);
 
 export default function StoolExtraFormStep() {
-  const [description, setDescription] = useState('');
-  const [selectedMealType, setSelectedMealType] = useState('이유식');
+  const {
+    additionalDescription,
+    dietType,
+    dietDescription,
+    setAdditionalDescription,
+    setDietType,
+    setDietDescription,
+  } = useStoolDiagnosisStore();
+
+  // DietType을 한글로 변환하는 함수
+  const getDietTypeLabel = (type: DietType) => {
+    const reverseMealTypeMapping = Object.entries(MEAL_TYPE_MAPPING).reduce(
+      (acc, [key, value]) => ({...acc, [value]: key}),
+      {} as Record<DietType, string>,
+    );
+    return reverseMealTypeMapping[type] || '기타';
+  };
 
   return (
     <S.Container>
@@ -58,8 +81,8 @@ export default function StoolExtraFormStep() {
 
 예시)'
         multiline
-        value={description}
-        onChangeText={setDescription}
+        value={additionalDescription}
+        onChangeText={setAdditionalDescription}
         maxLength={500}
         textAlignVertical='top'
       />
@@ -69,10 +92,10 @@ export default function StoolExtraFormStep() {
         {MEAL_TYPES.map(type => (
           <S.MealTypeButton
             key={type}
-            isSelected={selectedMealType === type}
-            onPress={() => setSelectedMealType(type)}
+            isSelected={getDietTypeLabel(dietType) === type}
+            onPress={() => setDietType(MEAL_TYPE_MAPPING[type as keyof typeof MEAL_TYPE_MAPPING])}
           >
-            <S.MealTypeText textType='B2' isSelected={selectedMealType === type}>
+            <S.MealTypeText textType='B2' isSelected={getDietTypeLabel(dietType) === type}>
               {type}
             </S.MealTypeText>
           </S.MealTypeButton>
@@ -86,6 +109,8 @@ export default function StoolExtraFormStep() {
         multiline
         textAlignVertical='top'
         maxLength={500}
+        value={dietDescription}
+        onChangeText={setDietDescription}
       />
     </S.Container>
   );
